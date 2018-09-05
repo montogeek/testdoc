@@ -6,9 +6,11 @@ Requisites:
 
 Instructions:
 
-1. `git clone https://github.com/montogeek/testdoc.git`
-2. `cd testdoc`
-3. `docker-composer up -d ngnix mysql`
+1. `git clone https://github.com/montogeek/testdoc.git --recursive`
+2. `cd testdoc/laradock`
+3. `docker-compose up -d ngnix mysql`
 4. Wait ~10 mins.
-5. Open `http://localhost`
-6. Profit!
+5. `docker-compose exec workspace composer install`
+6. `docker-compose exec workspace php artisan key:generate`
+7. Open [http://localhost](http://localhost)
+8. Profit!
