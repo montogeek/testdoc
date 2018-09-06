@@ -12,5 +12,7 @@ Instructions:
 4. Wait ~10 mins.
 5. `docker-compose exec workspace composer install`
 6. `docker-compose exec workspace php artisan key:generate`
-7. Open [http://localhost](http://localhost)
-8. Profit!
+7. Create `events` database.
+8. `docker-compose exec workspace php artisan migrate:refresh --seed`
+9. Open [http://localhost](http://localhost)
+10. Profit!
