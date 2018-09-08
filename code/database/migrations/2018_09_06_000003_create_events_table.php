@@ -26,7 +26,7 @@ class CreateEventsTable extends Migration
             $table->increments('id');
             $table->string('name', 45);
             $table->dateTime('date');
-            $table->time('duration');
+            $table->dateTime('duration');
             $table->string('location', 45)->nullable();
             $table->json('extras')->nullable();
             $table->timestamps();
