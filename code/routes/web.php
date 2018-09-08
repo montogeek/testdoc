@@ -19,3 +19,7 @@ Auth::routes();
 
 Route::get('/dashboard', 'HomeController@index')->name('home');
 Route::resource('/dashboard/events', 'EventController');
+
+//Route::view('/{path?}', 'welcome')
+//    ->where('path', '.*')
+//    ->name('react');
