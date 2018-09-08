@@ -11,7 +11,7 @@ let tailwindcss = require('tailwindcss');
  |
  */
 
-mix.react('resources/js/app.js', 'public/js')
+mix.react('resources/js/index.js', 'public/js')
     .postCss('resources/styles/app.css', 'public/css', [
         require("postcss-import"),
         tailwindcss('./tailwind.config.js')
