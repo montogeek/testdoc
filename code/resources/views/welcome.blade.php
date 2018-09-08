@@ -15,6 +15,7 @@
     </head>
     <body>
         <div id="root"></div>
+        @routes
         <script src="{{ mix('js/index.js') }}"></script>
     </body>
 </html>
