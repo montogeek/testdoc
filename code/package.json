@@ -16,11 +16,13 @@
     "babel-preset-react": "^6.24.1",
     "css-loader": "1.0.0",
     "esm": "3.0.82",
-    "laravel-mix": "2.1.14",
     "postcss-import": "12.0.0",
+    "postcss-loader": "3.0.0",
+    "prettier": "1.14.2",
     "react": "16.5.0",
     "react-dom": "16.5.0",
     "react-hot-loader": "4.3.6",
+    "style-loader": "0.23.0",
     "tailwindcss": "0.6.5",
     "webpack": "4.17.2",
     "webpack-cli": "3.1.0",
@@ -28,5 +30,8 @@
   },
   "esm": {
     "mode": "all"
+  },
+  "dependencies": {
+    "react-router-dom": "4.3.1"
   }
 }

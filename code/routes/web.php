@@ -11,15 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
+//Auth::routes();
+//
+//Route::get('/dashboard', 'HomeController@index')->name('home');
+//Route::resource('/dashboard/events', 'EventController');
 
-Auth::routes();
-
-Route::get('/dashboard', 'HomeController@index')->name('home');
-Route::resource('/dashboard/events', 'EventController');
-
-//Route::view('/{path?}', 'welcome')
-//    ->where('path', '.*')
-//    ->name('react');
+Route::view('/{path?}', 'welcome')
+    ->where('path', '.*')
+    ->name('react');
