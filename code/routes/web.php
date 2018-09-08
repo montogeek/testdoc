@@ -17,4 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('home');
+Route::resource('/dashboard/events', 'EventController');
+
+//Route::view('/{path?}', 'welcome')
+//    ->where('path', '.*')
+//    ->name('react');
