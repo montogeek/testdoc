@@ -26,10 +26,11 @@ class CreateChairsTable extends Migration
             $table->increments('id');
             $table->json('layout')->nullable();
             $table->string('notes', 45)->nullable();
+            $table->timestamps();
+
             $table->unsignedInteger('event_id');
 
             $table->index(["event_id"], 'fk_chairs_parties1_idx');
-
 
             $table->foreign('event_id', 'fk_chairs_parties1_idx')
                 ->references('id')->on('events')

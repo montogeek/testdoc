@@ -26,15 +26,16 @@ class CreateEventsTable extends Migration
             $table->increments('id');
             $table->string('name', 45);
             $table->dateTime('date');
-            $table->dateTime('duration');
+            $table->time('duration');
             $table->string('location', 45)->nullable();
             $table->json('extras')->nullable();
-            $table->unsignedInteger('users_id');
+            $table->timestamps();
 
-            $table->index(["users_id"], 'fk_events_users1_idx');
+            $table->unsignedInteger('user_id');
 
+            $table->index(["user_id"], 'fk_events_user1_idx');
 
-            $table->foreign('users_id', 'fk_events_users1_idx')
+            $table->foreign('user_id', 'fk_events_user1_idx')
                 ->references('id')->on('users')
                 ->onDelete('no action')
                 ->onUpdate('no action');

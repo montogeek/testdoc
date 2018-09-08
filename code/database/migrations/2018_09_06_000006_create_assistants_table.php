@@ -25,7 +25,7 @@ class CreateAssistantsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name', 45)->nullable();
-            $table->string('address', 45)->nullable();
+            $table->string('address', 100)->nullable();
             $table->string('city', 45)->nullable();
             $table->string('state', 45)->nullable();
             $table->string('zip', 45)->nullable();
@@ -34,11 +34,11 @@ class CreateAssistantsTable extends Migration
             $table->tinyInteger('rsvp')->nullable();
             $table->integer('kids')->nullable();
             $table->integer('adults')->nullable();
+            $table->timestamps();
 
             $table->unsignedInteger('event_id');
 
             $table->index(["event_id"], 'fk_guests_parties1_idx');
-
 
             $table->foreign('event_id', 'fk_guests_parties1_idx')
                 ->references('id')->on('events')

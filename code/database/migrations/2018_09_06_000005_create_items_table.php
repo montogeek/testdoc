@@ -30,15 +30,15 @@ class CreateItemsTable extends Migration
             $table->float('shareAdult')->nullable();
             $table->string('notes', 45)->nullable();
             $table->tinyInteger('bought')->nullable();
-            $table->unsignedInteger('event_id');
             $table->json('extras')->nullable();
             $table->unsignedInteger('quantity')->nullable();
+            $table->timestamps();
+
+            $table->unsignedInteger('event_id');
             $table->unsignedInteger('categories_id');
 
             $table->index(["categories_id"], 'fk_items_categories1_idx');
-
             $table->index(["event_id"], 'fk_menus_parties1_idx');
-
 
             $table->foreign('event_id', 'fk_menus_parties1_idx')
                 ->references('id')->on('events')
