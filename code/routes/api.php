@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event) {
     return $event->attributesToArray();
 });
+
+Route::middleware('auth:api')->post('auth/login', function () {
+   return response()->json(['All good'], 200);
+});

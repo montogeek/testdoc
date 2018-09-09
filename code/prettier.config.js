@@ -1,5 +1,5 @@
-export default {
-  printWidth: 80,
+module.exports = {
+  printWidth: 100,
   parser: 'babylon',
   tabWidth: 2,
   semi: false,
