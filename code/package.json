@@ -28,5 +28,11 @@
   },
   "esm": {
     "mode": "all"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.0.0",
+    "ky": "0.2.0",
+    "querystring": "0.2.0",
+    "react-router-dom": "4.3.1"
   }
 }

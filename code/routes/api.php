@@ -22,3 +22,7 @@ use Illuminate\Http\Request;
 //});
 
 
+// Route::middleware('auth:api')->post('/auth/login', function () {
+//    return response()->json(['All good'], 200);
+// });
+
