@@ -26,3 +26,10 @@ use Illuminate\Http\Request;
 //    return response()->json(['All good'], 200);
 // });
 
+// Route::middleware('auth:api')->post('/events/{event}', function (App\Event $event) {
+//     return $event->attributesToArray();
+// });
+
+// Route::middleware('auth:api')->post('/auth/login', function () {
+//    return response()->json(['All good'], 200);
+// });

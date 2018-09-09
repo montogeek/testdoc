@@ -78,3 +78,15 @@ Route::post('/login/refresh', 'LoginController@refresh')->name('refresh');
 
 // Protected
 Route::post('/logout', 'LoginController@logout')->name('logout');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
+//Auth::routes();
+//
+//Route::get('/dashboard', 'HomeController@index')->name('home');
+//Route::resource('/dashboard/events', 'EventController');
+
+// Route::view('/{path?}', 'welcome')
+//     ->where('path', '.*')
+//     ->name('react');

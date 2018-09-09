@@ -3,6 +3,7 @@ import path from 'path';
 
 export default {
     mode: 'development',
+    devtool: 'cheap-module-source-map',
     entry: {
         'js/index': [
             path.resolve(__dirname, 'resources/js/index.js'),
