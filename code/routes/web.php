@@ -11,15 +11,33 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Auth::routes();
-
-Route::get('/dashboard', 'HomeController@index')->name('home');
-Route::resource('/dashboard/events', 'EventController');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
+//Auth::routes();
+//
+//Route::get('/dashboard', 'HomeController@index')->name('home');
+//Route::resource('/dashboard/events', 'EventController');
 
 //Route::view('/{path?}', 'welcome')
 //    ->where('path', '.*')
 //    ->name('react');
+
+//Route::get('/redirect', function () {
+//    $query = http_build_query([
+//        'client_id' => '3',
+//        'redirect_uri' => 'http://localhost/auth/callback',
+//        'response_type' => 'code',
+//        'scope' => '',
+//    ]);
+//
+//    return redirect('http://localhost/oauth/authorize?'.$query);
+//});
+
+// Public
+Route::post('/login', 'LoginController@login')->name('login');
+Route::post('/login/refresh', 'LoginController@refresh')->name('refresh');
+
+// Protected
+Route::post('/logout', 'LoginController@logout')->name('logout');
