@@ -126,12 +126,13 @@ class Login extends React.Component {
     try {
       const res = await ky.post('/oauth/token', { json: data }).json()
 
-      const res1 = await ky.post('/api/events/1', { headers: {
-        'Authorization': `Bearer ${res.refresh_token}`
-      } }).json()
+      // const res1 = await ky.post('/api/events/1', { headers: {
+      //   'Authorization': `Bearer ${res.refresh_token}`
+      // } }).json()
 
-      console.log(res)
-      console.log(res1)
+      fakeAuth.authenticate(() => {
+        this.setState({ redirectToReferrer: true })
+      })
     } catch (e) {
       throw e
     }
