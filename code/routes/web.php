@@ -57,9 +57,9 @@
 //Route::get('/dashboard', 'HomeController@index')->name('home');
 //Route::resource('/dashboard/events', 'EventController');
 
-Route::view('/{path?}', 'welcome')
-   ->where('path', '.*')
-   ->name('react');
+//Route::view('/{path?}', 'welcome')
+//   ->where('path', '.*')
+//   ->name('react');
 
 //Route::get('/redirect', function () {
 //    $query = http_build_query([
@@ -72,15 +72,17 @@ Route::view('/{path?}', 'welcome')
 //    return redirect('http://localhost/oauth/authorize?'.$query);
 //});
 
+Route::get('/', function () {
+  return view('welcome');
+});
+
 // Public
 Route::post('/login', 'LoginController@login')->name('login');
 Route::post('/login/refresh', 'LoginController@refresh')->name('refresh');
 
 // Protected
 Route::post('/logout', 'LoginController@logout')->name('logout');
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+
 //
 //Auth::routes();
 //

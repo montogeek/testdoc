@@ -1,7 +1,3 @@
 @tailwind preflight;
 @tailwind components;
 @tailwind utilities;
-
-body {
-  background-color: yellow;
-}

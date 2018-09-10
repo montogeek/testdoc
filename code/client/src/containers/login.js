@@ -57,7 +57,7 @@ const AuthButton = withRouter(
         </button>
       </p>
     ) : (
-      <p>You are not logged in.</p>
+      <p>You are not logged ins.</p>
     )
 )
 
