@@ -1,5 +1,5 @@
-import tailwindcss from 'tailwindcss';
+import tailwindcss from "tailwindcss"
 
-export default {
-    plugins: [require('postcss-import'), tailwindcss('./tailwind.config.js')]
-};
+module.exports = {
+  plugins: [tailwindcss("./tailwind.config.js")]
+}

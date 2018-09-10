@@ -3,6 +3,7 @@ import path from 'path';
 
 export default {
     mode: 'development',
+    devtool: 'cheap-module-source-map',
     entry: {
         'js/index': [
             path.resolve(__dirname, 'resources/js/index.js'),
@@ -21,8 +22,9 @@ export default {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader',
-                    'postcss-loader'
+                  'style-loader',
+                  { loader: 'css-loader', options: { importLoaders: 1 } },
+                  'postcss-loader'
                 ]
             }
         ]
