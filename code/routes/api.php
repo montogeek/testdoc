@@ -22,3 +22,9 @@ Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event
 Route::middleware('auth:api')->post('/events', function (App\Event $event) {
     return $event->all();
 });
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    var_dump(get_class_methods($request));
+//    dd($request->user()->tokens->count());
+    return response()->json($request->user());
+});

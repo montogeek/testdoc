@@ -1,14 +1,19 @@
-import React, { Component } from 'react'
-import Login from './containers/login'
-import { hot } from 'react-hot-loader'
+import React, { Component } from "react"
+import Login from "./containers/login"
+import { hot } from "react-hot-loader"
+import { Provider } from "redux-zero/react"
+
+import store from "./store"
 
 class App extends Component {
   render() {
     return (
-      <div className="container mx-auto">
-        <Login />
-      </div>
-    );
+      <Provider store={store}>
+        <div className="container mx-auto">
+          <Login />
+        </div>
+      </Provider>
+    )
   }
 }
 

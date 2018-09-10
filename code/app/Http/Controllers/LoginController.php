@@ -16,7 +16,8 @@ class LoginController extends Controller
         $this->client = $client;
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $email = $request->get('email');
         $password = $request->get('password');
 
@@ -25,10 +26,11 @@ class LoginController extends Controller
         return response($response);
     }
 
-    protected function attemptLogin($email, $password) {
+    protected function attemptLogin($email, $password)
+    {
         $user = User::where('email', $email)->first();
 
-        if($user !== null) {
+        if ($user !== null) {
             return $this->proxy('password', [
                 'username' => $email,
                 'password' => $password
@@ -50,7 +52,7 @@ class LoginController extends Controller
         $request = Request::create('/oauth/token', 'POST', $data);
         $response = app()->handle($request);
 
-        if($response->isSuccessful()) {
+        if ($response->isSuccessful()) {
             $responseData = json_decode($response->getContent());
 
             Cookie::queue('refreshToken', $responseData->refresh_token, 864000, null, null, false, true);
@@ -64,11 +66,13 @@ class LoginController extends Controller
         throw new UnauthorizedHttpException('', 'Not authorized');
     }
 
-    public function refresh(Request $request) {
+    public function refresh(Request $request)
+    {
 
     }
 
-    public function logout() {
+    public function logout()
+    {
 
     }
 }

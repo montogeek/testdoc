@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class Event extends Model
 {
-    protected $appends = ['month_year'];
+    protected $appends = ['month_year', 'day'];
 
     public function user()
     {
@@ -16,7 +16,7 @@ class Event extends Model
 
     public function getDayAttribute()
     {
-        return Carbon::parse($this->date)->hour;
+        return Carbon::parse($this->date)->day;
     }
 
     public function getMonthYearAttribute()
