@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -12,24 +11,14 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-//
-//Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event) {
-//    return $event->attributesToArray();
-//});
+Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event) {
+    return $event->attributesToArray();
+});
 
-
-// Route::middleware('auth:api')->post('/auth/login', function () {
-//    return response()->json(['All good'], 200);
-// });
-
-// Route::middleware('auth:api')->post('/events/{event}', function (App\Event $event) {
-//     return $event->attributesToArray();
-// });
-
-// Route::middleware('auth:api')->post('/auth/login', function () {
-//    return response()->json(['All good'], 200);
-// });
+Route::middleware('auth:api')->post('/events', function (App\Event $event) {
+    return $event->all();
+});
