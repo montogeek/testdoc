@@ -2,7 +2,7 @@ import ky from "ky"
 
 const actions = store => ({
   login: async (state, email, password) => {
-    const res = await ky.post(`http://localhost/login`, { json: { email, password } }).json()
+    const res = await ky.post(`/login`, { json: { email, password } }).json()
 
     return {
       auth: {
@@ -14,7 +14,7 @@ const actions = store => ({
 
   getEvents: async state => {
     const events = await ky
-      .post("http://localhost/api/events", {
+      .post("/api/events", {
         headers: {
           Authorization: "Bearer " + state.auth.access_token
         }
