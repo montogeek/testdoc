@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node -r esm ./node_modules/.bin/webpack-dev-server",
+    "start": "node -r esm ./node_modules/.bin/webpack-dev-server --hot",
     "build": "node -r esm ./node_modules/.bin/webpack",
     "hot": "NODE_ENV=development node -r esm ./node_modules/.bin/webpack-dev-server"
   },
