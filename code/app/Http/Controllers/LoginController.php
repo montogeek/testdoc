@@ -68,7 +68,17 @@ class LoginController extends Controller
 
     public function refresh(Request $request)
     {
+        return response($this->attemptRefresh());
+    }
 
+    protected function attemptRefresh()
+    {
+
+        $refreshToken = Cookie::get('refreshToken');
+
+        return $this->proxy('refresh_token', [
+            'refresh_token' => $refreshToken
+        ]);
     }
 
     public function logout()
