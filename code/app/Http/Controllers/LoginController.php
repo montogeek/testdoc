@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
     public function __construct(Client $client)
     {
         $this->client = $client;
+        $this->middleware('auth:api')->only('logout');
     }
 
     public function login(Request $request)
@@ -41,6 +43,39 @@ class LoginController extends Controller
 
     }
 
+
+    public function refresh(Request $request)
+    {
+        return response($this->attemptRefresh());
+    }
+
+    protected function attemptRefresh()
+    {
+
+        $refreshToken = Cookie::get('refreshToken');
+
+        return $this->proxy('refresh_token', [
+            'refresh_token' => $refreshToken
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $accessToken = $request->user()->token();
+
+        $refreshToken = DB::table('oauth_refresh_tokens')
+            ->where('access_token_id', $accessToken->id)
+            ->update([
+                'revoked' => true
+            ]);
+
+        $accessToken->revoke();
+
+        Cookie::queue(Cookie::forget('refreshToken'));
+
+        return response()->json([], 200);
+    }
+
     protected function proxy($grantType, array $data = [])
     {
         $data = array_merge($data, [
@@ -64,15 +99,5 @@ class LoginController extends Controller
         }
 
         throw new UnauthorizedHttpException('', 'Not authorized');
-    }
-
-    public function refresh(Request $request)
-    {
-
-    }
-
-    public function logout()
-    {
-
     }
 }

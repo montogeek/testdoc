@@ -4,7 +4,7 @@ import actions from "../actions"
 
 class Navbar extends React.Component {
   render() {
-    return <div className="h-10">Eventos</div>
+    return <div className="h-10">Eventos to</div>
   }
 }
 
