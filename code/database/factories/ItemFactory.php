@@ -12,7 +12,7 @@ $factory->define(App\Item::class, function (Faker $faker) {
         'shareAdult' => mt_rand(0, 10) / 10,
         'bought' => (bool)random_int(0, 1),
         'notes' => $faker->realText(30),
-        'event_id' => 1,
+        'event_id' => random_int(1, 21),
         'categories_id' => rand(1, 4)
     ];
 });
