@@ -2,7 +2,7 @@ import ky from "ky"
 
 const actions = store => ({
   login: async (state, email, password) => {
-    const res = await ky.post(`http://localhost/login`, { json: { email, password } }).json()
+    const res = await ky.post(`http://localhost/login`, { json: { email, password }, credentials: "include" }).json()
 
     localStorage.setItem("access_token", res.access_token)
     localStorage.setItem("expires_in", Date.now() + res.expires_in * 1000)
@@ -48,7 +48,7 @@ const actions = store => ({
 
   logout: async state => {
     const res = await ky
-      .post("http://localhost/logout", {
+      .post("http://localhost/api/logout", {
         headers: {
           Authorization: "Bearer " + state.auth.access_token
         }

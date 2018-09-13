@@ -4,6 +4,14 @@ import Event from '../components/event'
 import Navbar from "../components/navbar";
 import actions from "../actions"
 
+
+const LogoutComponent = ({ logout }) => {
+  return (<div>
+    <button onClick={logout}>Logout</button>
+  </div>)
+}
+
+const Logout = connect(() => {}, actions)(LogoutComponent)
 class Dashboard extends React.Component {
   constructor() {
     super()
@@ -20,8 +28,9 @@ class Dashboard extends React.Component {
 
     if (events.length > 0) {
       return (
-        <div>
+        <div className="bg-blue-dark">
           <Navbar />
+          <Logout />
           {events.map((event, i) => (
             <Event key={i} event={event} />
           ))}

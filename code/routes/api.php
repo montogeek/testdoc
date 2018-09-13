@@ -15,8 +15,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   return response()->json($request->user());
 });
 
-//Route::middleware('auth:api')->post('/logout', 'LoginController@logout');
-
 Route::middleware('auth:api')->post('/events', function (Request $request) {
   return response()->json($request->user()->events);
 });
@@ -24,4 +22,7 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
 Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event) {
     return $event->attributesToArray();
 });
+
+
+Route::middleware('auth:api')->post('/logout', 'LoginController@logout')->name('logout');
 
