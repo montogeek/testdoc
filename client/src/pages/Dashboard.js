@@ -1,17 +1,9 @@
 import React from "react"
 import { connect } from "redux-zero/react"
-import Event from '../components/event'
-import Navbar from "../components/navbar";
+import Event from "../components/event"
+import Navbar from "../components/navbar"
 import actions from "../actions"
 
-
-const LogoutComponent = ({ logout }) => {
-  return (<div>
-    <button onClick={logout}>Logout</button>
-  </div>)
-}
-
-const Logout = connect(() => {}, actions)(LogoutComponent)
 class Dashboard extends React.Component {
   constructor() {
     super()
@@ -24,16 +16,22 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    const { data: { events } } = this.props
+    const {
+      data: { events }
+    } = this.props
 
     if (events.length > 0) {
       return (
-        <div className="bg-blue-dark">
+        <div>
           <Navbar />
-          <Logout />
-          {events.map((event, i) => (
-            <Event key={i} event={event} />
-          ))}
+          <div className="w-full max-w-2xl mx-auto px-6">
+          <div className="pt-24 pb-8 w-full">
+            <h1>Eventos</h1>
+            {events.map((event, i) => (
+              <Event key={i} event={event} />
+            ))}
+            </div>
+          </div>
         </div>
       )
     }
