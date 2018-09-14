@@ -15,11 +15,5 @@ Route::get('/', function () {
   return view('welcome');
 });
 
-// Public
 Route::post('/login', 'LoginController@login')->name('login');
 Route::post('/login/refresh', 'LoginController@refresh')->name('refresh');
-
-// Protected
-Route::post('/logout', 'LoginController@logout')->name('logout');
-
-

@@ -15,23 +15,39 @@ const initialState = {
   user: {}
 }
 
-const refreshToken = store => next => async action => {
+const refreshToken = store => next => action => {
+  const nextAction = next(action)
+
   const expires = parseInt(localStorage.getItem("expires_in"), 10)
   const now = Date.now()
 
+  const refreshToken = async () => {
+    const res = await ky
+      .post("http://localhost/login/refresh", {
+        credentials: "include"
+      })
+      .json()
+
+    localStorage.setItem("access_token", res.access_token)
+    localStorage.setItem("expires_in", Date.now() + res.expires_in * 1000)
+    localStorage.setItem("authenticated", true)
+
+    store.setState({
+      auth: {
+        authenticated: true,
+        ...res
+      }
+    })
+  }
+
   if (expires) {
-    if (now > expires) {
-      const res = await ky.post("http://localhost/login/refresh", { credentials: "include" }).json()
-
-      localStorage.setItem("access_token", res.access_token)
-      localStorage.setItem("expires_in", Date.now() + res.expires_in * 1000)
-      localStorage.setItem("authenticated", true)
-
-      return res
+    if (now > expires - 30000) { // If token is about to expire (30 seconds), refresh it.
+      refreshToken()
+      return nextAction
     }
   }
 
-  return next(action)
+  return nextAction
 }
 
 const middlewares = connect ? applyMiddleware(connect(initialState), refreshToken) : []

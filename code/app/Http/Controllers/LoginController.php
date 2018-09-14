@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-        $this->middleware('auth:api')->only('logout');
-    }
-
     public function login(Request $request)
     {
         $email = $request->get('email');
