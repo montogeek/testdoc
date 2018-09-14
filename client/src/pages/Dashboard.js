@@ -20,22 +20,18 @@ class Dashboard extends React.Component {
       data: { events }
     } = this.props
 
-    if (events.length > 0) {
-      return (
-        <div className="bg-grey-lightest font-sans">
-          <Navbar />
-          <div className="w-full max-w-2xl mx-auto px-6">
+    return (
+      <div className="bg-grey-lightest font-sans">
+        <Navbar />
+        <div className="w-full max-w-2xl mx-auto px-6">
           <div className="pt-24 pb-8 w-full">
-            {events.map((event, i) => (
-              <Event key={i} event={event} />
-            ))}
-            </div>
+            {events.length > 0
+              ? events.map((event, i) => <Event key={i} event={event} />)
+              : "Agrega un evento"}
           </div>
         </div>
-      )
-    }
-
-    return "Loading..."
+      </div>
+    )
   }
 }
 
