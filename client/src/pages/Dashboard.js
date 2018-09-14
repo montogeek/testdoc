@@ -22,11 +22,10 @@ class Dashboard extends React.Component {
 
     if (events.length > 0) {
       return (
-        <div>
+        <div className="bg-grey-lightest font-sans">
           <Navbar />
           <div className="w-full max-w-2xl mx-auto px-6">
           <div className="pt-24 pb-8 w-full">
-            <h1>Eventos</h1>
             {events.map((event, i) => (
               <Event key={i} event={event} />
             ))}
