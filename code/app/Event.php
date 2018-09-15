@@ -9,7 +9,7 @@ class Event extends Model
 {
     protected $appends = ['month_year', 'day', 'kids', 'adults'];
 
-    protected $hidden = ['assistant'];
+    protected $hidden = ['assistant', 'item'];
 
     public function user()
     {
@@ -18,6 +18,10 @@ class Event extends Model
 
     public function assistant() {
         return $this->hasMany('App\Assistant');
+    }
+
+    public function item() {
+        return $this->hasMany('App\Item');
     }
 
     public function getDayAttribute()

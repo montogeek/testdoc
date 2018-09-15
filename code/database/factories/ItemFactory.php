@@ -13,6 +13,6 @@ $factory->define(App\Item::class, function (Faker $faker) {
         'bought' => (bool)random_int(0, 1),
         'notes' => $faker->realText(30),
         'event_id' => random_int(1, 21),
-        'categories_id' => rand(1, 4)
+        'category_id' => rand(1, 4)
     ];
 });
