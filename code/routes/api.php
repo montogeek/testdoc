@@ -49,14 +49,21 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
             return $items->sum('cost');
         })->sum();
 
+        $budget = $event->item->groupBy('category_id')->values()->map(function ($items) {
+            return [
+                'name' => $items[0]->category->name,
+                'count' => $items->count(),
+                'budget' => $items[0]->category->budget,
+                'cost' => $items->sum('cost')
+            ];
+        });
+
         $event['summary'] = [
             'assistants' => [
                 'food' => $foodShare,
                 'other' => $otherShare / ($event->adults + $event->kids)
             ],
-            'budget' => [
-                ''
-            ]
+            'budget' => $budget
         ];
 
         return $event;
