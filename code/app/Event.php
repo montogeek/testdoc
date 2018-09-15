@@ -35,13 +35,13 @@ class Event extends Model
     }
 
     public function getKidsAttribute() {
-        return $this->assistant->reduce(function($carry, $assistant) {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
             return $carry + $assistant->kids;
         }, 0);
     }
 
     public function getAdultsAttribute() {
-        return $this->assistant->reduce(function($carry, $assistant) {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
             return $carry + $assistant->adults;
         }, 0);
     }

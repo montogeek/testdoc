@@ -7,7 +7,7 @@ $factory->define(App\Item::class, function (Faker $faker) {
 
     return [
         'name' => rand(0,1) ? $faker->foodName() : $faker->beverageName(),
-        'cost' => random_int(15, 75),
+        'cost' => random_int(50, 200),
         'shareKid' => mt_rand(0, 5) / 10,
         'shareAdult' => mt_rand(0, 10) / 10,
         'bought' => (bool)random_int(0, 1),

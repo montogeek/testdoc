@@ -45,12 +45,19 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
             return $calculateShare($item, $event);
         })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
 
-        $otherShare = $event->item->where('category_id', '!=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
-            return $calculateShare($item, $event);
-        })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
+        $otherShare = $event->item->where('category_id', '!=', 1)->groupBy('category_id')->values()->map(function ($items) {
+            return $items->sum('cost');
+        })->sum();
 
-        $event['foodShare'] = $foodShare;
-        $event['otherShare'] = $otherShare;
+        $event['summary'] = [
+            'assistants' => [
+                'food' => $foodShare,
+                'other' => $otherShare / ($event->adults + $event->kids)
+            ],
+            'budget' => [
+                ''
+            ]
+        ];
 
         return $event;
     });
