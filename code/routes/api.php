@@ -58,11 +58,22 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
             ];
         });
 
+        $adults = [
+            'name' => 'Adultos',
+            'total' => $event->adults,
+            'food' => $foodShare['adults'],
+            'other' => $otherShare / ($event->adults + $event->kids)
+        ];
+
+        $kids = [
+            'name' => 'Niños',
+            'total' => $event->kids,
+            'food' => $foodShare['kids'],
+            'other' => $otherShare / ($event->adults + $event->kids)
+        ];
+
         $event['summary'] = [
-            'assistants' => [
-                'food' => $foodShare,
-                'other' => $otherShare / ($event->adults + $event->kids)
-            ],
+            'assistants' => [$adults, $kids],
             'budget' => $budget
         ];
 

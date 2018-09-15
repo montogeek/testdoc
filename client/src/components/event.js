@@ -27,10 +27,7 @@ class Event extends React.Component {
 
     return (
       <div className="rounded overflow-hidden shadow-md max-w-2xl p-6 my-6">
-        <div
-          className="flex justify-between"
-          onClick={this.showDetails}
-        >
+        <div className="flex justify-between" onClick={this.showDetails}>
           <div className="flex flex-row">
             <div className="h-24 w-24 bg-orange-lighter rounded flex flex-col items-center justify-center mr-4">
               <p className="text-5xl text-orange-dark font-thin">{event.day}</p>
@@ -40,8 +37,6 @@ class Event extends React.Component {
               <p className="text-xl text-grey-darkest font-bold">{event.name}</p>
               <p>{event.duration} horas</p>
               <p>{event.location}</p>
-              {/* <p>Adultos {event.kids}</p> */}
-              {/* <p>Ninos {event.adults}</p> */}
             </div>
           </div>
           <div className="flex flex-col justify-around">
@@ -60,7 +55,36 @@ class Event extends React.Component {
             </a>
           </div>
         </div>
-        {showDetails && <div>Resumen</div>}
+        {showDetails && (
+          <div>
+            <h2>Asistentes</h2>
+            <ul>
+              {event.summary.assistants.map(assistant => {
+                return (
+                  <li>
+                    {assistant.name} |
+                    {assistant.total} |
+                    {assistant.food} |
+                    {assistant.other}
+                  </li>
+                )
+              })}
+            </ul>
+            <h2>Presupuesto</h2>
+            <ul>
+              {event.summary.budget.map(item => {
+                return (
+                  <li>
+                    {item.name} |
+                    {item.count} |
+                    {item.budget} |
+                    {item.cost}
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )}
       </div>
     )
   }
