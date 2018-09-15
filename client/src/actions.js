@@ -2,7 +2,9 @@ import ky from "ky"
 
 const actions = store => ({
   login: async (state, email, password) => {
-    const res = await ky.post(`http://localhost/login`, { json: { email, password }, credentials: "include" }).json()
+    const res = await ky
+      .post(`http://localhost/login`, { json: { email, password }, credentials: "include" })
+      .json()
 
     localStorage.setItem("access_token", res.access_token)
     localStorage.setItem("expires_in", Date.now() + res.expires_in * 1000)
@@ -14,6 +16,16 @@ const actions = store => ({
         ...res
       }
     }
+  },
+
+  register: async (state, data) => {
+    const res = await ky
+      .post("http://localhost/register", { json: data, credentials: "include" })
+      .json()
+
+    console.log(res)
+
+    return res
   },
 
   getEvents: async state => {

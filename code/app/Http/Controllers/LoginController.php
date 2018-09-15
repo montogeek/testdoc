@@ -12,6 +12,20 @@ use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
+    public function register(Request $request)
+    {
+        $data = $request->all();
+
+        $user = new User;
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt($data['password']);
+
+        $user->save();
+
+        return response()->json([], 200);
+    }
+
     public function login(Request $request)
     {
         $email = $request->get('email');
@@ -36,7 +50,6 @@ class LoginController extends Controller
         throw new UnauthorizedHttpException('', 'Not authorized');
 
     }
-
 
     public function refresh(Request $request)
     {

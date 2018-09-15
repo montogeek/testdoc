@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 Route::post('/login', 'LoginController@login')->name('login');
 Route::post('/login/refresh', 'LoginController@refresh')->name('refresh');
+Route::post('/register', 'LoginController@register')->name('register');

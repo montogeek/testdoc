@@ -8,6 +8,7 @@
     "test": "node scripts/test.js --env=jsdom"
   },
   "dependencies": {
+    "classnames": "2.2.6",
     "date-fns": "2.0.0-alpha.16",
     "ky": "0.2.0",
     "react": "^16.5.0",
