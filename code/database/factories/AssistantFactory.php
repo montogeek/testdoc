@@ -14,6 +14,6 @@ $factory->define(App\Assistant::class, function (Faker $faker) {
         'rsvp' => (bool)random_int(0, 1),
         'kids' => random_int(0, 5),
         'adults' => random_int(0, 5),
-        'event_id' => random_int(1, 21)
+        'event_id' => random_int(1, 20)
     ];
 });
