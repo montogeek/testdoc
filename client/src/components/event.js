@@ -1,4 +1,5 @@
 import React from "react"
+import { Transition, animated } from "react-spring"
 
 class Event extends React.Component {
   constructor() {
@@ -55,36 +56,37 @@ class Event extends React.Component {
             </a>
           </div>
         </div>
-        {showDetails && (
-          <div>
-            <h2>Asistentes</h2>
-            <ul>
-              {event.summary.assistants.map(assistant => {
-                return (
-                  <li>
-                    {assistant.name} |
-                    {assistant.total} |
-                    {assistant.food} |
-                    {assistant.other}
-                  </li>
-                )
-              })}
-            </ul>
-            <h2>Presupuesto</h2>
-            <ul>
-              {event.summary.budget.map(item => {
-                return (
-                  <li>
-                    {item.name} |
-                    {item.count} |
-                    {item.budget} |
-                    {item.cost}
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        )}
+        <Transition
+          from={{ opacity: 0, height: 0 }}
+          enter={{ opacity: 1, height: "auto" }}
+          leave={{ opacity: 0, height: 0 }}
+        >
+          {showDetails &&
+            (styles => (
+              <animated.div style={styles}>
+                <h2>Asistentes</h2>
+                <ul>
+                  {event.summary.assistants.map((assistant, i) => {
+                    return (
+                      <li key={i}>
+                        {assistant.name} | {assistant.total} | {assistant.food} | {assistant.other}
+                      </li>
+                    )
+                  })}
+                </ul>
+                <h2>Presupuesto</h2>
+                <ul>
+                  {event.summary.budget.map((item, i) => {
+                    return (
+                      <li key={i}>
+                        {item.name} | {item.count} | {item.budget} | {item.cost}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </animated.div>
+            ))}
+        </Transition>
       </div>
     )
   }
