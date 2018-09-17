@@ -44,7 +44,7 @@ class Event extends React.Component {
           <div className="flex flex-col justify-around">
             <a
               href="#"
-              className="border-orange-lightest border bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
+              className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
               onClick={this.showAssistants}
             >
               Invitados
