@@ -28,7 +28,7 @@ class Event extends React.Component {
     const { showDetails } = this.state
 
     return (
-      <div className="rounded overflow-hidden shadow bg-white max-w-2xl p-6 my-6">
+      <div className="rounded shadow bg-white max-w-2xl p-6 my-6">
         <div className="flex justify-between cursor-pointer" onClick={this.showDetails}>
           <div className="flex flex-row">
             <div className="h-24 w-24 bg-orange-lighter rounded flex flex-col items-center justify-center mr-4">
@@ -58,7 +58,8 @@ class Event extends React.Component {
           </div>
         </div>
         <Transition
-          from={{ opacity: 0, height: 0 }}
+          native
+          from={{ overflow: 'hidden', opacity: 0, height: 0 }}
           enter={{ opacity: 1, height: "auto" }}
           leave={{ opacity: 0, height: 0 }}
         >
