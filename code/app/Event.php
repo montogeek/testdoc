@@ -46,6 +46,10 @@ class Event extends Model
         }, 0);
     }
 
+    public function getTotalAssistantsAttribute() {
+        return $this->adults + $this->kids;
+    }
+
     public function getDurationAttribute($value)
     {
         return Carbon::parse($value)->diffInHours($this->date);

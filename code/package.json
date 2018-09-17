@@ -16,7 +16,7 @@
     "babel-loader": "8.0.2",
     "babel-preset-react": "^6.24.1",
     "css-loader": "1.0.0",
-    "esm": "3.0.82",
+    "esm": "3.0.83",
     "postcss-import": "12.0.0",
     "postcss-loader": "3.0.0",
     "prettier": "1.14.2",

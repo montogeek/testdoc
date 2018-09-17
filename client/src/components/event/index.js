@@ -1,5 +1,6 @@
 import React from "react"
 import { Transition, animated } from "react-spring"
+import Details from "./details"
 
 class Event extends React.Component {
   constructor() {
@@ -27,8 +28,8 @@ class Event extends React.Component {
     const { showDetails } = this.state
 
     return (
-      <div className="rounded overflow-hidden shadow-md max-w-2xl p-6 my-6">
-        <div className="flex justify-between" onClick={this.showDetails}>
+      <div className="rounded overflow-hidden shadow bg-white max-w-2xl p-6 my-6">
+        <div className="flex justify-between cursor-pointer" onClick={this.showDetails}>
           <div className="flex flex-row">
             <div className="h-24 w-24 bg-orange-lighter rounded flex flex-col items-center justify-center mr-4">
               <p className="text-5xl text-orange-dark font-thin">{event.day}</p>
@@ -43,7 +44,7 @@ class Event extends React.Component {
           <div className="flex flex-col justify-around">
             <a
               href="#"
-              className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
+              className="border-orange-lightest border bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
               onClick={this.showAssistants}
             >
               Invitados
@@ -61,31 +62,7 @@ class Event extends React.Component {
           enter={{ opacity: 1, height: "auto" }}
           leave={{ opacity: 0, height: 0 }}
         >
-          {showDetails &&
-            (styles => (
-              <animated.div style={styles}>
-                <h2>Asistentes</h2>
-                <ul>
-                  {event.summary.assistants.map((assistant, i) => {
-                    return (
-                      <li key={i}>
-                        {assistant.name} | {assistant.total} | {assistant.food} | {assistant.other}
-                      </li>
-                    )
-                  })}
-                </ul>
-                <h2>Presupuesto</h2>
-                <ul>
-                  {event.summary.budget.map((item, i) => {
-                    return (
-                      <li key={i}>
-                        {item.name} | {item.count} | {item.budget} | {item.cost}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </animated.div>
-            ))}
+          {showDetails && (styles => <Details styles={styles} summary={event.summary} />)}
         </Transition>
       </div>
     )
