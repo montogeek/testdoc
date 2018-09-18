@@ -35,9 +35,9 @@ class CreateItemsTable extends Migration
             $table->timestamps();
 
             $table->unsignedInteger('event_id');
-            $table->unsignedInteger('categories_id');
+            $table->unsignedInteger('category_id');
 
-            $table->index(["categories_id"], 'fk_items_categories1_idx');
+            $table->index(["category_id"], 'fk_items_category1_idx');
             $table->index(["event_id"], 'fk_menus_parties1_idx');
 
             $table->foreign('event_id', 'fk_menus_parties1_idx')
@@ -45,7 +45,7 @@ class CreateItemsTable extends Migration
                 ->onDelete('no action')
                 ->onUpdate('no action');
 
-            $table->foreign('categories_id', 'fk_items_categories1_idx')
+            $table->foreign('category_id', 'fk_items_category1_idx')
                 ->references('id')->on('categories')
                 ->onDelete('no action')
                 ->onUpdate('no action');

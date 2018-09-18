@@ -33,7 +33,6 @@ class Navbar extends React.Component {
   }
   render() {
     const { user } = this.props
-    console.log(user)
     return (
       <div className="flex bg-white border-b-2 border-grey-lighter fixed pin-t pin-x z-100 h-16 items-center">
         <div className="w-full max-w-2xl relative mx-auto px-6">

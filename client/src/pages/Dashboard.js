@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "redux-zero/react"
-import Event from "../components/event"
+import Event from "../components/event/"
 import Navbar from "../components/navbar"
 import actions from "../actions"
 

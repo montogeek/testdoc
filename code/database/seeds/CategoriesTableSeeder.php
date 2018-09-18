@@ -20,7 +20,8 @@ class CategoriesTableSeeder extends Seeder
 
         array_walk($categories, function($category) {
             DB::table('categories')->insert([
-                'name' => $category
+                'name' => $category,
+                'budget'=> random_int(500, 2000)
              ]);
         });
     }

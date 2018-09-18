@@ -1778,9 +1778,9 @@ eslint-scope@^4.0.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-esm@3.0.82:
-  version "3.0.82"
-  resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.82.tgz#e8c4363a14e30936bedf49a44bf962e2c91866ff"
+esm@3.0.83:
+  version "3.0.83"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.83.tgz#a696272b47114dea65d969e4ab87bd39dc88797f"
 
 esprima@^4.0.0:
   version "4.0.1"

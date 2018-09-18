@@ -9,7 +9,7 @@ class Event extends Model
 {
     protected $appends = ['month_year', 'day', 'kids', 'adults'];
 
-    protected $hidden = ['assistant'];
+    protected $hidden = ['assistant', 'item'];
 
     public function user()
     {
@@ -18,6 +18,10 @@ class Event extends Model
 
     public function assistant() {
         return $this->hasMany('App\Assistant');
+    }
+
+    public function item() {
+        return $this->hasMany('App\Item');
     }
 
     public function getDayAttribute()
@@ -31,15 +35,19 @@ class Event extends Model
     }
 
     public function getKidsAttribute() {
-        return $this->assistant->reduce(function($carry, $assistant) {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
             return $carry + $assistant->kids;
         }, 0);
     }
 
     public function getAdultsAttribute() {
-        return $this->assistant->reduce(function($carry, $assistant) {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
             return $carry + $assistant->adults;
         }, 0);
+    }
+
+    public function getTotalAssistantsAttribute() {
+        return $this->adults + $this->kids;
     }
 
     public function getDurationAttribute($value)
