@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Login from "./containers/login"
-// import { hot } from "react-hot-loader"
 import { Provider, connect } from "redux-zero/react"
 import "./styles/app.css"
 

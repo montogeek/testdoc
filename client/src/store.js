@@ -5,7 +5,7 @@ import ky from "ky"
 
 const initialState = {
   auth: {
-    authenticated: localStorage.getItem("authenticated", true),
+    authenticated: localStorage.getItem("authenticated") === 'true' ?  true : false,
     access_token: localStorage.getItem("access_token") || "",
     expires_in: localStorage.getItem("expires_in") || ""
   },

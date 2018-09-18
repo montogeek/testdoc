@@ -2,27 +2,33 @@ import React from "react"
 import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
 import { connect } from "redux-zero/react"
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const RedirectRoute = props => {
+  const { Component, auth, ...rest } = props
   return (
-    <Route
-      {...rest}
-      render={props =>
-        rest.auth.authenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/",
-              state: { from: props.location }
-            }}
-          />
-        )
-      }
-    />
+    <>
+      {auth.authenticated ? (
+        <Component {...rest} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/",
+            state: { from: props.location }
+          }}
+        />
+      )}
+    </>
   )
 }
 
-export default connect(
+const ConnectedRoute = connect(
   ({ auth }) => ({ auth }),
   {}
-)(PrivateRoute)
+)(RedirectRoute)
+
+const PrivateRoute = Component => {
+  return function ConnectedPrivateRoute(props) {
+    return <ConnectedRoute {...props} Component={Component} />
+  }
+}
+
+export default PrivateRoute
