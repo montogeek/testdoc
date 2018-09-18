@@ -5,7 +5,7 @@ import { connect } from "redux-zero/react"
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import EventCreate from "./views/eventcreate"
-import PrivateRoute from "./containers/router"
+import PrivateRoute from "./helpers/router"
 import actions from "./actions"
 import store from "./store"
 
