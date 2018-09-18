@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Login from "./containers/login"
+import Root from "./Root"
 import { Provider, connect } from "redux-zero/react"
 import "./styles/app.css"
 
@@ -10,7 +10,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Login />
+        <Root />
       </Provider>
     )
   }
