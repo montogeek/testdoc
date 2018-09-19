@@ -30,7 +30,7 @@ const actions = store => ({
 
   getEvents: async state => {
     const events = await ky
-      .post("http://localhost/api/events", {
+      .get("http://localhost/api/events", {
         headers: {
           Authorization: "Bearer " + state.auth.access_token
         }
