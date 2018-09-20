@@ -11,6 +11,11 @@ class Event extends Model
 
     protected $hidden = ['assistant', 'item'];
 
+    protected $casts = [
+        'date' => 'datetime:Y-m-d H:i:s',
+        'duration' => 'datetime:Y-m-d H:i:s'
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\User');

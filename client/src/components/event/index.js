@@ -1,5 +1,6 @@
 import React from "react"
 import { Transition, animated } from "react-spring"
+import { DateTime } from "luxon"
 import Details from "./details"
 
 class Event extends React.Component {
@@ -36,6 +37,11 @@ class Event extends React.Component {
               <p className="text-xl text-orange-dark font-thin">{event.month_year}</p>
             </div>
             <div className="flex flex-col justify-around">
+              <p>
+                {DateTime.fromSQL(event.date, { zone: "utc" })
+                  .toLocal()
+                  .toLocaleString(DateTime.DATETIME_MED)}
+              </p>
               <p className="text-xl text-grey-darkest font-bold">{event.name}</p>
               <p>{event.duration} horas</p>
               <p>{event.location}</p>
@@ -59,7 +65,7 @@ class Event extends React.Component {
         </div>
         <Transition
           native
-          from={{ overflow: 'hidden', opacity: 0, height: 0 }}
+          from={{ overflow: "hidden", opacity: 0, height: 0 }}
           enter={{ opacity: 1, height: "auto" }}
           leave={{ opacity: 0, height: 0 }}
         >

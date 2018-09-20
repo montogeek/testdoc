@@ -88,7 +88,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'diff' => 0
         ]);
 
-        $otherTotal = round($otherShare / ($event->adults + $event->kids), 2);
+        $otherTotal = round($otherShare / max($event->adults + $event->kids, 1), 2);
 
         $adults = [
             'name' => 'Adultos',

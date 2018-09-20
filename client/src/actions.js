@@ -44,6 +44,19 @@ const actions = store => ({
     }
   },
 
+  createEvent: async (state, data) => {
+    const createEvent = await ky
+      .post("http://localhost/api/events", {
+        json: data,
+        headers: {
+          Authorization: "Bearer " + state.auth.access_token
+        }
+      })
+      .json()
+
+    return createEvent
+  },
+
   getUser: async state => {
     const user = await ky
       .get("http://localhost/api/user", {

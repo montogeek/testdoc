@@ -1,8 +1,8 @@
 import React, { Component } from "react"
+import { connect } from "redux-zero/react"
 import { Formik, Form, Field } from "formik"
 import DateTimePicker from "react-datetime-picker"
-
-import "react-day-picker/lib/style.css"
+import actions from "../actions"
 
 class EventCreate extends Component {
   constructor() {
@@ -14,11 +14,16 @@ class EventCreate extends Component {
   }
 
   render() {
+    const { createEvent } = this.props
+
     return (
       <Formik
         initialValues={{ name: "", date: "", location: "" }}
         onSubmit={values => {
-          console.log(values)
+          return createEvent({
+            ...values,
+            date: values.date.toISOString()
+          })
         }}
       >
         <Form className="bg-white px-8 pt-6 pb-8 mb-4">
@@ -52,24 +57,6 @@ class EventCreate extends Component {
                 />
               )}
             />
-            {/* <Field
-              component={props => (
-                <DayPickerInput
-                  dayPickerProps={{
-                    disabledDays: { before: new Date() },
-                    fromMonth: new Date(new Date().getFullYear(), new Date().getMonth())
-                  }}
-                  onDayChange={day => props.form.setFieldValue("date", day)}
-                  inputProps={{
-                    className:
-                      "shadow appearance-none border {{ $errors->has('email') ? 'border-red' : ''}} rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline",
-                    name: "date",
-                    id: "date",
-                    required: true
-                  }}
-                />
-              )}
-            /> */}
           </div>
           <div className="mb-6">
             <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="location">
@@ -97,4 +84,7 @@ class EventCreate extends Component {
   }
 }
 
-export default EventCreate
+export default connect(
+  () => {},
+  actions
+)(EventCreate)
