@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom"
 import { connect } from "redux-zero/react"
 import cx from "classnames"
 import actions from "../actions"
+import { loginUser } from "../redux/actions";
 
 class Login extends React.Component {
   constructor() {
@@ -218,6 +219,19 @@ class Register extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSubmit: payload => {
+      dispatch(loginUser(payload))
+    }
+  }
+}
 class Home extends React.Component {
   constructor() {
     super()
@@ -234,12 +248,12 @@ class Home extends React.Component {
 
   render() {
     const { tab } = this.state
-    const { auth, login, register } = this.props
+    const { user, login, register } = this.props
     const { from } = this.props.location.state || {
       from: { pathname: "/dashboard" }
     }
 
-    if (auth.authenticated) {
+    if (user) {
       return <Redirect to={from} />
     }
 
@@ -269,7 +283,9 @@ class Home extends React.Component {
   }
 }
 
-export default connect(
-  ({ auth }) => ({ auth }),
-  actions
-)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+
+// export default connect(
+//   ({ auth }) => ({ auth }),
+//   actions
+// )(Home)
