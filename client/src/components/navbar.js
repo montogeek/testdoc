@@ -1,6 +1,6 @@
 import React from "react"
-import { connect } from "redux-zero/react"
-import actions from "../actions"
+import { connect } from "react-redux"
+import { getUser, logout } from "../redux/actions"
 
 const LogoutComponent = ({ logout }) => {
   return (
@@ -11,8 +11,8 @@ const LogoutComponent = ({ logout }) => {
 }
 
 const Logout = connect(
-  () => {},
-  actions
+  () => ({}),
+  { logout }
 )(LogoutComponent)
 
 const User = ({ user }) => {
@@ -24,9 +24,6 @@ const User = ({ user }) => {
 }
 
 class Navbar extends React.Component {
-  constructor() {
-    super()
-  }
   componentDidMount() {
     const { getUser } = this.props
     getUser()
@@ -38,7 +35,7 @@ class Navbar extends React.Component {
         <div className="w-full max-w-2xl relative mx-auto px-6">
           <div className="flex items-center justify-between -mx-6">
             <div className="border-b-2 py-6 border-blue text-blue">Eventos</div>
-            <User user={user} />
+            <User user={user.data} />
           </div>
         </div>
       </div>
@@ -48,5 +45,7 @@ class Navbar extends React.Component {
 
 export default connect(
   ({ user }) => ({ user }),
-  actions
+  {
+    getUser
+  }
 )(Navbar)

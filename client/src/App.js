@@ -1,14 +1,11 @@
 import React, { Component } from "react"
 import { Provider } from "react-redux"
-import { createStore } from "redux"
-import reducers from "./redux/reducers"
+import configureStore from './redux/store'
 
 import Login from "./containers/login"
 import "./styles/app.css"
 
-const store = createStore(reducers)
-
-console.log(store.getState())
+const store = configureStore()
 
 class App extends Component {
   render() {

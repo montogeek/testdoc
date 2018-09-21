@@ -66,7 +66,7 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
 
         $budgetTotal = $budget->values()->reduce(function ($carry, $item) {
             $diff = ($carry['budget'] + $item['budget']) - ($carry['cost'] + $item['cost']);
-            
+
             return [
                 'name' => 'Total',
                 'count' => $carry['count'] + $item['count'],
@@ -82,7 +82,7 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
             'diff' => 0
         ]);
 
-        $otherTotal = round($otherShare / ($event->adults + $event->kids), 2);
+        $otherTotal = round($otherShare / max(($event->adults + $event->kids), 1), 2);
 
         $adults = [
             'name' => 'Adultos',

@@ -1,9 +1,9 @@
 import React from "react"
 import { Redirect } from "react-router-dom"
-import { connect } from "redux-zero/react"
+import { connect } from "react-redux"
 import cx from "classnames"
-import actions from "../actions"
-import { loginUser } from "../redux/actions";
+import { bindActionCreators } from "redux"
+import { loginUser } from "../redux/actions"
 
 class Login extends React.Component {
   constructor() {
@@ -226,12 +226,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    onSubmit: payload => {
-      dispatch(loginUser(payload))
-    }
-  }
+  return bindActionCreators({ loginUser }, dispatch)
 }
+
 class Home extends React.Component {
   constructor() {
     super()
@@ -248,12 +245,12 @@ class Home extends React.Component {
 
   render() {
     const { tab } = this.state
-    const { user, login, register } = this.props
+    const { user, loginUser, registerUser } = this.props
     const { from } = this.props.location.state || {
       from: { pathname: "/dashboard" }
     }
 
-    if (user) {
+    if (user.data.authenticated) {
       return <Redirect to={from} />
     }
 
@@ -276,14 +273,17 @@ class Home extends React.Component {
               Registro
             </button>
           </nav>
-          {tab === "login" ? <Login onSubmit={login} /> : <Register onSubmit={register} />}
+          {tab === "login" ? <Login onSubmit={loginUser} /> : <Register onSubmit={registerUser} />}
         </div>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home)
 
 // export default connect(
 //   ({ auth }) => ({ auth }),

@@ -1,12 +1,8 @@
 import React from "react"
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter, Switch } from "react-router-dom"
-import qs from "querystring"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Home from "../pages/Home"
 import Dashboard from "../pages/Dashboard"
 import PrivateRoute from '../router'
-import { connect } from "redux-zero/react"
-import actions from "../actions"
-import store from '../store'
 
 const AuthExample = () => (
   <Router>
