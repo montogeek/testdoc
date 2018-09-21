@@ -1,10 +1,11 @@
 import React, { Component } from "react"
 import Root from "./Root"
-import { Provider, connect } from "redux-zero/react"
+import { Provider } from "react-redux"
+import configureStore from './redux/store'
+
 import "./styles/app.css"
 
-import store from "./store"
-import actions from "./actions"
+const store = configureStore()
 
 class App extends Component {
   render() {

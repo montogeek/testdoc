@@ -1,14 +1,14 @@
 import React from "react"
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
-import { connect } from "redux-zero/react"
+import { Redirect } from "react-router-dom"
+import { connect } from "react-redux"
 
 import Navbar from "../components/navbar"
 
 const RedirectRoute = props => {
-  const { Component, auth, ...rest } = props
+  const { Component, user, ...rest } = props
   return (
     <>
-      {auth.authenticated ? (
+      {user.data.authenticated ? (
         <div className="bg-grey-lightest font-sans">
           <Navbar />
           <div className="w-full max-w-2xl mx-auto px-6 pt-24">
@@ -30,7 +30,7 @@ const RedirectRoute = props => {
 }
 
 const ConnectedRoute = connect(
-  ({ auth }) => ({ auth }),
+  ({ user }) => ({ user }),
   {}
 )(RedirectRoute)
 

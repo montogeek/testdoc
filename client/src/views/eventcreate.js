@@ -1,8 +1,8 @@
 import React, { Component } from "react"
-import { connect } from "redux-zero/react"
+import { connect } from "react-redux"
 import { Formik, Form, Field } from "formik"
 import DateTimePicker from "react-datetime-picker"
-import actions from "../actions"
+import { createEvent } from "../redux/actions"
 
 class EventCreate extends Component {
   constructor() {
@@ -85,6 +85,8 @@ class EventCreate extends Component {
 }
 
 export default connect(
-  () => {},
-  actions
+  () => ({}),
+  {
+    createEvent
+  }
 )(EventCreate)

@@ -1,13 +1,10 @@
 import React from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { connect } from "redux-zero/react"
 
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
 import EventCreate from "./views/eventcreate"
 import PrivateRoute from "./helpers/router"
-import actions from "./actions"
-import store from "./store"
 
 const routes = [
   {
@@ -32,8 +29,8 @@ const routes = [
 const Root = () => (
   <Router>
     <Switch>
-      {routes.map(route => {
-        return <Route path={route.path} exact={route.exact} component={route.component} />
+      {routes.map((route, i) => {
+        return <Route key={i} path={route.path} exact={route.exact} component={route.component} />
       })}
     </Switch>
   </Router>

@@ -1,6 +1,6 @@
 import React from "react"
-import { Transition, animated } from "react-spring"
 import { DateTime } from "luxon"
+import { Transition } from "react-spring"
 import Details from "./details"
 
 class Event extends React.Component {

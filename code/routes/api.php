@@ -72,7 +72,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 
         $budgetTotal = $budget->values()->reduce(function ($carry, $item) {
             $diff = ($carry['budget'] + $item['budget']) - ($carry['cost'] + $item['cost']);
-            
+
             return [
                 'name' => 'Total',
                 'count' => $carry['count'] + $item['count'],

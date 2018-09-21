@@ -1,7 +1,7 @@
 import React from "react"
-import { connect } from "redux-zero/react"
 import { Link } from "react-router-dom"
-import actions from "../actions"
+import { connect } from "react-redux"
+import { getUser, logout } from "../redux/actions"
 
 const LogoutComponent = ({ logout }) => {
   return (
@@ -12,8 +12,8 @@ const LogoutComponent = ({ logout }) => {
 }
 
 const Logout = connect(
-  () => {},
-  actions
+  () => ({}),
+  { logout }
 )(LogoutComponent)
 
 const User = ({ user }) => {
@@ -25,9 +25,6 @@ const User = ({ user }) => {
 }
 
 class Navbar extends React.Component {
-  constructor() {
-    super()
-  }
   componentDidMount() {
     const { getUser } = this.props
     getUser()
@@ -41,7 +38,7 @@ class Navbar extends React.Component {
             <Link to="/dashboard" className="no-underline cursor-pointer">
               <div className="border-b-2 py-6 border-blue text-blue">Eventos</div>
             </Link>
-            <User user={user} />
+            <User user={user.data} />
           </div>
         </div>
       </div>
@@ -51,5 +48,7 @@ class Navbar extends React.Component {
 
 export default connect(
   ({ user }) => ({ user }),
-  actions
+  {
+    getUser
+  }
 )(Navbar)
