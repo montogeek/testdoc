@@ -1,13 +1,13 @@
 import React from "react"
-import { BrowserRouter as Router, Route, Link, Redirect, withRouter } from "react-router-dom"
-import { connect } from "redux-zero/react"
+import { Route, Redirect } from "react-router-dom"
+import { connect } from "react-redux"
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={props =>
-        rest.auth.authenticated ? (
+        rest.user.data.authenticated ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -23,6 +23,5 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 }
 
 export default connect(
-  ({ auth }) => ({ auth }),
-  {}
+  ({ user }) => ({ user })
 )(PrivateRoute)
