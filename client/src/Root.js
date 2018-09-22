@@ -1,5 +1,7 @@
 import React from "react"
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { ConnectedRouter } from "connected-react-router"
+import history from "./history"
 
 import Home from "./pages/Home"
 import Dashboard from "./pages/Dashboard"
@@ -27,13 +29,13 @@ const routes = [
 ]
 
 const Root = () => (
-  <Router>
-    <Switch>
-      {routes.map((route, i) => {
-        return <Route key={i} path={route.path} exact={route.exact} component={route.component} />
-      })}
-    </Switch>
-  </Router>
+  <ConnectedRouter history={history}>
+      <Switch>
+        {routes.map((route, i) => {
+          return <Route key={i} path={route.path} exact={route.exact} component={route.component} />
+        })}
+      </Switch>
+  </ConnectedRouter>
 )
 
 export default Root

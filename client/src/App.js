@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import Root from "./Root"
 import { Provider } from "react-redux"
-import configureStore from './redux/store'
+
+import configureStore from "./redux/store"
 
 import "./styles/app.css"
 

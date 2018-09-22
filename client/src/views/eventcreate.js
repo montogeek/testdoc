@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Formik, Form, Field } from "formik"
 import DateTimePicker from "react-datetime-picker"
+import { push } from "connected-react-router"
 import { createEvent } from "../redux/actions"
 
 class EventCreate extends Component {
@@ -89,4 +90,10 @@ export default connect(
   {
     createEvent
   }
+  // dispatch => ({
+  //   createEvent: data => {
+  //     dispatch(createEvent(data))
+  //     dispatch(push("/dashboard"))
+  //   }
+  // })
 )(EventCreate)

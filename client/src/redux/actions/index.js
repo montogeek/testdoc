@@ -19,6 +19,7 @@ import {
   CREATE_EVENT_SUCCESS,
   CREATE_EVENT_FAILURE
 } from "../constants"
+import { push } from "connected-react-router";
 
 function loginUserRequest(email, password) {
   return {
@@ -141,7 +142,8 @@ export function createEvent(data) {
         }
       })
 
-      return dispatch({ type: CREATE_EVENT_SUCCESS, loading: false, data: await res.json() })
+      dispatch({ type: CREATE_EVENT_SUCCESS, loading: false, data: await res.json() })
+      return dispatch(push('/dashboard'))
     } catch (e) {
       return dispatch({ type: CREATE_EVENT_FAILURE, loading: false, error: e })
     }
