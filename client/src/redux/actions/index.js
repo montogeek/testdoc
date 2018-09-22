@@ -142,8 +142,7 @@ export function createEvent(data) {
         }
       })
 
-      dispatch({ type: CREATE_EVENT_SUCCESS, loading: false, data: await res.json() })
-      return dispatch(push('/dashboard'))
+      return dispatch({ type: CREATE_EVENT_SUCCESS, loading: false, data: await res.json() })
     } catch (e) {
       return dispatch({ type: CREATE_EVENT_FAILURE, loading: false, error: e })
     }
