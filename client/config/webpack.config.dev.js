@@ -172,7 +172,7 @@ module.exports = {
               baseConfig: {
                 extends: [require.resolve('eslint-config-react-app')],
               },
-
+              globals: ['API_URL']
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -375,6 +375,9 @@ module.exports = {
       fileName: 'asset-manifest.json',
       publicPath: publicPath,
     }),
+    new webpack.DefinePlugin({
+      API_URL: JSON.stringify('http://localhost')
+    })
   ],
 
   // Some libraries import Node modules but don't use them in the browser.

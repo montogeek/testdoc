@@ -24,6 +24,7 @@ import {
 } from "../constants"
 import { push } from "connected-react-router"
 
+
 function loginUserRequest(email, password) {
   return {
     type: LOGIN_USER_REQUEST,
@@ -52,7 +53,7 @@ export function loginUser(email, password) {
     dispatch(loginUserRequest(email, password))
 
     try {
-      const res = await ky.post(`http://localhost/login`, {
+      const res = await ky.post(`${API_URL}/login`, {
         json: { email, password },
         credentials: "include"
       })
@@ -69,7 +70,7 @@ export function getEvents() {
     dispatch({ type: GET_EVENTS_REQUEST, loading: true })
 
     try {
-      const res = await ky.get("http://localhost/api/events", {
+      const res = await ky.get(`${API_URL}/api/events`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -87,7 +88,7 @@ export function getUser() {
     dispatch({ type: GET_USER_REQUEST, loading: true })
 
     try {
-      const res = await ky.get("http://localhost/api/user", {
+      const res = await ky.get(`${API_URL}/api/user`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -105,7 +106,7 @@ export function logout() {
     dispatch({ type: LOGOUT_REQUEST, loading: true })
 
     try {
-      const res = await ky.post("http://localhost/api/logout", {
+      const res = await ky.post(`${API_URL}/api/logout`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -123,7 +124,7 @@ export function refreshToken() {
     dispatch({ type: REFRESH_TOKEN_REQUEST })
 
     try {
-      const res = await ky.post("http://localhost/login/refresh", {
+      const res = await ky.post(`${API_URL}/login/refresh`, {
         credentials: "include"
       })
 
@@ -138,7 +139,7 @@ export function createEvent(data) {
   return async function(dispatch, getState) {
     dispatch({ type: CREATE_EVENT_REQUEST })
     try {
-      const res = await ky.post("http://localhost/api/events", {
+      const res = await ky.post(`${API_URL}/api/events`, {
         json: data,
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
@@ -156,7 +157,7 @@ export function updateEvent(data) {
   return async function(dispatch, getState) {
     dispatch({ type: UPDATE_EVENT_REQUEST })
     try {
-      const res = await ky.put(`http://localhost/api/events/${data.id}`, {
+      const res = await ky.put(`${API_URL}/api/events/${data.id}`, {
         json: data,
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token

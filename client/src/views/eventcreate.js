@@ -88,8 +88,8 @@ class EventCreate extends Component {
 export default connect(
   () => ({}),
   dispatch => ({
-    createEvent: data => {
-      dispatch(createEvent(data))
+    createEvent: async data => {
+      await dispatch(createEvent(data))
       dispatch(push("/dashboard"))
     }
   })
