@@ -37,13 +37,9 @@ class Event extends React.Component {
               <p className="text-xl text-orange-dark font-thin">{event.month_year}</p>
             </div>
             <div className="flex flex-col justify-around">
-              <p>
-                {DateTime.fromSQL(event.date, { zone: "utc" })
-                  .toLocal()
-                  .toLocaleString(DateTime.DATETIME_MED)}
-              </p>
               <p className="text-xl text-grey-darkest font-bold">{event.name}</p>
-              <p>{event.duration} horas</p>
+              <p>{DateTime.fromSQL(event.date, { zone: "utc" })
+                  .toLocal().toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas</p>
               <p>{event.location}</p>
             </div>
           </div>
