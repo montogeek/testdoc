@@ -1,6 +1,7 @@
 import React from "react"
 import { DateTime } from "luxon"
 import { Transition } from "react-spring"
+import { Link } from "react-router-dom"
 import Details from "./details"
 
 class Event extends React.Component {
@@ -38,12 +39,19 @@ class Event extends React.Component {
             </div>
             <div className="flex flex-col justify-around">
               <p className="text-xl text-grey-darkest font-bold">{event.name}</p>
-              <p>{DateTime.fromSQL(event.date, { zone: "utc" })
-                  .toLocal().toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas</p>
+              <p>
+                {event.date.toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas
+              </p>
               <p>{event.location}</p>
             </div>
           </div>
-          <div className="flex flex-col justify-around">
+          <div className="flex flex-row justify-around items-center">
+            <Link
+              to={`/event/update/${event.id}`}
+              className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
+            >
+              Editar
+            </Link>
             <a
               href="#"
               className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
