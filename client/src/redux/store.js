@@ -1,17 +1,16 @@
 import { createStore, applyMiddleware, compose } from "redux"
 import thunkMiddleware from "redux-thunk"
 import { createLogger } from "redux-logger"
-
+import { connectRouter, routerMiddleware } from "connected-react-router"
 import rootReducer from "./reducers"
 import { refreshToken } from "./actions"
+import history from "../history"
 
 const loggerMiddleware = createLogger()
 
 const refreshTokenMiddleware = store => next => action => {
   const expires = parseInt(store.getState().user.data.expires_in, 10)
   const now = Date.now()
-
-  console.log({ expires }, now > expires - 30000)
 
   if (expires) {
     if (now > expires - 30000) {
@@ -26,8 +25,15 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default function configureStore(preloadedState) {
   return createStore(
-    rootReducer,
+    connectRouter(history)(rootReducer),
     preloadedState,
-    composeEnhancers(applyMiddleware(thunkMiddleware, loggerMiddleware, refreshTokenMiddleware))
+    composeEnhancers(
+      applyMiddleware(
+        routerMiddleware(history),
+        thunkMiddleware,
+        loggerMiddleware,
+        refreshTokenMiddleware
+      )
+    )
   )
 }

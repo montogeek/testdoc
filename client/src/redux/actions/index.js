@@ -14,8 +14,12 @@ import {
   LOGOUT_FAILURE,
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
-  REFRESH_TOKEN_FAILURE
+  REFRESH_TOKEN_FAILURE,
+  CREATE_EVENT_REQUEST,
+  CREATE_EVENT_SUCCESS,
+  CREATE_EVENT_FAILURE
 } from "../constants"
+import { push } from "connected-react-router";
 
 function loginUserRequest(email, password) {
   return {
@@ -62,7 +66,7 @@ export function getEvents() {
     dispatch({ type: GET_EVENTS_REQUEST, loading: true })
 
     try {
-      const res = await ky.post("http://localhost/api/events", {
+      const res = await ky.get("http://localhost/api/events", {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -123,6 +127,24 @@ export function refreshToken() {
       return dispatch({ type: REFRESH_TOKEN_SUCCESS, data: await res.json() })
     } catch (e) {
       return dispatch({ type: REFRESH_TOKEN_FAILURE, error: e })
+    }
+  }
+}
+
+export function createEvent(data) {
+  return async function(dispatch, getState) {
+    dispatch({ type: CREATE_EVENT_REQUEST })
+    try {
+      const res = await ky.post("http://localhost/api/events", {
+        json: data,
+        headers: {
+          Authorization: "Bearer " + getState().user.data.access_token
+        }
+      })
+
+      return dispatch({ type: CREATE_EVENT_SUCCESS, loading: false, data: await res.json() })
+    } catch (e) {
+      return dispatch({ type: CREATE_EVENT_FAILURE, loading: false, error: e })
     }
   }
 }

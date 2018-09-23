@@ -12,12 +12,18 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+/*
+ * Events
+ * Assistants
+ * Items
+ */
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return response()->json($request->user());
 });
 
 
-Route::middleware('auth:api')->post('/events', function (Request $request) {
+Route::middleware('auth:api')->get('/events', function (Request $request) {
 
     $calculateShare = function ($item, $event) {
         // Puede ser 0
@@ -82,7 +88,7 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
             'diff' => 0
         ]);
 
-        $otherTotal = round($otherShare / max(($event->adults + $event->kids), 1), 2);
+        $otherTotal = round($otherShare / max($event->adults + $event->kids, 1), 2);
 
         $adults = [
             'name' => 'Adultos',
@@ -124,6 +130,8 @@ Route::middleware('auth:api')->post('/events', function (Request $request) {
 Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event) {
     return $event->attributesToArray();
 });
+
+Route::middleware('auth:api')->post('/events', 'EventController@store');
 
 
 Route::middleware('auth:api')->post('/logout', 'LoginController@logout')->name('logout');

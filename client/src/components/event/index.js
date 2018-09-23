@@ -1,4 +1,5 @@
 import React from "react"
+import { DateTime } from "luxon"
 import { Transition } from "react-spring"
 import Details from "./details"
 
@@ -37,14 +38,15 @@ class Event extends React.Component {
             </div>
             <div className="flex flex-col justify-around">
               <p className="text-xl text-grey-darkest font-bold">{event.name}</p>
-              <p>{event.duration} horas</p>
+              <p>{DateTime.fromSQL(event.date, { zone: "utc" })
+                  .toLocal().toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas</p>
               <p>{event.location}</p>
             </div>
           </div>
           <div className="flex flex-col justify-around">
             <a
               href="#"
-              className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
+              className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
               onClick={this.showAssistants}
             >
               Invitados
@@ -59,7 +61,7 @@ class Event extends React.Component {
         </div>
         <Transition
           native
-          from={{ overflow: 'hidden', opacity: 0, height: 0 }}
+          from={{ overflow: "hidden", opacity: 0, height: 0 }}
           enter={{ opacity: 1, height: "auto" }}
           leave={{ opacity: 0, height: 0 }}
         >

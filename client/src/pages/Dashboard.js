@@ -1,7 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
 import Event from "../components/event/"
-import Navbar from "../components/navbar"
+import { Link } from "react-router-dom"
 import { getEvents } from "../redux/actions"
 
 class Dashboard extends React.Component {
@@ -18,16 +18,19 @@ class Dashboard extends React.Component {
     }
 
     return (
-      <div className="bg-grey-lightest font-sans">
-        <Navbar />
-        <div className="w-full max-w-2xl mx-auto px-6">
-          <div className="pt-24 pb-8 w-full">
-            {events.data.length > 0
-              ? events.data.map((event, i) => <Event key={i} event={event} />)
-              : "Agrega un evento"}
-          </div>
-        </div>
-      </div>
+      <>
+        <Link
+          to="/event/create"
+          className="bg-orange-lighter hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline inline-block"
+        >
+          Crea un evento
+        </Link>
+        {events.data.length > 0 ? (
+          events.data.map((event, i) => <Event key={i} event={event} />)
+        ) : (
+          <p>Parece que no tienes eventos, crea uno</p>
+        )}
+      </>
     )
   }
 }
