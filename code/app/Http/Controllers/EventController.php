@@ -90,7 +90,16 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $event = Event::find($id);
+        $event->name = $data['name'];
+        $event->date = Carbon::parse($data['date'])->format('Y-m-d H:i:s');
+        $event->location = $data['location'];
+
+        $event->save();
+
+        return $event;
     }
 
     /**
