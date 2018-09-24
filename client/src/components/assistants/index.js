@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { DateTime } from "luxon"
-import { getEvents } from "../../redux/actions"
+import { getEvents } from "../../redux/actions/events"
+import { updateAssistant } from "../../redux/actions/assistants"
 import { Table, Icon, Popconfirm, Button, Form, InputNumber, Input } from "antd"
 import "antd/lib/table/style/css"
 import "antd/lib/popconfirm/style/css"
@@ -41,7 +42,6 @@ class EditableCell extends React.Component {
       <EditableContext.Consumer>
         {form => {
           const { getFieldDecorator } = form
-          console.log(dataIndex, inputType)
           return (
             <td {...restProps}>
               {editing ? (
@@ -73,10 +73,11 @@ class Assistants extends Component {
     this.isEditing = this.isEditing.bind(this)
     this.cancel = this.cancel.bind(this)
     this.edit = this.edit.bind(this)
+    this.save = this.save.bind(this)
 
     this.columns = [
       {
-        title: "Nombre",
+        title: "Invitado",
         dataIndex: "name",
         key: "name",
         editable: true
@@ -188,7 +189,7 @@ class Assistants extends Component {
     // getAssistants()
   }
 
-  isEditing = record => {
+  isEditing(record) {
     return record.id === this.state.editingId
   }
 
@@ -196,8 +197,17 @@ class Assistants extends Component {
     this.setState({ editingId: id })
   }
 
-  cancel = () => {
+  cancel() {
     this.setState({ editingId: null })
+  }
+
+  save(form, id) {
+    const { updateAssistant } = this.props
+    form.validateFields(async (error, row) => {
+      if (error) return
+      await updateAssistant({ ...row, id: id})
+      this.setState({ editingId: null })
+    })
   }
 
   render() {
@@ -250,6 +260,14 @@ class Assistants extends Component {
             </div>
           </div>
         </div>
+        {/* <Button
+          type="dashed"
+          style={{ width: "100%", marginBottom: 8 }}
+          icon="plus"
+          onClick={this.showModal}
+        >
+          Añadir asistente
+        </Button> */}
         <Table
           components={components}
           loading={loading}
@@ -267,6 +285,7 @@ export default connect(
     loading: events.loading
   }),
   {
-    getEvents
+    getEvents,
+    updateAssistant
   }
 )(Assistants)
