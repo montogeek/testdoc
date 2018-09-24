@@ -75,6 +75,7 @@ class AssistantController extends Controller
         $assistant->name = $data['name'];
         $assistant->address = $data['address'];
         $assistant->phonenumber = $data['phonenumber'];
+        $assistant->rsvp = $data['rsvp'];
         $assistant->email = $data['email'];
         $assistant->kids = $data['kids'];
         $assistant->adults = $data['adults'];

@@ -3,13 +3,14 @@ import { connect } from "react-redux"
 import { DateTime } from "luxon"
 import { getEvents } from "../../redux/actions/events"
 import { updateAssistant } from "../../redux/actions/assistants"
-import { Table, Icon, Popconfirm, Button, Form, InputNumber, Input } from "antd"
+import { Table, Icon, Popconfirm, Button, Form, InputNumber, Input, Checkbox } from "antd"
 import "antd/lib/table/style/css"
 import "antd/lib/popconfirm/style/css"
 import "antd/lib/button/style/css"
 import "antd/lib/form/style/css"
 import "antd/lib/input-number/style/css"
 import "antd/lib/input/style/css"
+import "antd/lib/checkbox/style/css"
 
 const FormItem = Form.Item
 const EditableContext = React.createContext()
@@ -25,7 +26,8 @@ const EditableFormRow = Form.create()(EditableRow)
 const rules = {
   email: { required: true, type: "email", message: `Ingresa un email` },
   text: title => ({ required: true, message: `Ingresa ${title}` }),
-  number: { required: true, type: "integer", message: "Ingresa un numero" }
+  number: { required: true, type: "integer", message: "Ingresa un numero" },
+  checkbox: { type: "boolean" }
 }
 
 class EditableCell extends React.Component {
@@ -33,6 +35,11 @@ class EditableCell extends React.Component {
     if (this.props.inputType === "number") {
       return <InputNumber />
     }
+
+    if (this.props.inputType === "checkbox") {
+      return <Checkbox />
+    }
+
     return <Input />
   }
 
@@ -52,7 +59,9 @@ class EditableCell extends React.Component {
                         ? rules[inputType](title)
                         : rules[inputType]
                     ],
-                    initialValue: record[dataIndex]
+                    initialValue:
+                      dataIndex === "rsvp" ? Boolean(record[dataIndex]) : record[dataIndex],
+                    valuePropName: dataIndex === "rsvp" ? "checked" : "value"
                   })(this.getInput())}
                 </FormItem>
               ) : (
@@ -104,6 +113,7 @@ class Assistants extends Component {
         title: "Asistira?",
         dataIndex: "rsvp",
         key: "rsvp",
+        editable: true,
         filters: [
           {
             text: "Si",
@@ -147,7 +157,7 @@ class Assistants extends Component {
         render: (_, record) => {
           const editable = this.isEditing(record)
           return (
-            <div>
+            <div className="flex">
               {editable ? (
                 <span>
                   <EditableContext.Consumer>
@@ -162,21 +172,23 @@ class Assistants extends Component {
                   </Popconfirm>
                 </span>
               ) : (
-                <Button
-                  onClick={() => this.edit(record.id)}
-                  type="primary"
-                  icon="edit"
-                  size="small"
-                  className="rounded"
-                >
-                  Editar
-                </Button>
+                <>
+                  <Button
+                    onClick={() => this.edit(record.id)}
+                    type="primary"
+                    icon="edit"
+                    size="small"
+                    className="rounded"
+                  >
+                    Editar
+                  </Button>
+                  <Popconfirm title="Esta seguro?" onConfirm={() => this.handleDelete(record.id)}>
+                    <Button type="danger" icon="delete" size="small" className="rounded">
+                      Eliminar
+                    </Button>
+                  </Popconfirm>
+                </>
               )}
-              <Popconfirm title="Esta seguro?" onConfirm={() => this.handleDelete(record.id)}>
-                <Button type="danger" icon="delete" size="small" className="rounded">
-                  Eliminar
-                </Button>
-              </Popconfirm>
             </div>
           )
         }
@@ -205,9 +217,26 @@ class Assistants extends Component {
     const { updateAssistant } = this.props
     form.validateFields(async (error, row) => {
       if (error) return
-      await updateAssistant({ ...row, id: id})
+      await updateAssistant({ ...row, id: id })
       this.setState({ editingId: null })
     })
+  }
+
+  getInputType(type) {
+    switch (type) {
+      case "kids":
+      case "adults":
+        return "number"
+
+      case "email":
+        return "email"
+
+      case "rsvp":
+        return "checkbox"
+
+      default:
+        return "text"
+    }
   }
 
   render() {
@@ -228,12 +257,7 @@ class Assistants extends Component {
         ...col,
         onCell: record => ({
           record,
-          inputType:
-            col.dataIndex === "kids" || col.dataIndex === "adults"
-              ? "number"
-              : col.dataIndex === "email"
-                ? "email"
-                : "text",
+          inputType: this.getInputType(col.dataIndex),
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record)
