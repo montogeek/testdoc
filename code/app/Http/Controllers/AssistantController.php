@@ -93,6 +93,10 @@ class AssistantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $assistant = Assistant::find($id);
+
+        $assistant->delete();
+
+        return response()->json([], 200);
     }
 }

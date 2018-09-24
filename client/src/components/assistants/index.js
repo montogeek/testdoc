@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { DateTime } from "luxon"
 import { getEvents } from "../../redux/actions/events"
-import { updateAssistant } from "../../redux/actions/assistants"
+import { updateAssistant, removeAssistant } from "../../redux/actions/assistants"
 import { Table, Icon, Popconfirm, Button, Form, InputNumber, Input, Checkbox } from "antd"
 import "antd/lib/table/style/css"
 import "antd/lib/popconfirm/style/css"
@@ -80,6 +80,7 @@ class Assistants extends Component {
     super()
     this.state = { editingId: null }
     this.isEditing = this.isEditing.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
     this.cancel = this.cancel.bind(this)
     this.edit = this.edit.bind(this)
     this.save = this.save.bind(this)
@@ -195,10 +196,16 @@ class Assistants extends Component {
       }
     ]
   }
+
   componentDidMount() {
     const { getEvents } = this.props
     getEvents()
     // getAssistants()
+  }
+
+  async handleDelete(id) {
+    const { removeAssistant, event } = this.props
+    await removeAssistant(id, event.id)
   }
 
   isEditing(record) {
@@ -310,6 +317,7 @@ export default connect(
   }),
   {
     getEvents,
-    updateAssistant
+    updateAssistant,
+    removeAssistant
   }
 )(Assistants)
