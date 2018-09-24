@@ -35,6 +35,7 @@ class CreateAssistantsTable extends Migration
             $table->integer('kids')->nullable();
             $table->integer('adults')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unsignedInteger('event_id');
 

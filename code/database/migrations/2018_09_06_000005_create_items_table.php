@@ -33,6 +33,7 @@ class CreateItemsTable extends Migration
             $table->json('extras')->nullable();
             $table->unsignedInteger('quantity')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unsignedInteger('event_id');
             $table->unsignedInteger('category_id');
