@@ -118,11 +118,11 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'assistants' => [$adults, $kids, $total],
             'budget' => $budget->push($budgetTotal)
         ];
+
+        $event['assistants'] = $event->assistant;
+
         return $event;
     });
-
-//    return $data->toJson(JSON_PRESERVE_ZERO_FRACTION);
-
 
     return response()->json($data);
 });

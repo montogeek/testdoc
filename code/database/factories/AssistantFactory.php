@@ -5,11 +5,11 @@ use Faker\Generator as Faker;
 $factory->define(App\Assistant::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
-        'address' => $faker->address,
+        'address' => $faker->streetAddress,
         'city' => $faker->city,
         'state' => $faker->state,
         'zip' => $faker->postcode,
-        'phonenumber' => $faker->phoneNumber,
+        'phonenumber' => $faker->e164PhoneNumber,
         'email' => $faker->safeEmail,
         'rsvp' => (bool)random_int(0, 1),
         'kids' => random_int(0, 5),

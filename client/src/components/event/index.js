@@ -21,10 +21,6 @@ class Event extends React.Component {
     })
   }
 
-  showAssistants(e) {
-    e.stopPropagation()
-  }
-
   render() {
     const { event } = this.props
     const { showDetails } = this.state
@@ -52,13 +48,12 @@ class Event extends React.Component {
             >
               Editar
             </Link>
-            <a
-              href="#"
+            <Link
+              to={`/event/${event.id}/assistants`}
               className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
-              onClick={this.showAssistants}
             >
               Invitados
-            </a>
+            </Link>
             <a
               href="#"
               className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
