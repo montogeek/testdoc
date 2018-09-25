@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Budget;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -58,5 +59,9 @@ class Event extends Model
     public function getDurationAttribute($value)
     {
         return Carbon::parse($value)->diffInHours($this->date);
+    }
+
+    public function budgets(){
+    	return $this->belongsToMany(Category::class,'budgets')->using(Budget::class);
     }
 }
