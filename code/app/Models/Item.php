@@ -1,13 +1,17 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Assistant extends Model
+class Item extends Model
 {
     use SoftDeletes;
-    
+
     protected $dates = ['deleted_at'];
+
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -11,6 +11,6 @@ class AssistantsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Assistant::class, 500)->create();
+        factory(\App\Models\Assistant::class, 500)->create();
     }
 }
