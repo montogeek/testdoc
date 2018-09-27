@@ -60,6 +60,7 @@ class AddAssistant extends React.Component {
         onCancel={onCancel}
         confirmLoading={loading}
         destroyOnClose
+        title="Agregar asistente"
       >
         <Form onSubmit={this.handleSubmit}>
           <FormItem label="Nombre">
@@ -463,7 +464,7 @@ class Assistants extends Component {
           icon="plus"
           onClick={this.showModal}
         >
-          Añadir asistente
+          Agregar asistente
         </Button>
         <AddAssistantForm visible={visibleModal} event={event} onCancel={this.handleCancel} onOk={this.handleOk}/>
         <Table

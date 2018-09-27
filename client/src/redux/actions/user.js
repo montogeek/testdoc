@@ -1,5 +1,4 @@
 import ky from "ky"
-import { push } from "connected-react-router"
 import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
@@ -56,7 +55,6 @@ export function getUser() {
 
       return dispatch({ type: GET_USER_SUCCESS, loading: false, data: await res.json() })
     } catch (e) {
-      console.error(e)
       return dispatch({ type: GET_USER_FAILURE, loading: false, error: e })
     }
   }
