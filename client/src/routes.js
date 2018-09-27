@@ -3,6 +3,7 @@ import EventCreate from "./views/eventcreate"
 import EventUpdate from "./views/eventupdate"
 import Dashboard from "./pages/Dashboard"
 import Assistants from "./components/assistants"
+import Menu from "./views/menu"
 import Home from "./pages/Home"
 
 const routes = [
@@ -26,6 +27,10 @@ const routes = [
   {
     path: "/event/:id/assistants",
     component: PrivateRoute(Assistants)
+  },
+  {
+    path: "/event/:id/menu",
+    component: PrivateRoute(Menu)
   },
   {
     path: "*",

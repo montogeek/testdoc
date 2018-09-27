@@ -54,7 +54,6 @@ class AddAssistant extends React.Component {
     const { loading, onCancel } = this.props
     return (
       <Modal
-        title="Basic Modal"
         visible={visible}
         onOk={this.handleSubmit}
         onCancel={onCancel}

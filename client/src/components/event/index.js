@@ -54,12 +54,12 @@ class Event extends React.Component {
             >
               Invitados
             </Link>
-            <a
-              href="#"
+            <Link
+              to={`/event/${event.id}/menu`}
               className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
             >
               Menu
-            </a>
+            </Link>
           </div>
         </div>
         <Transition

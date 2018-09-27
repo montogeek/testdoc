@@ -36,7 +36,7 @@ export function removeAssistant(id, event_id) {
     dispatch({ type: REMOVE_ASSISTANT_REQUEST, loading: true })
 
     try {
-      const res = await ky.delete(`${API_URL}/api/assistants/${id}`, {
+      await ky.delete(`${API_URL}/api/assistants/${id}`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
