@@ -2,8 +2,8 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { DateTime } from "luxon"
 import { getEvents } from "../../redux/actions/events"
-import { updateAssistant, removeAssistant } from "../../redux/actions/assistants"
-import { Table, Icon, Popconfirm, Button, Form, InputNumber, Input, Checkbox } from "antd"
+import { updateAssistant, removeAssistant, addAssistant } from "../../redux/actions/assistants"
+import { Table, Icon, Popconfirm, Button, Form, InputNumber, Input, Checkbox, Modal } from "antd"
 import "antd/lib/table/style/css"
 import "antd/lib/popconfirm/style/css"
 import "antd/lib/button/style/css"
@@ -11,6 +11,7 @@ import "antd/lib/form/style/css"
 import "antd/lib/input-number/style/css"
 import "antd/lib/input/style/css"
 import "antd/lib/checkbox/style/css"
+import "antd/lib/modal/style/css"
 
 const FormItem = Form.Item
 const EditableContext = React.createContext()
@@ -29,6 +30,151 @@ const rules = {
   number: { required: true, type: "integer", message: "Ingresa un numero" },
   checkbox: { type: "boolean" }
 }
+
+class AddAssistant extends React.Component {
+  constructor() {
+    super()
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit() {
+    const { validateFields } = this.props.form
+    const { id } = this.props.event
+    const { addAssistant } = this.props
+    validateFields(async (error, values) => {
+      if (error) return
+      await addAssistant(values, id)
+      this.props.onOk()
+    })
+  }
+
+  render() {
+    const { getFieldDecorator } = this.props.form
+    const { visible } = this.props
+    const { loading, onCancel } = this.props
+    return (
+      <Modal
+        title="Basic Modal"
+        visible={visible}
+        onOk={this.handleSubmit}
+        onCancel={onCancel}
+        confirmLoading={loading}
+        destroyOnClose
+        title="Agregar asistente"
+      >
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem label="Nombre">
+            {getFieldDecorator("name", {
+              rules: [
+                {
+                  required: true
+                }
+              ]
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Dirección">
+            {getFieldDecorator("address", {
+              rules: [
+                {
+                  required: true
+                }
+              ]
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Ciudad">
+            {getFieldDecorator("city", {
+              rules: [
+                {
+                  required: true
+                }
+              ]
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Estado">
+            {getFieldDecorator("state", {
+              rules: [
+                {
+                  required: true
+                }
+              ]
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Codigo postal">
+            {getFieldDecorator("zip", {
+              rules: [
+                {
+                  required: true
+                }
+              ]
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Telefono">
+            {getFieldDecorator("phonenumber", {
+              rules: [
+                {
+                  required: true
+                }
+              ]
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Email">
+            {getFieldDecorator("email", {
+              rules: [
+                {
+                  required: true,
+                  type: "email"
+                }
+              ]
+            })(<Input />)}
+          </FormItem>
+          <FormItem label="Niños">
+            {getFieldDecorator("kids", {
+              rules: [
+                {
+                  type: "integer",
+                  required: true,
+                  min: 0
+                }
+              ]
+            })(<InputNumber />)}
+          </FormItem>
+          <FormItem label="Adultos">
+            {getFieldDecorator("adults", {
+              rules: [
+                {
+                  type: "integer",
+                  required: true,
+                  min: 0
+                }
+              ]
+            })(<InputNumber />)}
+          </FormItem>
+          <FormItem label="Atendera?">
+            {getFieldDecorator("rsvp", {
+              rules: [
+                {
+                  required: false,
+                  type: "boolean"
+                }
+              ],
+              initialValue: false,
+              valuePropName: "checked"
+            })(<Checkbox />)}
+          </FormItem>
+        </Form>
+      </Modal>
+    )
+  }
+}
+
+const AddAssistantForm = Form.create()(
+  connect(
+    ({ events }) => ({ loading: events.loading }),
+    {
+      addAssistant
+    }
+  )(AddAssistant)
+)
 
 class EditableCell extends React.Component {
   getInput = () => {
@@ -78,12 +224,15 @@ class EditableCell extends React.Component {
 class Assistants extends Component {
   constructor() {
     super()
-    this.state = { editingId: null }
+    this.state = { editingId: null, visibleModal: false }
     this.isEditing = this.isEditing.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.cancel = this.cancel.bind(this)
     this.edit = this.edit.bind(this)
     this.save = this.save.bind(this)
+    this.showModal = this.showModal.bind(this)
+    this.handleOk = this.handleOk.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
 
     this.columns = [
       {
@@ -200,12 +349,23 @@ class Assistants extends Component {
   componentDidMount() {
     const { getEvents } = this.props
     getEvents()
-    // getAssistants()
   }
 
   async handleDelete(id) {
     const { removeAssistant, event } = this.props
     await removeAssistant(id, event.id)
+  }
+
+  handleOk() {
+    this.setState({
+      visibleModal: false
+    })
+  }
+
+  handleCancel() {
+    this.setState({
+      visibleModal: false
+    })
   }
 
   isEditing(record) {
@@ -246,8 +406,15 @@ class Assistants extends Component {
     }
   }
 
+  showModal() {
+    this.setState({
+      visibleModal: true
+    })
+  }
+
   render() {
     const { event, loading } = this.props
+    const { visibleModal } = this.state
 
     const components = {
       body: {
@@ -291,14 +458,15 @@ class Assistants extends Component {
             </div>
           </div>
         </div>
-        {/* <Button
+        <Button
           type="dashed"
           style={{ width: "100%", marginBottom: 8 }}
           icon="plus"
           onClick={this.showModal}
         >
-          Añadir asistente
-        </Button> */}
+          Agregar asistente
+        </Button>
+        <AddAssistantForm visible={visibleModal} event={event} onCancel={this.handleCancel} onOk={this.handleOk}/>
         <Table
           components={components}
           loading={loading}

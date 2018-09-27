@@ -1,4 +1,5 @@
 import ky from "ky"
+import { push } from "connected-react-router"
 import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
@@ -52,6 +53,11 @@ export function getUser() {
           Authorization: "Bearer " + getState().user.data.access_token
         }
       })
+
+      if (!res.ok) {
+        dispatch(logout())
+        dispatch(push("/"))
+      }
 
       return dispatch({ type: GET_USER_SUCCESS, loading: false, data: await res.json() })
     } catch (e) {

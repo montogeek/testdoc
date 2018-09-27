@@ -1,6 +1,9 @@
 import ky from "ky"
 
 import {
+  ADD_ASSISTANT_REQUEST,
+  ADD_ASSISTANT_SUCCESS,
+  ADD_ASSISTANT_FAILURE,
   UPDATE_ASSISTANT_REQUEST,
   UPDATE_ASSISTANT_SUCCESS,
   UPDATE_ASSISTANT_FAILURE,
@@ -42,6 +45,25 @@ export function removeAssistant(id, event_id) {
       return dispatch({ type: REMOVE_ASSISTANT_SUCCESS, loading: false, data: { event_id, id } })
     } catch (e) {
       return dispatch({ type: REMOVE_ASSISTANT_FAILURE, loading: false, error: e })
+    }
+  }
+}
+
+export function addAssistant(data, event_id) {
+  return async function(dispatch, getState) {
+    dispatch({ type: ADD_ASSISTANT_REQUEST, loading: true })
+
+    try {
+      const res = await ky.post(`${API_URL}/api/assistants/`, {
+        json: { ...data, event_id },
+        headers: {
+          Authorization: "Bearer " + getState().user.data.access_token
+        }
+      })
+
+      return dispatch({ type: ADD_ASSISTANT_SUCCESS, loading: false, data: await res.json() })
+    } catch (e) {
+      return dispatch({ type: ADD_ASSISTANT_FAILURE, loading: false, error: e })
     }
   }
 }

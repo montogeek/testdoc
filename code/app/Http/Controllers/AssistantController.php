@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Assistant;
+use App\Models\Assistant;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class AssistantController extends Controller
@@ -35,7 +36,24 @@ class AssistantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $event = Event::find($data['event_id']);
+
+        $assistant = new Assistant();
+        $assistant->name = $data['name'];
+        $assistant->address = $data['address'];
+        $assistant->city = $data['city'];
+        $assistant->state = $data['state'];
+        $assistant->zip = $data['zip'];
+        $assistant->phonenumber = $data['phonenumber'];
+        $assistant->email = $data['email'];
+        $assistant->rsvp = $data['rsvp'];
+        $assistant->kids = $data['kids'];
+        $assistant->adults = $data['adults'];
+
+        $event->assistant()->save($assistant);
+
+        return $assistant;
     }
 
     /**

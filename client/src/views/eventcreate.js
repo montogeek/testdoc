@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { Formik, Form, Field } from "formik"
 import DateTimePicker from "react-datetime-picker"
 import { push } from "connected-react-router"
-import { createEvent } from "../redux/actions"
+import { createEvent } from "../redux/actions/events"
 
 class EventCreate extends Component {
   constructor() {
