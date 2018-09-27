@@ -22,11 +22,13 @@ class Event extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function assistant() {
+    public function assistant()
+    {
         return $this->hasMany('App\Assistant');
     }
 
-    public function item() {
+    public function item()
+    {
         return $this->hasMany('App\Item');
     }
 
@@ -37,22 +39,25 @@ class Event extends Model
 
     public function getMonthYearAttribute()
     {
-        return Carbon::parse($this->date)->shortEnglishMonth.' '.Carbon::parse($this->date)->year;
+        return Carbon::parse($this->date)->shortEnglishMonth . ' ' . Carbon::parse($this->date)->year;
     }
 
-    public function getKidsAttribute() {
-        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
+    public function getKidsAttribute()
+    {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
             return $carry + $assistant->kids;
         }, 0);
     }
 
-    public function getAdultsAttribute() {
-        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
+    public function getAdultsAttribute()
+    {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
             return $carry + $assistant->adults;
         }, 0);
     }
 
-    public function getTotalAssistantsAttribute() {
+    public function getTotalAssistantsAttribute()
+    {
         return $this->adults + $this->kids;
     }
 
@@ -61,7 +66,8 @@ class Event extends Model
         return Carbon::parse($value)->diffInHours($this->date);
     }
 
-    public function budgets(){
-    	return $this->belongsToMany(Category::class,'budgets')->using(Budget::class);
+    public function budgets()
+    {
+        return $this->belongsToMany(Category::class, 'budgets')->using(Budget::class);
     }
 }

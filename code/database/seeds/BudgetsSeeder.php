@@ -11,14 +11,14 @@ class BudgetsSeeder extends Seeder
      */
     public function run()
     {
-	    $events = \App\Event::all();
-	    $categories = \App\Category::all()->pluck('id')->toArray();
+        $events = \App\Event::all();
+        $categories = \App\Category::all()->pluck('id')->toArray();
 
-	    foreach ($events as $event){
-	    	$categories_map=array_combine($categories,
-			    factory(\App\Models\Budget::class,sizeof($categories))->make()->toArray()
-		    );
-	    	$event->budgets()->sync($categories_map,false);
-	    }
+        foreach ($events as $event) {
+            $categories_map = array_combine($categories,
+                factory(\App\Models\Budget::class, sizeof($categories))->make()->toArray()
+            );
+            $event->budgets()->sync($categories_map, false);
+        }
     }
 }

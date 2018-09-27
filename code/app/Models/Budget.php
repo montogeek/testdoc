@@ -9,18 +9,19 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class Budget extends Pivot
 {
 
-	protected $fillable=['event_id','category_id','budget','extras'];
+    protected $fillable = ['event_id', 'category_id', 'budget', 'extras'];
 
-	protected $casts=[
-		'extras'=>'json'
-	];
+    protected $casts = [
+        'extras' => 'json'
+    ];
 
-	protected $attributes=[
-		'extras'=>'{}'
-	];
+    protected $attributes = [
+        'extras' => '{}'
+    ];
 
 
-	public function budgets(){
-		return $this->hasMany(Budget::class);
-	}
+    public function budgets()
+    {
+        return $this->hasMany(Budget::class);
+    }
 }
