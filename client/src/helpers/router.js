@@ -12,7 +12,7 @@ const RedirectRoute = props => {
         <div className="bg-grey-lightest font-sans">
           <Navbar />
           <div className="w-full max-w-4xl mx-auto px-6 pt-24">
-            <div className="pb-8 w-full relative">
+            <div className="pb-8 relative">
               <Component {...rest} />
             </div>
           </div>

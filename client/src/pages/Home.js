@@ -2,8 +2,7 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 import { connect } from "react-redux"
 import cx from "classnames"
-import { bindActionCreators } from "redux"
-import { loginUser } from "../redux/actions"
+import { loginUser } from "../redux/actions/user"
 
 class Login extends React.Component {
   constructor() {
@@ -225,10 +224,6 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ loginUser }, dispatch)
-}
-
 class Home extends React.Component {
   constructor() {
     super()
@@ -244,6 +239,7 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     const { tab } = this.state
     const { user, loginUser, registerUser } = this.props
     const { from } = this.props.location.state || {
@@ -282,10 +278,7 @@ class Home extends React.Component {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {
+    loginUser
+  }
 )(Home)
-
-// export default connect(
-//   ({ auth }) => ({ auth }),
-//   actions
-// )(Home)

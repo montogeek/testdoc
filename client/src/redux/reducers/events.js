@@ -13,7 +13,10 @@ import {
   UPDATE_ASSISTANT_SUCCESS,
   UPDATE_ASSISTANT_FAILURE,
   REMOVE_ASSISTANT_REQUEST,
-  REMOVE_ASSISTANT_SUCCESS
+  REMOVE_ASSISTANT_SUCCESS,
+  ADD_ASSISTANT_REQUEST,
+  ADD_ASSISTANT_SUCCESS,
+  ADD_ASSISTANT_FAILURE
 } from "../constants"
 
 const initialState = {
@@ -121,6 +124,28 @@ export default function events(state = initialState, action) {
           return event
         })
       }
+
+    case ADD_ASSISTANT_REQUEST:
+      return { ...state, loading: action.loading }
+
+    case ADD_ASSISTANT_SUCCESS:
+      return {
+        ...state,
+        loading: action.loading,
+        data: state.data.map(event => {
+          if (event.id === action.data.event_id) {
+            return {
+              ...event,
+              assistants: [action.data, ...event.assistants]
+            }
+          }
+
+          return event
+        })
+      }
+
+    case ADD_ASSISTANT_FAILURE:
+      return { ...state, loading: action.loading, error: action.error }
 
     default:
       return state

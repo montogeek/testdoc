@@ -134,6 +134,7 @@ Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event
 Route::middleware('auth:api')->post('/events', 'EventController@store');
 Route::middleware('auth:api')->put('/events/{id}', 'EventController@update');
 
+Route::middleware('auth:api')->post('/assistants', 'AssistantController@store');
 Route::middleware('auth:api')->put('/assistants/{id}', 'AssistantController@update');
 Route::middleware('auth:api')->delete('/assistants/{id}', 'AssistantController@destroy');
 
