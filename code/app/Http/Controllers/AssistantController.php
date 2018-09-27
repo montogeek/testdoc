@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Assistant;
-use App\Event;
+use App\Models\Assistant;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class AssistantController extends Controller
