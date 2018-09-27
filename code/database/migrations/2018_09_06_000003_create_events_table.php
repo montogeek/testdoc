@@ -30,6 +30,7 @@ class CreateEventsTable extends Migration
             $table->string('location', 45)->nullable();
             $table->json('extras')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unsignedInteger('user_id');
 

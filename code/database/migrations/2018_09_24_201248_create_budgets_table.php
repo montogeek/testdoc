@@ -22,8 +22,12 @@ class CreateBudgetsTable extends Migration
             $table->json('extras');
 
             $table->primary(['event_id', 'category_id']);
-            $table->foreign('event_id')->references('id')->on('events');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('event_id')->references('id')->on('events')
+                ->onDelete('no action')
+                ->onUpdate('no action');
+            $table->foreign('category_id')->references('id')->on('categories')
+                ->onDelete('no action')
+                ->onUpdate('no action');;
         });
     }
 

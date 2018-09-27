@@ -1,13 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Models\Budget;
+
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
+    use SoftDeletes;
+
     protected $appends = ['month_year', 'day', 'kids', 'adults'];
 
     protected $hidden = ['assistant', 'item'];
@@ -17,19 +20,26 @@ class Event extends Model
         'duration' => 'datetime:Y-m-d H:i:s'
     ];
 
+    protected $dates = ['deleted_at'];
+
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function assistant()
     {
-        return $this->hasMany('App\Assistant');
+        return $this->hasMany(Assistant::class);
     }
 
     public function item()
     {
-        return $this->hasMany('App\Item');
+        return $this->hasMany(Item::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'budgets')->using(Budget::class);
     }
 
     public function getDayAttribute()
@@ -64,10 +74,5 @@ class Event extends Model
     public function getDurationAttribute($value)
     {
         return Carbon::parse($value)->diffInHours($this->date);
-    }
-
-    public function budgets()
-    {
-        return $this->belongsToMany(Category::class, 'budgets')->using(Budget::class);
     }
 }

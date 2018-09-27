@@ -11,7 +11,7 @@ const RedirectRoute = props => {
       {user.data.authenticated ? (
         <div className="bg-grey-lightest font-sans">
           <Navbar />
-          <div className="w-full max-w-2xl mx-auto px-6 pt-24">
+          <div className="w-full max-w-4xl mx-auto px-6 pt-24">
             <div className="pb-8 w-full relative">
               <Component {...rest} />
             </div>

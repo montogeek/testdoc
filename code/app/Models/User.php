@@ -1,14 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -28,8 +28,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $dates = ['deleted_at'];
+
     public function events()
     {
-        return $this->hasMany('App\Event');
+        return $this->hasMany(Event::class);
     }
 }

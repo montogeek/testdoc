@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Category;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Budget extends Pivot
@@ -18,10 +16,4 @@ class Budget extends Pivot
     protected $attributes = [
         'extras' => '{}'
     ];
-
-
-    public function budgets()
-    {
-        return $this->hasMany(Budget::class);
-    }
 }

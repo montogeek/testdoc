@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Budget;
+use App\Assistant;
 use Illuminate\Http\Request;
 
-class BudgetController extends Controller
+class AssistantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,14 @@ class BudgetController extends Controller
     /**
      * Display the specified resource.
      *
+     * <<<<<<< HEAD:code/app/Http/Controllers/BudgetController.php
      * @param  \App\Models\Budget $budget
+     * =======
+     * @param  int $id
+     * >>>>>>> 5668c8ba13c5aacd3dc1b7d10464ace194e40351:code/app/Http/Controllers/AssistantController.php
      * @return \Illuminate\Http\Response
      */
-    public function show(Budget $budget)
+    public function show($id)
     {
         //
     }
@@ -52,10 +56,14 @@ class BudgetController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * <<<<<<< HEAD:code/app/Http/Controllers/BudgetController.php
      * @param  \App\Models\Budget $budget
+     * =======
+     * @param  int $id
+     * >>>>>>> 5668c8ba13c5aacd3dc1b7d10464ace194e40351:code/app/Http/Controllers/AssistantController.php
      * @return \Illuminate\Http\Response
      */
-    public function edit(Budget $budget)
+    public function edit($id)
     {
         //
     }
@@ -64,22 +72,39 @@ class BudgetController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Budget $budget
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Budget $budget)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $assistant = Assistant::find($id);
+        $assistant->name = $data['name'];
+        $assistant->address = $data['address'];
+        $assistant->phonenumber = $data['phonenumber'];
+        $assistant->rsvp = $data['rsvp'];
+        $assistant->email = $data['email'];
+        $assistant->kids = $data['kids'];
+        $assistant->adults = $data['adults'];
+
+        $assistant->save();
+
+        return $assistant;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Budget $budget
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Budget $budget)
+    public function destroy($id)
     {
-        //
+        $assistant = Assistant::find($id);
+
+        $assistant->delete();
+
+        return response()->json([], 200);
     }
 }

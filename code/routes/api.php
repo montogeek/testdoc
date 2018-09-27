@@ -118,21 +118,25 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'assistants' => [$adults, $kids, $total],
             'budget' => $budget->push($budgetTotal)
         ];
+
+        $event['assistants'] = $event->assistant;
+
         return $event;
     });
-
-//    return $data->toJson(JSON_PRESERVE_ZERO_FRACTION);
-
 
     return response()->json($data);
 });
 
-Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event) {
+Route::middleware('auth:api')->get('/events/{event}', function (App\Models\Event $event) {
     return $event->attributesToArray();
 });
 
 Route::middleware('auth:api')->post('/events', 'EventController@store');
 Route::middleware('auth:api')->put('/events/{id}', 'EventController@update');
+
+Route::middleware('auth:api')->put('/assistants/{id}', 'AssistantController@update');
+Route::middleware('auth:api')->delete('/assistants/{id}', 'AssistantController@destroy');
+
 
 Route::middleware('auth:api')->post('/logout', 'LoginController@logout')->name('logout');
 
