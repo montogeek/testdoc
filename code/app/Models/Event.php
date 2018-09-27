@@ -1,6 +1,7 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -23,15 +24,22 @@ class Event extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
-    public function assistant() {
-        return $this->hasMany('App\Assistant');
+    public function assistant()
+    {
+        return $this->hasMany(Assistant::class);
     }
 
-    public function item() {
-        return $this->hasMany('App\Item');
+    public function item()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'budgets')->using(Budget::class);
     }
 
     public function getDayAttribute()
@@ -41,22 +49,25 @@ class Event extends Model
 
     public function getMonthYearAttribute()
     {
-        return Carbon::parse($this->date)->shortEnglishMonth.' '.Carbon::parse($this->date)->year;
+        return Carbon::parse($this->date)->shortEnglishMonth . ' ' . Carbon::parse($this->date)->year;
     }
 
-    public function getKidsAttribute() {
-        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
+    public function getKidsAttribute()
+    {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
             return $carry + $assistant->kids;
         }, 0);
     }
 
-    public function getAdultsAttribute() {
-        return $this->assistant->where('rsvp', '=', true)->reduce(function($carry, $assistant) {
+    public function getAdultsAttribute()
+    {
+        return $this->assistant->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
             return $carry + $assistant->adults;
         }, 0);
     }
 
-    public function getTotalAssistantsAttribute() {
+    public function getTotalAssistantsAttribute()
+    {
         return $this->adults + $this->kids;
     }
 

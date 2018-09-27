@@ -7,7 +7,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Cookie;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Illuminate\Http\Request;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
