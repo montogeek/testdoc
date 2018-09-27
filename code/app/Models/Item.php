@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
     public function category() {
-        return $this->belongsTo('App\Category');
+        return $this->belongsTo(Category::class);
     }
 }

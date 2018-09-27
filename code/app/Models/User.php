@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -30,6 +30,6 @@ class User extends Authenticatable
 
     public function events()
     {
-        return $this->hasMany('App\Event');
+        return $this->hasMany(Event::class);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Models\Budget;
+
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -19,15 +19,15 @@ class Event extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function assistant() {
-        return $this->hasMany('App\Assistant');
+        return $this->hasMany(Assistant::class);
     }
 
     public function item() {
-        return $this->hasMany('App\Item');
+        return $this->hasMany(Item::class);
     }
 
     public function getDayAttribute()

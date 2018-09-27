@@ -127,7 +127,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
     return response()->json($data);
 });
 
-Route::middleware('auth:api')->get('/events/{event}', function (App\Event $event) {
+Route::middleware('auth:api')->get('/events/{event}', function (App\Models\Event $event) {
     return $event->attributesToArray();
 });
 
