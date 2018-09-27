@@ -27,6 +27,7 @@ class CreateChairsTable extends Migration
             $table->json('layout')->nullable();
             $table->string('notes', 45)->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unsignedInteger('event_id');
 

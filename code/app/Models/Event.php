@@ -5,9 +5,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
 {
+    use SoftDeletes;
+
     protected $appends = ['month_year', 'day', 'kids', 'adults'];
 
     protected $hidden = ['assistant', 'item'];
@@ -16,6 +19,8 @@ class Event extends Model
         'date' => 'datetime:Y-m-d H:i:s',
         'duration' => 'datetime:Y-m-d H:i:s'
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function user()
     {
