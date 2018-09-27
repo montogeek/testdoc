@@ -41,11 +41,7 @@ class AssistantController extends Controller
     /**
      * Display the specified resource.
      *
-     * <<<<<<< HEAD:code/app/Http/Controllers/BudgetController.php
-     * @param  \App\Models\Budget $budget
-     * =======
      * @param  int $id
-     * >>>>>>> 5668c8ba13c5aacd3dc1b7d10464ace194e40351:code/app/Http/Controllers/AssistantController.php
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -56,11 +52,7 @@ class AssistantController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * <<<<<<< HEAD:code/app/Http/Controllers/BudgetController.php
-     * @param  \App\Models\Budget $budget
-     * =======
      * @param  int $id
-     * >>>>>>> 5668c8ba13c5aacd3dc1b7d10464ace194e40351:code/app/Http/Controllers/AssistantController.php
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
