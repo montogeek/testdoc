@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             AssistantsTableSeeder::class,
             CategoriesTableSeeder::class,
             ItemsTableSeeder::class,
+            BudgetTableSeeder::class
         ]);
     }
 }

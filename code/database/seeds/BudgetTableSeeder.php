@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class BudgetsSeeder extends Seeder
+class BudgetTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,7 +18,7 @@ class BudgetsSeeder extends Seeder
             $categories_map = array_combine($categories,
                 factory(\App\Models\Budget::class, sizeof($categories))->make()->toArray()
             );
-            $event->budgets()->sync($categories_map, false);
+            $event->categories()->sync($categories_map, false);
         }
     }
 }
