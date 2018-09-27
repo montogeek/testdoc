@@ -27,6 +27,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name', 45);
             $table->float('budget');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
