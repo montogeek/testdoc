@@ -1,13 +1,101 @@
-import React, { Component } from 'react';
+import React, { Component } from "react"
+import { connect } from "react-redux"
+import { Table } from "antd"
 
-class Menu extends Component {
+class CategoryList extends Component {
+  constructor() {
+    super()
+    this.columns = [
+      {
+        title: "Articulo",
+        dataIndex: "name",
+        key: "name",
+        editable: true
+      },
+      {
+        title: "Coste total",
+        dataIndex: "cost",
+        key: "cost",
+        editable: true
+      },
+      {
+        title: "Racion por nino",
+        dataIndex: "shareKid",
+        key: "shareKid",
+        editable: true
+      },
+      {
+        title: "Racion por adulto",
+        dataIndex: "shareAdult",
+        key: "shareAdult",
+        editable: true
+      },
+      {
+        title: "Total de raciones",
+        dataIndex: "totalshare",
+        key: "totalshare"
+      },
+      {
+        title: "Coste por racion",
+        dataIndex: "costShare",
+        key: "costShare"
+      },
+      {
+        title: "Coste por nino",
+        dataIndex: "costKid",
+        key: "costKid",
+        render: (_, record) => record.costShare * record.shareKid
+      },
+      {
+        title: "Coste por adulto",
+        dataIndex: "costAdult",
+        key: "costAdult",
+        render: (_, record) => record.costShare * record.shareAdult
+      },
+      {
+        title: "Notas",
+        dataIndex: "notes",
+        key: "notes"
+      }
+    ]
+  }
   render() {
+    const { name, items, loading } = this.props
+
     return (
       <div>
-        Menu
+        <h1>{name}</h1>
+        <Table dataSource={items} loading={loading} columns={this.columns} />
       </div>
-    );
+    )
   }
 }
 
-export default Menu;
+class Menu extends Component {
+  render() {
+    const { event, loading, kids, adults } = this.props
+
+    if (!event) return "loading"
+
+    return (
+      <div>
+        {event.menu.map(category => {
+          return <CategoryList loading={loading} kids={kids} adults={adults} {...category} />
+        })}
+      </div>
+    )
+  }
+}
+
+export default connect(
+  ({ events }, props) => {
+    const event = events.data.find(event => event.id === parseInt(props.match.params.id, 10))
+
+    return {
+      event: event,
+      kids: event.summary.assistants[1].count,
+      adults: event.summary.assistants[0].count,
+      loading: events.loading
+    }
+  }
+)(Menu)

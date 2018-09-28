@@ -6,7 +6,28 @@ import rootReducer from "./reducers"
 import { refreshToken } from "./actions/user"
 import history from "../history"
 
-const loggerMiddleware = createLogger()
+export function loadState() {
+  try {
+    const state = localStorage.getItem("state")
+
+    if (state === null) {
+      return undefined
+    }
+
+    return JSON.parse(state)
+  } catch (e) {
+    return undefined
+  }
+}
+
+export function saveState(state) {
+  try {
+    const stateJSON = JSON.stringify(state)
+    localStorage.setItem("state", stateJSON)
+  } catch (e) {
+    throw e
+  }
+}
 
 const refreshTokenMiddleware = store => next => action => {
   const expires = parseInt(store.getState().user.data.expires_in, 10)
@@ -21,6 +42,7 @@ const refreshTokenMiddleware = store => next => action => {
   return next(action)
 }
 
+const loggerMiddleware = createLogger()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export default function configureStore(preloadedState) {

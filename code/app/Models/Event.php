@@ -13,7 +13,7 @@ class Event extends Model
 
     protected $appends = ['month_year', 'day', 'kids', 'adults'];
 
-    protected $hidden = ['assistant', 'item'];
+    protected $hidden = ['assistant', 'items'];
 
     protected $casts = [
         'date' => 'datetime:Y-m-d H:i:s',
@@ -32,14 +32,14 @@ class Event extends Model
         return $this->hasMany(Assistant::class);
     }
 
-    public function item()
+    public function items()
     {
         return $this->hasMany(Item::class);
     }
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'budgets')->using(Budget::class);
+        return $this->belongsToMany(Category::class, 'budgets')->using(Budget::class)->as('budget')->withPivot('budget', 'extras')->withTimestamps();
     }
 
     public function getDayAttribute()

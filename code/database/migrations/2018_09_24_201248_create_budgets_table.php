@@ -16,10 +16,11 @@ class CreateBudgetsTable extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->unsignedInteger('event_id');
             $table->unsignedInteger('category_id');
+            $table->float('budget')->default(0.0);
+            $table->json('extras');
+
             $table->timestamps();
             $table->softDeletes();
-            $table->unsignedDecimal('budget')->default(0);
-            $table->json('extras');
 
             $table->primary(['event_id', 'category_id']);
             $table->foreign('event_id')->references('id')->on('events')

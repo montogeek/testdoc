@@ -47,15 +47,15 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
     };
 
     $data = $request->user()->events->sortBy('date')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
-        $foodShare = $event->item->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
+        $foodShare = $event->items->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
             return $calculateShare($item, $event);
         })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
 
-        $otherShare = $event->item->where('category_id', '!=', 1)->groupBy('category_id')->values()->map(function ($items) {
+        $otherShare = $event->items->where('category_id', '!=', 1)->groupBy('category_id')->values()->map(function ($items) {
             return $items->sum('cost');
         })->sum();
 
-        $budget = $event->item->groupBy('category_id')->values()->map(function ($items) {
+        $budget = $event->items->groupBy('category_id')->values()->map(function ($items) {
             $budget = $items[0]->category->budget;
             $cost = $items->sum('cost');
             $diff = $budget - $cost;
@@ -120,15 +120,23 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         ];
 
         $event['assistants'] = $event->assistant;
+//        $event['categories'] = $event->categories;
+        $event['menu'] = $event->items->groupBy('category.name')->values()->map(function ($items) use ($adults, $kids) {
+            return [
+                'id' => $items[0]->category->id,
+                'name' => $items[0]->category->name,
+                'items' => $items->map(function ($item) use ($adults, $kids) {
+                    $item['totalshare'] = $item->shareKid * $kids['count'] + $item->shareAdult * $adults['count'];
+                    $item['costShare'] = $item->cost / max($item['totalshare'], 1);
+                    return $item;
+                })
+            ];
+        });
 
         return $event;
     });
 
     return response()->json($data);
-});
-
-Route::middleware('auth:api')->get('/events/{event}', function (App\Models\Event $event) {
-    return $event->attributesToArray();
 });
 
 Route::middleware('auth:api')->post('/events', 'EventController@store');

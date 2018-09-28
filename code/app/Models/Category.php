@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    public function item()
+    public function items()
     {
         return $this->hasMany(Item::class);
     }
 
-
     public function events()
     {
-        return $this->belongsToMany(Event::class, 'budgets')->using(Budget::class);
+        return $this->belongsToMany(Event::class, 'budgets')->using(Budget::class)->as('budget')->withPivot('budget', 'extras')->withTimestamps();
     }
 }
