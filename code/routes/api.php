@@ -121,7 +121,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 
         $event['assistants'] = $event->assistant;
 //        $event['categories'] = $event->categories;
-        $event['menu'] = $event->items->groupBy('category.name')->values()->map(function ($items) use ($adults, $kids) {
+        $event['menu'] = $event->items->sortBy('category.id')->groupBy('category.name')->values()->map(function ($items) use ($adults, $kids) {
             return [
                 'id' => $items[0]->category->id,
                 'name' => $items[0]->category->name,
