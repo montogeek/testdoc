@@ -47,15 +47,15 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
     };
 
     $data = $request->user()->events->sortBy('date')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
-        $foodShare = $event->item->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
+        $foodShare = $event->items->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
             return $calculateShare($item, $event);
         })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
 
-        $otherShare = $event->item->where('category_id', '!=', 1)->groupBy('category_id')->values()->map(function ($items) {
+        $otherShare = $event->items->where('category_id', '!=', 1)->groupBy('category_id')->values()->map(function ($items) {
             return $items->sum('cost');
         })->sum();
 
-        $budget = $event->item->groupBy('category_id')->values()->map(function ($items) {
+        $budget = $event->items->groupBy('category_id')->values()->map(function ($items) {
             $budget = $items[0]->category->budget;
             $cost = $items->sum('cost');
             $diff = $budget - $cost;
@@ -114,21 +114,44 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'total' => round(($adults['total'] + $kids['total']) / 2, 2)
         ];
 
+        $foodItems = $event->items->where('category.name', '=', 'Comida y bebidas')->values();
+
+        $foodMenu = $foodItems->map(function ($item) use ($adults, $kids) {
+            $item['totalshare'] = $item->shareKid * $kids['count'] + $item->shareAdult * $adults['count'];
+            $item['costShare'] = $item->cost / max($item['totalshare'], 1);
+            return $item;
+        });
+
+
+        $otherMenu = $event->items->where('category.name', '!==', 'Comida y bebidas')->sortBy('category.id')->groupBy('category.name')->values()->map(function ($items) {
+            return [
+                'id' => $items[0]->category->id,
+                'name' => $items[0]->category->name,
+                'items' => $items
+            ];
+        });
+
+        // $event['categories'] = $event->categories;
+
         $event['summary'] = [
             'assistants' => [$adults, $kids, $total],
             'budget' => $budget->push($budgetTotal)
         ];
 
         $event['assistants'] = $event->assistant;
+        $event['menu'] = [
+            'food' => [
+                'id' => $foodItems[0]->category->id,
+                'name' => $foodItems[0]->category->name,
+                'items' => $foodMenu,
+            ],
+            'other' => $otherMenu
+        ];
 
         return $event;
     });
 
     return response()->json($data);
-});
-
-Route::middleware('auth:api')->get('/events/{event}', function (App\Models\Event $event) {
-    return $event->attributesToArray();
 });
 
 Route::middleware('auth:api')->post('/events', 'EventController@store');
