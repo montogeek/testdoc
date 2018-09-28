@@ -114,24 +114,39 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'total' => round(($adults['total'] + $kids['total']) / 2, 2)
         ];
 
+        $foodItems = $event->items->where('category.name', '=', 'Comida y bebidas')->values();
+
+        $foodMenu = $foodItems->map(function ($item) use ($adults, $kids) {
+            $item['totalshare'] = $item->shareKid * $kids['count'] + $item->shareAdult * $adults['count'];
+            $item['costShare'] = $item->cost / max($item['totalshare'], 1);
+            return $item;
+        });
+
+
+        $otherMenu = $event->items->where('category.name', '!==', 'Comida y bebidas')->sortBy('category.id')->groupBy('category.name')->values()->map(function ($items) {
+            return [
+                'id' => $items[0]->category->id,
+                'name' => $items[0]->category->name,
+                'items' => $items
+            ];
+        });
+
+        // $event['categories'] = $event->categories;
+
         $event['summary'] = [
             'assistants' => [$adults, $kids, $total],
             'budget' => $budget->push($budgetTotal)
         ];
 
         $event['assistants'] = $event->assistant;
-//        $event['categories'] = $event->categories;
-        $event['menu'] = $event->items->sortBy('category.id')->groupBy('category.name')->values()->map(function ($items) use ($adults, $kids) {
-            return [
-                'id' => $items[0]->category->id,
-                'name' => $items[0]->category->name,
-                'items' => $items->map(function ($item) use ($adults, $kids) {
-                    $item['totalshare'] = $item->shareKid * $kids['count'] + $item->shareAdult * $adults['count'];
-                    $item['costShare'] = $item->cost / max($item['totalshare'], 1);
-                    return $item;
-                })
-            ];
-        });
+        $event['menu'] = [
+            'food' => [
+                'id' => $foodItems[0]->category->id,
+                'name' => $foodItems[0]->category->name,
+                'items' => $foodMenu,
+            ],
+            'other' => $otherMenu
+        ];
 
         return $event;
     });
