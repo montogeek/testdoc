@@ -10,9 +10,9 @@ const persistedState = loadState()
 
 const store = configureStore(persistedState)
 
-store.subscribe(() => {
-  saveState(store.getState())
-})
+// store.subscribe(() => {
+//   saveState(store.getState())
+// })
 
 class App extends Component {
   render() {
