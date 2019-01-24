@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Table, Modal, Form, Input, InputNumber, Button } from "antd"
-import { connect } from 'react-redux'
+import { connect } from "react-redux"
 import { addItem } from "../../redux/actions/items"
 
 const FormItem = Form.Item
@@ -51,7 +51,7 @@ class AddItem extends React.Component {
               rules: [
                 {
                   required: true,
-                  type: 'number'
+                  type: "number"
                 }
               ]
             })(<InputNumber />)}
@@ -61,7 +61,7 @@ class AddItem extends React.Component {
               rules: [
                 {
                   required: true,
-                  type: 'number'
+                  type: "number"
                 }
               ]
             })(<InputNumber />)}
@@ -71,7 +71,7 @@ class AddItem extends React.Component {
               rules: [
                 {
                   required: true,
-                  type: 'number'
+                  type: "number"
                 }
               ]
             })(<InputNumber />)}

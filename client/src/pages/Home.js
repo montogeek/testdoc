@@ -239,7 +239,6 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const { tab } = this.state
     const { user, loginUser, registerUser } = this.props
     const { from } = this.props.location.state || {
