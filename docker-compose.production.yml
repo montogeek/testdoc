@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.production
+    env_file:
+      - ./client/.env
+    depends_on:
+      - backend
+      - ngnix
+      - db
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+  backend:
+    build:
+      context: ./code
+      dockerfile: Dockerfile.production
+    container_name: backend
+    depends_on:
+      - db
+    networks:
+      - app-network
+  ngnix:
+    build:
+      context: ./code
+      dockerfile: ./nginx/Dockerfile.nginx.production
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+  db:
+    image: mysql:5.7.22
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: events
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
