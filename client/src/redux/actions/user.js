@@ -23,7 +23,7 @@ export function loginUser(email, password) {
     })
 
     try {
-      const res = await ky.post(`${API_URL}/login`, {
+      const res = await ky.post(`${process.env.REACT_APP_API_URL}/login`, {
         json: { email, password },
         credentials: "include"
       })
@@ -48,7 +48,7 @@ export function getUser() {
     dispatch({ type: GET_USER_REQUEST, loading: true })
 
     try {
-      const res = await ky.get(`${API_URL}/api/user`, {
+      const res = await ky.get(`${process.env.REACT_APP_API_URL}/api/user`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -71,7 +71,7 @@ export function logout() {
     dispatch({ type: LOGOUT_REQUEST, loading: true })
 
     try {
-      const res = await ky.post(`${API_URL}/api/logout`, {
+      const res = await ky.post(`${process.env.REACT_APP_API_URL}/api/logout`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -89,7 +89,7 @@ export function refreshToken() {
     dispatch({ type: REFRESH_TOKEN_REQUEST })
 
     try {
-      const res = await ky.post(`${API_URL}/login/refresh`, {
+      const res = await ky.post(`${process.env.REACT_APP_API_URL}/login/refresh`, {
         credentials: "include"
       })
 

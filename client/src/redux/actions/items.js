@@ -6,7 +6,7 @@ export function addItem(data, event_id, category_id) {
     dispatch({ type: ADD_ITEM_REQUEST, loading: true })
 
     try {
-      const res = await ky.post(`${API_URL}/api/items/`, {
+      const res = await ky.post(`${process.env.REACT_APP_API_URL}/api/items/`, {
         json: { ...data, event_id, category_id },
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token

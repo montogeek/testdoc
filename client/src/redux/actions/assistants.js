@@ -17,7 +17,7 @@ export function updateAssistant(data) {
     dispatch({ type: UPDATE_ASSISTANT_REQUEST, loading: true })
 
     try {
-      const res = await ky.put(`${API_URL}/api/assistants/${data.id}`, {
+      const res = await ky.put(`${process.env.REACT_APP_API_URL}/api/assistants/${data.id}`, {
         json: data,
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
@@ -36,7 +36,7 @@ export function removeAssistant(id, event_id) {
     dispatch({ type: REMOVE_ASSISTANT_REQUEST, loading: true })
 
     try {
-      await ky.delete(`${API_URL}/api/assistants/${id}`, {
+      await ky.delete(`${process.env.REACT_APP_API_URL}/api/assistants/${id}`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -54,7 +54,7 @@ export function addAssistant(data, event_id) {
     dispatch({ type: ADD_ASSISTANT_REQUEST, loading: true })
 
     try {
-      const res = await ky.post(`${API_URL}/api/assistants/`, {
+      const res = await ky.post(`${process.env.REACT_APP_API_URL}/api/assistants/`, {
         json: { ...data, event_id },
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token

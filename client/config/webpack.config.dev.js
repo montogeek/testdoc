@@ -170,8 +170,7 @@ module.exports = {
               eslintPath: require.resolve("eslint"),
               baseConfig: {
                 extends: [require.resolve("eslint-config-react-app")]
-              },
-              globals: ["API_URL"]
+              }
             },
             loader: require.resolve("eslint-loader")
           }
@@ -377,9 +376,6 @@ module.exports = {
     new ManifestPlugin({
       fileName: "asset-manifest.json",
       publicPath: publicPath
-    }),
-    new webpack.DefinePlugin({
-      API_URL: JSON.stringify("http://localhost")
     })
   ],
 

@@ -16,7 +16,7 @@ export function getEvents() {
     dispatch({ type: GET_EVENTS_REQUEST, loading: true })
 
     try {
-      const res = await ky.get(`${API_URL}/api/events`, {
+      const res = await ky.get(`${process.env.REACT_APP_API_URL}/api/events`, {
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
         }
@@ -33,7 +33,7 @@ export function createEvent(data) {
   return async function(dispatch, getState) {
     dispatch({ type: CREATE_EVENT_REQUEST })
     try {
-      const res = await ky.post(`${API_URL}/api/events`, {
+      const res = await ky.post(`${process.env.REACT_APP_API_URL}/api/events`, {
         json: data,
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
@@ -51,7 +51,7 @@ export function updateEvent(data) {
   return async function(dispatch, getState) {
     dispatch({ type: UPDATE_EVENT_REQUEST })
     try {
-      const res = await ky.put(`${API_URL}/api/events/${data.id}`, {
+      const res = await ky.put(`${process.env.REACT_APP_API_URL}/api/events/${data.id}`, {
         json: data,
         headers: {
           Authorization: "Bearer " + getState().user.data.access_token
