@@ -85,10 +85,14 @@ class LoginController extends Controller
 
     protected function proxy($grantType, array $data = [])
     {
+        $oAuthClient = DB::table("oauth_clients")
+            ->where("name", "Frontend")
+            ->first();
+        
         $data = array_merge($data, [
             'grant_type' => $grantType,
-            'client_id' => env('PASSWORD_CLIENT_ID'),
-            'client_secret' => env('PASSWORD_CLIENT_SECRET')
+            'client_id' => $oAuthClient->id,
+            'client_secret' => $oAuthClient->secret
         ]);
 
         $request = Request::create('/oauth/token', 'POST', $data);

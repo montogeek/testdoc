@@ -13,6 +13,10 @@ class Dashboard extends React.Component {
   render() {
     const { events } = this.props
 
+    if(events.loading) {
+      return "tuku tuku"
+    }
+
     if (events.error) {
       return <p>Error!</p>
     }
