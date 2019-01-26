@@ -21,6 +21,8 @@ services:
       context: ./code
       dockerfile: Dockerfile.production
     container_name: backend
+    env_file:
+      - ./code/.env.production
     depends_on:
       - db
     networks:

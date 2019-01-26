@@ -6,10 +6,10 @@ services:
       context: ./client
       dockerfile: Dockerfile
     env_file:
-      - ./client/.env
+      - ./client/.env.local
     depends_on:
       - backend
-      - ngnix
+      - nginx
       - db
     container_name: frontend
     ports:
@@ -24,24 +24,23 @@ services:
       dockerfile: Dockerfile
     container_name: backend
     depends_on:
+      - nginx
       - db
     networks:
       - app-network
     volumes:
       - ./code:/var/www
-  ngnix:
+  nginx:
     image: nginx:alpine
     container_name: nginx
     ports:
       - "80:80"
       - "443:443"
-    depends_on:
-      - backend
     networks:
       - app-network
     volumes:
       - ./code:/var/www
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./code/nginx/conf.d/default.dev.conf:/etc/nginx/conf.d/default.conf
   db:
     image: mysql:5.7.22
     container_name: db
