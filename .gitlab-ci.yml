@@ -4,7 +4,7 @@ stages:
 
 .init_ssh: &init_ssh |
   eval $(ssh-agent -s)
-  echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh
   [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
@@ -74,5 +74,5 @@ production:
     - *init_ssh
   script:
     - ls -alh ~/.ssh/
-    - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key echo "$SSH_PRIVATE_KEY" proyecto-grado
+    - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa proyecto-grado
     - docker-compose $(docker-machine config $CONTAINER_IMAGE) up -d
