@@ -12,6 +12,7 @@ before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
 build_image:
+  stage: build_image
   image: docker:git
   services:
     - docker:dind
