@@ -66,7 +66,7 @@ production:
     - sudo chmod +x /usr/local/bin/docker-compose
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
+    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
