@@ -75,7 +75,8 @@ production:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
-    - eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
+    - docker-machine env $DOCKER_MACHINE_NAME
+    # - eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
     # - docker-compose $(docker-machine config $MACHINE_NAME) up -d
     - docker build --pull $CONTAINER_IMAGE:latest
     - docker run $CONTAINER_IMAGE:latest
