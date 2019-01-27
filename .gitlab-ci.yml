@@ -54,5 +54,9 @@ deploy:
   image: docker:git
   only:
     - master
+  before_script:
+    - curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
+    - chmod +x /tmp/docker-machine
+    - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
   script:
     - docker-machine create --drive generic --generic-ip-address=138.197.6.62
