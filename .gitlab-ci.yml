@@ -2,13 +2,6 @@ stages:
   - build_image
   - deploy
 
-.init_ssh: &init_ssh |
-  eval $(ssh-agent -s)
-  echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
-  mkdir -p ~/.ssh
-  chmod 700 ~/.ssh
-  [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-
 services:
 - docker:dind
 
@@ -71,8 +64,12 @@ production:
     - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
     - sudo curl -L --fail https://github.com/docker/compose/releases/download/1.23.2/run.sh -o /usr/local/bin/docker-compose
     - sudo chmod +x /usr/local/bin/docker-compose
-    - *init_ssh
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
-    - ls -alh ~/.ssh/
+    - ls -alh ~/.ssh
     - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa proyecto-grado
     - docker-compose $(docker-machine config $CONTAINER_IMAGE) up -d
