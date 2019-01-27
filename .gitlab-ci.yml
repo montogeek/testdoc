@@ -73,5 +73,6 @@ production:
     - sudo chmod +x /usr/local/bin/docker-compose
     - *init_ssh
   script:
-    - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa proyecto-grado-2
+    - ls -alh ~/.ssh/
+    - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key echo "$SSH_PRIVATE_KEY" proyecto-grado
     - docker-compose $(docker-machine config $CONTAINER_IMAGE) up -d
