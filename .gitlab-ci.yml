@@ -51,7 +51,8 @@ build_image:
 
 deploy:
   stage: deploy
+  image: docker:git
   only:
     - master
   script:
-    - docker-machine
+    - docker-machine create --drive generic --generic-ip-address=138.197.6.62
