@@ -6,7 +6,7 @@ services:
 - docker:dind
 
 variables:
-  CONTAINER_RELEASE_VERSION: registry.gitlab.com/montogeek/testdoc/backend:$CI_COMMIT_REF_NAME
+  CONTAINER_IMAGE: registry.gitlab.com/montogeek/testdoc/backend
 
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
@@ -18,8 +18,9 @@ build_image:
     - docker:dind
   script:
     - cd code
-    - docker build -t $CONTAINER_RELEASE_VERSION -f ./Dockerfile.production .
-    - docker push $CONTAINER_RELEASE_VERSION
+    - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE:latest -f ./Dockerfile.production .
+    - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE:latest
   only:
     - master
 
@@ -53,4 +54,4 @@ deploy:
   only:
     - master
   script:
-    - echo "hallo"
+    - docker-machine
