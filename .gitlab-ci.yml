@@ -39,3 +39,5 @@ variables:
 deploy:
   only:
     - master
+  script:
+    - echo "hallo"
