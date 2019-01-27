@@ -73,10 +73,10 @@ production:
     - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
     - chmod 700 ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
-    - docker-machine env $DOCKER_MACHINE_NAME --shell sh
-    # - eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
+    - eval $(docker-machine env proyecto-grado --shell sh)
     # - docker-compose $(docker-machine config $MACHINE_NAME) up -d
     - docker build --pull $CONTAINER_IMAGE:latest
     - docker run $CONTAINER_IMAGE:latest
