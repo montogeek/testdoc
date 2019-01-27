@@ -20,6 +20,7 @@ build:
   - docker-php-ext-enable xdebug
   # Install and run Composer
   - curl -sS https://getcomposer.org/installer | php
+  - mv composer.phar code/composer.phar
 
   script:
     - cd code
