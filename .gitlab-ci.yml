@@ -51,7 +51,7 @@ build_image:
 
 deploy:
   stage: deploy
-  image: docker:git
+  image: edbizarro/gitlab-ci-pipeline-php:7.2
   only:
     - master
   before_script:
