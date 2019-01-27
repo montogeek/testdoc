@@ -4,7 +4,7 @@ stages:
 
 build:
   stage: build
-  image: php:7.2-fpm
+  image: php:7.2
   # Select what we should cache between builds
   cache:
     paths:
