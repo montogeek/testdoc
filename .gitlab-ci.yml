@@ -54,14 +54,13 @@ build_image:
 production:
   stage: deploy
   image: docker:git
-  when: manual
   environment:
     name: production
     url: http://138.197.6.62
   only:
     - master
   before_script:
-    - apt-get update; apt-get install curl
+    - apk add --no-cache curl
     - curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
     - chmod +x /tmp/docker-machine
     - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
@@ -74,7 +73,7 @@ production:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
-    # - eval $(docker-machine env $DOCKER_MACHINE_NAME)
+    - eval "$(docker-machine env $DOCKER_MACHINE_NAME)"
     # - docker-compose $(docker-machine config $MACHINE_NAME) up -d
     - docker build --pull $CONTAINER_IMAGE:latest
     - docker run $CONTAINER_IMAGE:latest
