@@ -37,6 +37,7 @@ build:
     MYSQL_ROOT_PASSWORD: root
 
 deploy:
+  stage: deploy
   only:
     - master
   script:
