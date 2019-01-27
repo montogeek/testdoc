@@ -37,7 +37,12 @@ COPY . /var/www
 
 RUN mkdir -p /var/www/vendor
 
-RUN composer install
+RUN composer install \
+    --ignore-platform-reqs \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --prefer-dist
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
