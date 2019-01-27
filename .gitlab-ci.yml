@@ -53,7 +53,7 @@ build_image:
 
 production:
   stage: deploy
-  image: edbizarro/gitlab-ci-pipeline-php:7.2
+  image: docker:git
   when: manual
   environment:
     name: production
@@ -61,6 +61,7 @@ production:
   only:
     - master
   before_script:
+    - apt-get update; apt-get install curl
     - curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
     - chmod +x /tmp/docker-machine
     - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
