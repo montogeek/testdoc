@@ -4,27 +4,35 @@ stages:
 
 build:
   stage: build
-  image: php:7.2
+  image: php:7.2-fpm
   # Select what we should cache between builds
   cache:
     paths:
     - code/vendor/
 
   before_script:
-  - apt-get update -yqq
-  - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
-  # Install PHP extensions
-  - docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache
-  # Install & enable Xdebug for code coverage reports
-  - pecl install xdebug
-  - docker-php-ext-enable xdebug
+  - apt-get update && apt-get install -y \
+    build-essential \
+    mysql-client \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl
+  - docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+  - docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+  - docker-php-ext-install gd
   # Install and run Composer
-  - curl -sS https://getcomposer.org/installer | php
-  - mv composer.phar code/composer.phar
+  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
   script:
     - cd code
-    - php composer.phar install
+    - composer install
 
   # Bring in any services we need http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
   # See http://docs.gitlab.com/ce/ci/services/README.html for examples.
