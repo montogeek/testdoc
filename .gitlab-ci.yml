@@ -53,7 +53,7 @@ build_image:
 
 production:
   stage: deploy
-  image: docker:git
+  image: docker:18.09
   environment:
     name: production
     url: http://138.197.6.62
