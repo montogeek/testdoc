@@ -1,37 +1,51 @@
 stages:
-  - build
+  - build_image
   - deploy
 
-build:
-  stage: build
-  image: php:7.2
-  # Select what we should cache between builds
-  cache:
-    paths:
-    - code/vendor/
+services:
+- docker:dind
 
-  before_script:
-  - apt-get update && apt-get install -y build-essential mysql-client libpng-dev libjpeg62-turbo-dev libfreetype6-dev locales zip jpegoptim optipng pngquant gifsicle vim unzip git curl
-  - docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-  - docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-  - docker-php-ext-install gd
-  # Install and run Composer
-  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+variables:
+  CONTAINER_RELEASE_VERSION: registry.gitlab.com/montogeek/testdoc/backend:$CI_COMMIT_REF_NAME
 
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+
+build_image:
+  image: docker:git
+  services:
+    - docker:dind
   script:
     - cd code
-    - composer install
+    - docker build -t $CONTAINER_RELEASE_VERSION -f ./Dockerfile.production .
+    - docker push $CONTAINER_RELEASE_VERSION
+  only:
+    - master
 
-  # Bring in any services we need http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
-  # See http://docs.gitlab.com/ce/ci/services/README.html for examples.
-  services:
-    - mysql:5.7
+# build:
+#   stage: build
+#   image: php:7.2
+#   cache:
+#     paths:
+#     - code/vendor/
 
-  # Set any variables we need
-  variables:
-    # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-    MYSQL_DATABASE: events
-    MYSQL_ROOT_PASSWORD: root
+#   before_script:
+#   - apt-get update && apt-get install -y build-essential mysql-client libpng-dev libjpeg62-turbo-dev libfreetype6-dev locales zip jpegoptim optipng pngquant gifsicle vim unzip git curl
+#   - docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+#   - docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+#   - docker-php-ext-install gd
+#   # Install and run Composer
+#   - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+#   script:
+#     - cd code
+#     - composer install
+#   services:
+#     - mysql:5.7
+
+#   variables:
+#     MYSQL_DATABASE: events
+#     MYSQL_ROOT_PASSWORD: root
 
 deploy:
   stage: deploy
