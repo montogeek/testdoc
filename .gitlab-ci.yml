@@ -19,6 +19,7 @@ build_image:
     - docker:dind
   script:
     - cd code
+    - docker pull $CONTAINER_IMAGE:latest || true
     - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE:latest -f ./Dockerfile.production .
     - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
     - docker push $CONTAINER_IMAGE:latest
@@ -72,7 +73,8 @@ production:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   script:
     - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
-    - eval $(docker-machine env $DOCKER_MACHINE_NAME)
-    - docker pull $CONTAINER_IMAGE:latest
+    # - eval $(docker-machine env $DOCKER_MACHINE_NAME)
+    # - docker-compose $(docker-machine config $MACHINE_NAME) up -d
+    - docker build --pull $CONTAINER_IMAGE:latest
     - docker run $CONTAINER_IMAGE:latest
     # - docker-compose $(docker-machine config $DOCKER_MACHINE_NAME) up -d
