@@ -102,6 +102,4 @@ production:
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest
     - docker pull $CONTAINER_IMAGE_NGINX:latest
     - docker network inspect $NETWORK_NAME
-    - docker run --network=$NETWORK_NAME --name=backend -d --env-file ./client/.env.production $CONTAINER_IMAGE_BACKEND:latest
-    - docker run --network=$NETWORK_NAME -p 80:80 --name=frontend -d --env-file ./code/.env.production $CONTAINER_IMAGE_FRONTEND:latest
-    - docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx -d $CONTAINER_IMAGE_NGINX:latest
+    - docker run --network=$NETWORK_NAME --name=backend --env-file ./client/.env.production $CONTAINER_IMAGE_BACKEND:latest && docker run --network=$NETWORK_NAME -p 80:80 --name=frontend --env-file ./code/.env.production $CONTAINER_IMAGE_FRONTEND:latest && docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx $CONTAINER_IMAGE_NGINX:latest
