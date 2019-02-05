@@ -25,15 +25,17 @@ build_image:
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
     - docker pull $CONTAINER_IMAGE_NGINX:latest || true
     - docker pull $CONTAINER_IMAGE_DB:latest || true
-    - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./code/Dockerfile.production .
-    - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./client/Dockerfile.production .
-    - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./code/nginx/Dockerfile.nginx.production .
+    - cd code
+    - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./Dockerfile.production .
+    - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/Dockerfile.nginx.production .
     - docker push $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA
     - docker push $CONTAINER_IMAGE_BACKEND:latest
-    - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
-    - docker push $CONTAINER_IMAGE_FRONTEND:latest
     - docker push $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA
     - docker push $CONTAINER_IMAGE_NGINX:latest
+    - cd ../client
+    - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./Dockerfile.production .
+    - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE_FRONTEND:latest
   only:
     - master
 
