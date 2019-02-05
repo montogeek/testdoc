@@ -24,7 +24,6 @@ build_image:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
     - docker pull $CONTAINER_IMAGE_NGINX:latest || true
-    - docker pull $CONTAINER_IMAGE_DB:latest || true
     - cd code
     - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./Dockerfile.production .
     - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/Dockerfile.nginx.production .
@@ -36,6 +35,7 @@ build_image:
     - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./Dockerfile.production .
     - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
     - docker push $CONTAINER_IMAGE_FRONTEND:latest
+    # - docker build --cache-from $CONTAINER_IMAGE_DB --tag $CONTAINER_IMAGE_DB:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_DB:latest --build-arg MYSQL_DATABASE=events --build-arg MYSQL_USER=root --build-arg MYSQL_ROOT_PASSWORD=root 
   only:
     - master
 
@@ -92,6 +92,7 @@ production:
     - eval $(docker-machine env proyecto-grado --shell sh)
     # - docker-compose $(docker-machine config $MACHINE_NAME) up -d
     # - docker build --pull $CONTAINER_IMAGE:latest
+    - docker run -t -p 3306:3306 -v dbdata:/var/lib/mysql --env MYSQL_DATABASE=events --env MYSQL_USER=root --env MYSQL_ROOT_PASSWORD=root --name db mysql:5.7.22
     - docker pull $CONTAINER_IMAGE_BACKEND:latest
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest
     - docker pull $CONTAINER_IMAGE_NGINX:latest
