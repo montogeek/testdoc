@@ -259,7 +259,7 @@ class Home extends React.Component {
               onClick={() => this.showTab("login")}
               className={cx("py-4", { [activeTab]: tab === "login" })}
             >
-              Iniciar sesion
+              Iniciar sesion con tilde
             </button>
             <button
               onClick={() => this.showTab("register")}
