@@ -36,7 +36,7 @@ build_image:
     - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./Dockerfile.production .
     - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
     - docker push $CONTAINER_IMAGE_FRONTEND:latest
-    # - docker build --cache-from $CONTAINER_IMAGE_DB --tag $CONTAINER_IMAGE_DB:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_DB:latest --build-arg MYSQL_DATABASE=events --build-arg MYSQL_USER=root --build-arg MYSQL_ROOT_PASSWORD=root 
+    # - docker build --cache-from $CONTAINER_IMAGE_DB --tag $CONTAINER_IMAGE_DB:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_DB:latest --build-arg MYSQL_DATABASE=events --build-arg MYSQL_USER=root --build-arg MYSQL_ROOT_PASSWORD=root
   only:
     - master
 
@@ -102,4 +102,6 @@ production:
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest
     - docker pull $CONTAINER_IMAGE_NGINX:latest
     - docker network inspect $NETWORK_NAME
-    - docker run --network=$NETWORK_NAME --name=backend --env-file ./client/.env.production $CONTAINER_IMAGE_BACKEND:latest && docker run --network=$NETWORK_NAME -p 80:80 --name=frontend --env-file ./code/.env.production $CONTAINER_IMAGE_FRONTEND:latest && docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx $CONTAINER_IMAGE_NGINX:latest
+    - docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx -it -d $CONTAINER_IMAGE_NGINX:latest
+    - docker run --network=$NETWORK_NAME -p 80:80 --name=frontend --env-file ./code/.env.production -it -d $CONTAINER_IMAGE_FRONTEND:latest
+    - docker run --network=$NETWORK_NAME --name=backend --env-file ./client/.env.production -it -d $CONTAINER_IMAGE_BACKEND:latest
