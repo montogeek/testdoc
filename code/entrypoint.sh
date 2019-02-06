@@ -2,6 +2,7 @@
 set -e
 
 php artisan migrate:refresh --seed --force -v
+php artisan passport:keys
 php artisan passport:client --password --name="Frontend"
 
 php-fpm
