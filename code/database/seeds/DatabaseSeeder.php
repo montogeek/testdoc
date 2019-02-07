@@ -11,13 +11,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            UsersTableSeeder::class,
-            EventsTableSeeder::class,
-            AssistantsTableSeeder::class,
-            CategoriesTableSeeder::class,
-            ItemsTableSeeder::class,
-            BudgetTableSeeder::class
-        ]);
+        $migrated = \DB::table("users")->get();
+
+        if ($migrated->isEmpty()) {
+            $this->call([
+              UsersTableSeeder::class,
+              EventsTableSeeder::class,
+              AssistantsTableSeeder::class,
+              CategoriesTableSeeder::class,
+              ItemsTableSeeder::class,
+              BudgetTableSeeder::class
+            ]);
+        }
     }
 }
