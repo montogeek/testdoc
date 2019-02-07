@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $migrated = \DB::table("users")->get();
 
+        var_dump($migrated);
+
         if ($migrated->isEmpty()) {
             $this->call([
               UsersTableSeeder::class,
