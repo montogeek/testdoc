@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-php artisan migrate
-php artisan db:seed
+php artisan migrate --force
+php artisan db:seed --force
 php artisan passport:keys
 php artisan passport:client --password --name="Frontend"
 

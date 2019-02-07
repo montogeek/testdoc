@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
               ItemsTableSeeder::class,
               BudgetTableSeeder::class
             ]);
+        } else {
+          echo "Already seeded";
         }
     }
 }
