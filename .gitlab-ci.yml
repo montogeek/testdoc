@@ -67,6 +67,8 @@ production:
     - eval $(docker-machine env $DOCKER_MACHINE_NAME --shell sh)
     - docker network prune --force
     - docker network create -d bridge --attachable $NETWORK_NAME
+    - docker volume ls
+    - docker volume inspect dbdata
     - docker stop db || true
     - docker stop backend || true
     - docker stop frontend || true
@@ -84,3 +86,4 @@ production:
     - docker run --network=$NETWORK_NAME -p 80:80 --name=frontend -it -d $CONTAINER_IMAGE_FRONTEND:latest
     - docker network inspect $NETWORK_NAME
     - docker volume ls
+    - docker volume inspect dbdata
