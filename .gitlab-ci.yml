@@ -83,3 +83,4 @@ production:
     - docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx -it -d $CONTAINER_IMAGE_NGINX:latest
     - docker run --network=$NETWORK_NAME -p 80:80 --name=frontend -it -d $CONTAINER_IMAGE_FRONTEND:latest
     - docker network inspect $NETWORK_NAME
+    - docker volume ls
