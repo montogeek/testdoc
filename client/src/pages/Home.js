@@ -2,7 +2,51 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 import { connect } from "react-redux"
 import cx from "classnames"
+import { Formik, withFormik } from "formik"
+import * as Yup from "yup"
+
 import { loginUser } from "../redux/actions/user"
+
+import {
+  EuiPage,
+  EuiPageBody,
+  EuiPageContent,
+  EuiPageContentBody,
+  EuiPageContentHeader,
+  EuiPageContentHeaderSection,
+  EuiTitle,
+  EuiTabbedContent,
+  EuiCallOut,
+  EuiText,
+  EuiSpacer,
+  EuiButton,
+  EuiCheckboxGroup,
+  EuiFieldText,
+  EuiForm,
+  EuiFormRow,
+  EuiFilePicker,
+  EuiRange,
+  EuiSelect,
+  EuiSwitch,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFieldPassword
+} from "@elastic/eui"
+
+const DisplayFormikState = props => (
+  <div style={{ margin: "1rem 0" }}>
+    <h3 style={{ fontFamily: "monospace" }} />
+    <pre
+      style={{
+        background: "#f6f8fa",
+        fontSize: ".65rem",
+        padding: ".5rem"
+      }}
+    >
+      <strong>props</strong> = {JSON.stringify(props, null, 2)}
+    </pre>
+  </div>
+)
 
 class Login extends React.Component {
   constructor() {
@@ -224,53 +268,164 @@ const mapStateToProps = state => {
   }
 }
 
-class Home extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      tab: "login"
-    }
-  }
+let LoginForm = props => {
+  const {
+    values,
+    touched,
+    errors,
+    status,
+    isValid,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    user
+  } = props
 
-  showTab(tab) {
-    this.setState({
-      tab: tab
-    })
+  return (
+    <EuiForm>
+      <form onSubmit={handleSubmit}>
+        {status && status.error && (
+          <EuiCallOut size="s" title={status.error} color="danger" className="euiForm__errors" />
+        )}
+        <EuiFormRow
+          label="Correo electronico"
+          isInvalid={!isValid && errors.email && touched.email}
+          error={errors.email}
+          id="email"
+        >
+          <EuiFieldText
+            icon="user"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.email}
+            isInvalid={!isValid && errors.email && touched.email}
+          />
+        </EuiFormRow>
+        <EuiFormRow
+          label="Contraseña"
+          isInvalid={!isValid && errors.password && touched.password}
+          error={errors.password}
+          id="password"
+        >
+          <EuiFieldPassword
+            id="password"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.password}
+            isInvalid={!isValid && errors.password && touched.password}
+          />
+        </EuiFormRow>
+        <EuiFormRow hasEmptyLabelSpace>
+          <EuiButton type="submit" isDisabled={isSubmitting} isLoading={user.loading} fill>
+            Iniciar sesion
+          </EuiButton>
+        </EuiFormRow>
+        <DisplayFormikState {...props} />
+      </form>
+    </EuiForm>
+  )
+}
+
+LoginForm = withFormik({
+  validationSchema: Yup.object().shape({
+    email: Yup.string()
+      .email("Email invalido")
+      .required("Requerido"),
+    password: Yup.string().required("Requerido")
+  }),
+  mapPropsToValues: () => ({
+    email: "",
+    password: ""
+  }),
+  handleSubmit: (values, { props, setSubmitting, setError, setStatus }) => {
+    props
+      .loginUser(values.email, values.password)
+      .then(t => {
+        setSubmitting(false)
+      })
+      .catch(e => {
+        setSubmitting(false)
+        setStatus({ error: "Usuario invalido" })
+      })
+  },
+  displayName: "Login"
+})(LoginForm)
+
+LoginForm = connect(
+  mapStateToProps,
+  {
+    loginUser
   }
+)(LoginForm)
+
+class Home extends React.Component {
+  tabs = [
+    {
+      id: "login",
+      name: "Iniciar sesion",
+      content: (
+        <>
+          <EuiSpacer />
+          <LoginForm />
+        </>
+      )
+    },
+    {
+      id: "register",
+      name: "Registrarse",
+      content: (
+        <>
+          <EuiSpacer />
+          <EuiForm>
+            <EuiFormRow label="Nombre">
+              <EuiFieldText />
+            </EuiFormRow>
+            <EuiFormRow label="Correo electronico">
+              <EuiFieldText />
+            </EuiFormRow>
+            <EuiFormRow label="Contraseña">
+              <EuiFieldPassword />
+            </EuiFormRow>
+            <EuiFormRow label="Confirmar contraseña">
+              <EuiFieldPassword />
+            </EuiFormRow>
+            <EuiFormRow hasEmptyLabelSpace>
+              <EuiButton>Registrarme</EuiButton>
+            </EuiFormRow>
+          </EuiForm>
+        </>
+      )
+    }
+  ]
 
   render() {
-    const { tab } = this.state
     const { user, loginUser, registerUser } = this.props
     const { from } = this.props.location.state || {
       from: { pathname: "/dashboard" }
     }
 
-    if (user.data.authenticated) {
+    if (user.data.isAuthenticated) {
       return <Redirect to={from} />
     }
 
-    const activeTab = "border-b-2 border-blue text-blue font-bold"
-
     return (
-      <div className="max-w-sm mx-auto flex items-center justify-center h-screen">
-        <div className="w-full shadow-md rounded">
-          <nav className="flex justify-around align-middle mb-4">
-            <button
-              onClick={() => this.showTab("login")}
-              className={cx("py-4", { [activeTab]: tab === "login" })}
-            >
-              Iniciar sesion con tilde
-            </button>
-            <button
-              onClick={() => this.showTab("register")}
-              className={cx("py-4", { [activeTab]: tab === "register" })}
-            >
-              Registro
-            </button>
-          </nav>
-          {tab === "login" ? <Login onSubmit={loginUser} /> : <Register onSubmit={registerUser} />}
-        </div>
-      </div>
+      <EuiPage className="vh-100">
+        <EuiPageBody>
+          <EuiPageContent verticalPosition="center" horizontalPosition="center">
+            <EuiPageContentHeader>
+              <EuiPageContentHeaderSection>
+                <EuiTitle>
+                  <h2>Eventos</h2>
+                </EuiTitle>
+              </EuiPageContentHeaderSection>
+            </EuiPageContentHeader>
+            <EuiPageContentBody>
+              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[0]} expand={true} />
+            </EuiPageContentBody>
+          </EuiPageContent>
+        </EuiPageBody>
+      </EuiPage>
     )
   }
 }

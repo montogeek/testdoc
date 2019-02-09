@@ -25,20 +25,31 @@ export function loginUser(email, password) {
     try {
       const res = await ky.post(`${process.env.REACT_APP_API_URL}/login`, {
         json: { email, password },
-        credentials: "include"
+        credentials: "include",
+        headers: {
+          Accept: "application/json"
+        }
       })
 
-      return dispatch({
-        type: LOGIN_USER_SUCCESS,
-        loading: false,
-        data: await res.json()
-      })
+      if (res.ok) {
+        return dispatch({
+          type: LOGIN_USER_SUCCESS,
+          loading: false,
+          data: await res.json()
+        })
+      }
+
+      throw res
     } catch (e) {
-      return dispatch({
+      const error = await e.json()
+
+      dispatch({
         type: LOGIN_USER_FAILURE,
         loading: false,
-        error: e
+        error: error.message
       })
+
+      throw e
     }
   }
 }

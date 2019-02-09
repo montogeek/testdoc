@@ -6,7 +6,8 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   REFRESH_TOKEN_REQUEST,
-  REFRESH_TOKEN_SUCCESS
+  REFRESH_TOKEN_SUCCESS,
+  LOGIN_USER_FAILURE
 } from "../constants"
 
 const initialState = {
@@ -36,6 +37,13 @@ export default function userSession(state = initialState, action) {
           expires_in: Date.now() + action.data.expires_in * 1000,
           authenticated: true
         },
+        loading: action.loading
+      }
+
+    case LOGIN_USER_FAILURE:
+      return {
+        ...state,
+        error: action.error,
         loading: action.loading
       }
 

@@ -4,7 +4,7 @@ import { Provider } from "react-redux"
 
 import configureStore, { loadState, saveState } from "./redux/store"
 
-import "./styles/app.css"
+import "./styles/app.scss"
 
 const persistedState = loadState()
 

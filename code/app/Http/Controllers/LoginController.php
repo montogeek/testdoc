@@ -88,7 +88,7 @@ class LoginController extends Controller
         $oAuthClient = DB::table("oauth_clients")
             ->where("name", "Frontend")
             ->first();
-        
+
         $data = array_merge($data, [
             'grant_type' => $grantType,
             'client_id' => $oAuthClient->id,
