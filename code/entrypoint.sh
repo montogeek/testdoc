@@ -7,4 +7,6 @@ php artisan passport:client --password --name="Frontend"
 
 php artisan config:cache
 
+chmod 777 -R bootstrap/cache
+
 php-fpm
