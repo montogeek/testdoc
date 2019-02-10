@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   data: {
-    authenticated: localStorage.getItem("authenticated") === "true" ? true : false,
+    isAuthenticated: localStorage.getItem("isAuthenticated") === "true" ? true : false,
     access_token: localStorage.getItem("access_token") || "",
     expires_in: localStorage.getItem("expires_in") || ""
   },
@@ -28,14 +28,14 @@ export default function userSession(state = initialState, action) {
     case LOGIN_USER_SUCCESS:
       localStorage.setItem("access_token", action.data.access_token)
       localStorage.setItem("expires_in", Date.now() + action.data.expires_in * 1000)
-      localStorage.setItem("authenticated", true)
+      localStorage.setItem("isAuthenticated", true)
 
       return {
         ...state,
         data: {
           access_token: action.data.access_token,
           expires_in: Date.now() + action.data.expires_in * 1000,
-          authenticated: true
+          isAuthenticated: true
         },
         loading: action.loading
       }
@@ -56,7 +56,7 @@ export default function userSession(state = initialState, action) {
     case LOGOUT_REQUEST:
       localStorage.removeItem("access_token")
       localStorage.removeItem("expires_in")
-      localStorage.removeItem("authenticated")
+      localStorage.removeItem("isAuthenticated")
 
       return { ...state, loading: action.loading }
 
@@ -65,7 +65,7 @@ export default function userSession(state = initialState, action) {
         ...state,
         loading: action.loading,
         data: {
-          authenticated: false
+          isAuthenticated: false
         }
       }
 
