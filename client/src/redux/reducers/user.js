@@ -7,7 +7,10 @@ import {
   LOGOUT_SUCCESS,
   REFRESH_TOKEN_REQUEST,
   REFRESH_TOKEN_SUCCESS,
-  LOGIN_USER_FAILURE
+  LOGIN_USER_FAILURE,
+  REGISTER_USER_REQUEST,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_FAILURE
 } from "../constants"
 
 const initialState = {
@@ -41,6 +44,25 @@ export default function userSession(state = initialState, action) {
       }
 
     case LOGIN_USER_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+        loading: action.loading
+      }
+
+    case REGISTER_USER_REQUEST:
+      return { ...state, loading: action.loading }
+
+    case REGISTER_USER_SUCCESS:
+      return {
+        ...state,
+        data: {
+          isAuthenticated: false
+        },
+        loading: action.loading
+      }
+
+    case REGISTER_USER_FAILURE:
       return {
         ...state,
         error: action.error,

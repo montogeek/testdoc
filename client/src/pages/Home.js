@@ -1,12 +1,10 @@
-// @ts-check
 import React from "react"
 import { Redirect } from "react-router-dom"
 import { connect } from "react-redux"
-import cx from "classnames"
-import { Formik, withFormik } from "formik"
+import { withFormik } from "formik"
 import * as Yup from "yup"
 
-import { loginUser } from "../redux/actions/user"
+import { loginUser, registerUser } from "../redux/actions/user"
 
 import {
   EuiPage,
@@ -264,6 +262,130 @@ LoginForm = connect(
   }
 )(LoginForm)
 
+let RegisterForm = props => {
+  const {
+    values,
+    touched,
+    errors,
+    status,
+    isValid,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    user
+  } = props
+
+  return (
+    <EuiForm>
+      <form onSubmit={handleSubmit}>
+        {status && status.error && (
+          <EuiCallOut size="s" title={status.error} color="danger" className="euiForm__errors" />
+        )}
+        <EuiFormRow
+          label="Nombre"
+          isInvalid={!isValid && errors.name && touched.name}
+          error={errors.name}
+          id="name"
+        >
+          <EuiFieldText
+            icon="user"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.name}
+            isInvalid={!isValid && errors.name && touched.name}
+          />
+        </EuiFormRow>
+        <EuiFormRow
+          label="Correo electronico"
+          isInvalid={!isValid && errors.email && touched.email}
+          error={errors.email}
+          id="email"
+        >
+          <EuiFieldText
+            icon="user"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.email}
+            isInvalid={!isValid && errors.email && touched.email}
+          />
+        </EuiFormRow>
+        <EuiFormRow
+          label="Contraseña"
+          isInvalid={!isValid && errors.password && touched.password}
+          error={errors.password}
+          id="password"
+        >
+          <EuiFieldPassword
+            id="password"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.password}
+            isInvalid={!isValid && errors.password && touched.password}
+          />
+        </EuiFormRow>
+        <EuiFormRow
+          label="Contraseña"
+          isInvalid={!isValid && errors.password_confirmation && touched.password_confirmation}
+          error={errors.password_confirmation}
+          id="password_confirmation"
+        >
+          <EuiFieldPassword
+            id="password_confirmation"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.password_confirmation}
+            isInvalid={!isValid && errors.password_confirmation && touched.password_confirmation}
+          />
+        </EuiFormRow>
+        <EuiFormRow hasEmptyLabelSpace>
+          <EuiButton type="submit" isDisabled={isSubmitting} isLoading={user.loading} fill>
+            Registrarme
+          </EuiButton>
+        </EuiFormRow>
+      </form>
+    </EuiForm>
+  )
+}
+
+RegisterForm = withFormik({
+  validationSchema: Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    email: Yup.string()
+      .email("Email invalido")
+      .required("Requerido"),
+    password: Yup.string().required("Contraseña es requerida"),
+    password_confirmation: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Contraseñas deben ser iguales")
+      .required("Confirmacion contraseña es requerida")
+  }),
+  mapPropsToValues: () => ({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: ""
+  }),
+  handleSubmit: (values, { props, setSubmitting, setStatus }) => {
+    props
+      .registerUser(values.name, values.email, values.password, values.password_confirmation)
+      .then(() => {
+        setSubmitting(false)
+      })
+      .catch(() => {
+        setSubmitting(false)
+        setStatus({ error: "Error registrandose" })
+      })
+  },
+  displayName: "Register"
+})(RegisterForm)
+
+RegisterForm = connect(
+  mapStateToProps,
+  {
+    registerUser
+  }
+)(RegisterForm)
+
 class Home extends React.Component {
   tabs = [
     {
@@ -282,30 +404,14 @@ class Home extends React.Component {
       content: (
         <>
           <EuiSpacer />
-          <EuiForm>
-            <EuiFormRow label="Nombre">
-              <EuiFieldText />
-            </EuiFormRow>
-            <EuiFormRow label="Correo electronico">
-              <EuiFieldText />
-            </EuiFormRow>
-            <EuiFormRow label="Contraseña">
-              <EuiFieldPassword />
-            </EuiFormRow>
-            <EuiFormRow label="Confirmar contraseña">
-              <EuiFieldPassword />
-            </EuiFormRow>
-            <EuiFormRow hasEmptyLabelSpace>
-              <EuiButton>Registrarme</EuiButton>
-            </EuiFormRow>
-          </EuiForm>
+          <RegisterForm />
         </>
       )
     }
   ]
 
   render() {
-    const { user, loginUser, registerUser } = this.props
+    const { user } = this.props
     const { from } = this.props.location.state || {
       from: { pathname: "/dashboard" }
     }
@@ -326,7 +432,7 @@ class Home extends React.Component {
               </EuiPageContentHeaderSection>
             </EuiPageContentHeader>
             <EuiPageContentBody>
-              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[0]} expand={true} />
+              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[1]} expand={true} />
             </EuiPageContentBody>
           </EuiPageContent>
         </EuiPageBody>
@@ -335,9 +441,4 @@ class Home extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    loginUser
-  }
-)(Home)
+export default connect(mapStateToProps)(Home)
