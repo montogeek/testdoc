@@ -39,6 +39,8 @@ COPY .env.production /var/www/.env
 RUN mkdir -p /var/www/vendor
 
 RUN composer install \
+    --optimize-autoloader \
+    --no-dev \
     --ignore-platform-reqs \
     --no-interaction \
     --no-plugins \
