@@ -48,4 +48,4 @@ USER www
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 
-ENTRYPOINT ["/var/www/entrypoint.sh"]
+ENTRYPOINT ["/var/www/entrypoint.dev.sh"]
