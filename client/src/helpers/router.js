@@ -2,21 +2,12 @@ import React from "react"
 import { Redirect } from "react-router-dom"
 import { connect } from "react-redux"
 
-import Navbar from "../components/navbar"
-
 const RedirectRoute = props => {
   const { Component, user, ...rest } = props
   return (
     <>
       {user.data.isAuthenticated ? (
-        <div className="bg-grey-lightest font-sans">
-          <Navbar />
-          <div className="w-full max-w-4xl mx-auto px-6 pt-24">
-            <div className="pb-8 relative">
-              <Component {...rest} />
-            </div>
-          </div>
-        </div>
+        <Component {...rest} />
       ) : (
         <Redirect
           to={{

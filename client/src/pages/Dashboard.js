@@ -1,7 +1,20 @@
 import React from "react"
 import { connect } from "react-redux"
-import Event from "../components/event/"
 import { Link } from "react-router-dom"
+import {
+  EuiPageHeader,
+  EuiPageContentHeaderSection,
+  EuiTitle,
+  EuiPageContentHeader,
+  EuiPageHeaderSection,
+  EuiPageContentBody,
+  EuiPageContent,
+  EuiLoadingChart,
+  EuiEmptyPrompt,
+  EuiButton
+} from "@elastic/eui"
+
+import Event from "../components/event/"
 import { getEvents } from "../redux/actions/events"
 
 class Dashboard extends React.Component {
@@ -13,8 +26,12 @@ class Dashboard extends React.Component {
   render() {
     const { events } = this.props
 
-    if(events.loading) {
-      return "loading"
+    if (events.loading) {
+      return (
+        <EuiPageContent verticalPosition="center" horizontalPosition="center">
+          <EuiLoadingChart size="xl" mono />
+        </EuiPageContent>
+      )
     }
 
     if (events.error) {
@@ -22,19 +39,46 @@ class Dashboard extends React.Component {
     }
 
     return (
-      <div className="max-w-2xl mx-auto">
-        <Link
-          to="/event/create"
-          className="bg-orange-lighter hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline inline-block"
-        >
-          Crea un evento
-        </Link>
-        {events.data.length > 0 ? (
-          events.data.map((event, i) => <Event key={i} event={event} />)
-        ) : (
-          <p>Parece que no tienes eventos, crea uno</p>
-        )}
-      </div>
+      <>
+        <EuiPageHeader>
+          <EuiPageHeaderSection>
+            <EuiTitle size="l">
+              <h1>Eventos</h1>
+            </EuiTitle>
+          </EuiPageHeaderSection>
+        </EuiPageHeader>
+        <EuiPageContent>
+          {events.data.length > 0 ? (
+            events.data.map((event, i) => (
+              <>
+                <EuiPageContentHeader>
+                  <EuiPageContentHeaderSection>
+                    <EuiTitle>
+                      <h2>Eventos activos</h2>
+                    </EuiTitle>
+                  </EuiPageContentHeaderSection>
+                </EuiPageContentHeader>
+                <EuiPageContentBody>
+                  <Event key={i} event={event} />
+                </EuiPageContentBody>
+              </>
+            ))
+          ) : (
+            <EuiEmptyPrompt
+              iconType="editorStrike"
+              title={<h2>No tienes eventos</h2>}
+              body={<p>Empieza a crear eventos ahora mismo</p>}
+              actions={
+                <Link to="/event/create">
+                  <EuiButton color="primary" fill>
+                    Crear evento
+                  </EuiButton>
+                </Link>
+              }
+            />
+          )}
+        </EuiPageContent>
+      </>
     )
   }
 }
