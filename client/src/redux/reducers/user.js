@@ -54,10 +54,16 @@ export default function userSession(state = initialState, action) {
       return { ...state, loading: action.loading }
 
     case REGISTER_USER_SUCCESS:
+      localStorage.setItem("access_token", action.data.access_token)
+      localStorage.setItem("expires_in", Date.now() + action.data.expires_in * 1000)
+      localStorage.setItem("isAuthenticated", true)
+
       return {
         ...state,
         data: {
-          isAuthenticated: false
+          access_token: action.data.access_token,
+          expires_in: Date.now() + action.data.expires_in * 1000,
+          isAuthenticated: true
         },
         loading: action.loading
       }

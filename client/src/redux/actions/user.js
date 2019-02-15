@@ -91,7 +91,7 @@ export function registerUser(name, email, password, password_confirmation) {
         error: error.message
       })
 
-      throw e
+      throw error
     }
   }
 }

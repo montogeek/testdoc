@@ -16,11 +16,15 @@ class LoginController extends Controller
     {
         $data = $request->all();
 
-        $request->validate([
+        $validator = validator($request->only("name", "email", "password", "password_confirmation"), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toArray(), 400);
+        }
 
         $user = new User;
         $user->name = $data['name'];
@@ -29,7 +33,10 @@ class LoginController extends Controller
 
         $user->save();
 
-        return response()->json([], 200);
+        return $this->proxy('password', [
+            "username" => $data["email"],
+            "password" => $data["password"]
+        ]);
     }
 
     public function login(Request $request)

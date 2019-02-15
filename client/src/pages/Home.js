@@ -224,7 +224,6 @@ let LoginForm = props => {
             Iniciar sesion
           </EuiButton>
         </EuiFormRow>
-        <DisplayFormikState {...props} />
       </form>
     </EuiForm>
   )
@@ -266,6 +265,7 @@ let RegisterForm = props => {
   const {
     values,
     touched,
+    dirty,
     errors,
     status,
     isValid,
@@ -280,7 +280,17 @@ let RegisterForm = props => {
     <EuiForm>
       <form onSubmit={handleSubmit}>
         {status && status.error && (
-          <EuiCallOut size="s" title={status.error} color="danger" className="euiForm__errors" />
+          <EuiCallOut size="s" title={status.error} color="danger" className="euiForm__errors">
+            {Array.isArray(errors) && (
+              <ul>
+                {errors.map((error, i) => (
+                  <li className="euiForm__error" key={i}>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </EuiCallOut>
         )}
         <EuiFormRow
           label="Nombre"
@@ -344,6 +354,7 @@ let RegisterForm = props => {
           </EuiButton>
         </EuiFormRow>
       </form>
+      <DisplayFormikState {...props} />
     </EuiForm>
   )
 }
@@ -354,7 +365,7 @@ RegisterForm = withFormik({
     email: Yup.string()
       .email("Email invalido")
       .required("Requerido"),
-    password: Yup.string().required("Contraseña es requerida"),
+    password: Yup.string().min(6).required("Contraseña es requerida"),
     password_confirmation: Yup.string()
       .oneOf([Yup.ref("password"), null], "Contraseñas deben ser iguales")
       .required("Confirmacion contraseña es requerida")
@@ -365,15 +376,16 @@ RegisterForm = withFormik({
     password: "",
     password_confirmation: ""
   }),
-  handleSubmit: (values, { props, setSubmitting, setStatus }) => {
+  handleSubmit: (values, { props, setSubmitting, setStatus, setErrors }) => {
     props
       .registerUser(values.name, values.email, values.password, values.password_confirmation)
       .then(() => {
         setSubmitting(false)
       })
-      .catch(() => {
+      .catch(e => {
         setSubmitting(false)
         setStatus({ error: "Error registrandose" })
+        setErrors(e)
       })
   },
   displayName: "Register"
