@@ -2,14 +2,8 @@ import React, { useState } from "react"
 import { DateTime } from "luxon"
 import { useTransition } from "react-spring"
 import { Link } from "react-router-dom"
-import {
-  EuiPanel,
-  EuiStat,
-  EuiFlexItem,
-  EuiFlexGroup,
-  EuiText,
-  EuiButton
-} from "@elastic/eui"
+import { EuiPanel, EuiStat, EuiFlexItem, EuiFlexGroup, EuiText, EuiButton } from "@elastic/eui"
+
 import Details from "./details"
 
 function Event({ event }) {
@@ -24,18 +18,18 @@ function Event({ event }) {
   })
 
   return (
-    <EuiPanel onClick={toggleShowDetails}>
-      <EuiFlexGroup gutterSize="m">
+    <EuiPanel>
+      <EuiFlexGroup gutterSize="l" onClick={toggleShowDetails}>
         <EuiFlexItem grow={1}>
           <EuiStat title={event.day} description={event.month_year} textAlign="center" reverse />
         </EuiFlexItem>
         <EuiFlexItem grow={10}>
-          <EuiText size="l">
+          <EuiText size="m">
             <h3>{event.name}</h3>
             <p>
               {event.date.toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas
             </p>
-            <p>{event.location}</p>
+            {event.location}
           </EuiText>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
@@ -58,11 +52,13 @@ function Event({ event }) {
           </EuiFlexGroup>
         </EuiFlexItem>
       </EuiFlexGroup>
-      <EuiFlexGroup>
-        {animatedDetails.map(({ item, props, key }) => {
-          return showDetails && <Details key={key} styles={props} summary={event.summary} />
-        })}
-      </EuiFlexGroup>
+      {showDetails && (
+        <EuiFlexGroup>
+          {animatedDetails.map(({ item, props, key }) => {
+            return showDetails && <Details key={key} styles={props} summary={event.summary} />
+          })}
+        </EuiFlexGroup>
+      )}
     </EuiPanel>
   )
 }

@@ -4,7 +4,6 @@ import { ConnectedRouter } from "connected-react-router"
 
 import history from "./history"
 import routes from "./routes"
-import Layout from "./components/layout"
 
 const Root = () => (
   <ConnectedRouter history={history}>

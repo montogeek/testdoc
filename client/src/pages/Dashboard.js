@@ -51,7 +51,7 @@ class Dashboard extends React.Component {
         <EuiPageContent>
           {events.data.length > 0 ? (
             events.data.map((event, i) => (
-              <EuiPageContentBody>
+              <EuiPageContentBody key={i}>
                 <Event key={i} event={event} />
                 <EuiSpacer />
               </EuiPageContentBody>
