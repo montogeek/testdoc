@@ -13,7 +13,7 @@ class Event extends Model
 
     protected $appends = ['month_year', 'day', 'kids', 'adults'];
 
-    protected $hidden = ['assistant', 'items'];
+    protected $hidden = ['assistant', 'items', 'categories'];
 
     protected $casts = [
         'date' => 'datetime:Y-m-d H:i:s',

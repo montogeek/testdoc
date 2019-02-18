@@ -55,20 +55,35 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             return $items->sum('cost');
         })->sum();
 
-        $budget = $event->items->groupBy('category_id')->values()->map(function ($items) {
-            $budget = $items[0]->category->budget;
-            $cost = $items->sum('cost');
-            $diff = $budget - $cost;
+
+//        $budget = $event->items->groupBy('category_id')->values()->map(function ($items) {
+//            $budget = $items[0]->category->budget;
+//            $cost = $items->sum('cost');
+//            $diff = $budget - $cost;
+//
+//            return [
+//                'name' => $items[0]->category->name,
+//                'count' => $items->count(),
+//                'budget' => $budget,
+//                'cost' => $cost,
+//                'diff' => $diff,
+//                'balance' => $diff !== 0 ? $diff > 0 ? true : false : null
+//            ];
+//        });
+
+        $budget = $event->categories->values()->map(function ($category) use ($event) {
+            $budget = $category->budget->budget;
+            $cost = $category->items()->where("event_id", "=", $event->id)->sum('cost');
 
             return [
-                'name' => $items[0]->category->name,
-                'count' => $items->count(),
+                'name' => $category->name,
+                'count' => $category->items()->where("event_id", "=", $event->id)->count(),
                 'budget' => $budget,
                 'cost' => $cost,
-                'diff' => $diff,
-                'balance' => $diff !== 0 ? $diff > 0 ? true : false : null
+                'diff' => $budget - $cost
             ];
         });
+
 
         $budgetTotal = $budget->values()->reduce(function ($carry, $item) {
             $diff = ($carry['budget'] + $item['budget']) - ($carry['cost'] + $item['cost']);
@@ -87,7 +102,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'cost' => 0,
             'diff' => 0
         ]);
-
+//
         $otherTotal = round($otherShare / max($event->adults + $event->kids, 1), 2);
 
         $adults = [
@@ -130,9 +145,9 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
                 'items' => $items
             ];
         });
-
-        // $event['categories'] = $event->categories;
-
+//
+//        // $event['categories'] = $event->categories;
+//
         $event['summary'] = [
             'assistants' => [$adults, $kids, $total],
             'budget' => $budget->push($budgetTotal)

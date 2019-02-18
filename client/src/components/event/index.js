@@ -54,9 +54,10 @@ function Event({ event }) {
       </EuiFlexGroup>
       {showDetails && (
         <EuiFlexGroup>
-          {animatedDetails.map(({ item, props, key }) => {
-            return showDetails && <Details key={key} styles={props} summary={event.summary} />
-          })}
+          {/* {animatedDetails.map(({ item, props, key }) => { */}
+            {/* return showDetails && <Details key={key} styles={props} summary={event.summary} /> */}
+          {/* })} */}
+          <Details summary={event.summary} />
         </EuiFlexGroup>
       )}
     </EuiPanel>

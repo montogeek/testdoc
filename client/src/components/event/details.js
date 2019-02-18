@@ -59,22 +59,22 @@ class Details extends Component {
     ]
 
     return (
-      <animated.div style={styles}>
-        <EuiFlexGroup>
-          <EuiFlexItem>
-            <EuiText size="m">
-              <h3>Asistentes Confirmados</h3>
-              <EuiBasicTable items={summary.assistants} columns={assistantsColumns} />
-            </EuiText>
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiText size="m">
-              <h3>Presupuesto</h3>
-              <EuiBasicTable items={summary.budget} columns={budgetColumns} />
-            </EuiText>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      </animated.div>
+      // <animated.div style={styles}>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiText size="m">
+            <h3>Asistentes Confirmados</h3>
+            <EuiBasicTable items={summary.assistants} columns={assistantsColumns} />
+          </EuiText>
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiText size="m">
+            <h3>Presupuesto</h3>
+            <EuiBasicTable items={summary.budget} columns={budgetColumns} />
+          </EuiText>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      // </animated.div>
     )
   }
 }
