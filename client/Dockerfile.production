@@ -15,7 +15,7 @@ RUN yarn --production
 # Bundle app source
 COPY . /usr/src/app
 
-RUN npm run build
+RUN GENERATE_SOURCEMAP=false node --max-old-space-size=4000  ./node_modules/.bin/react-scripts build
 
 FROM nginx:1.12-alpine
 RUN rm -rf /etc/nginx/conf.d/
