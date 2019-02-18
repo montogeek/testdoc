@@ -6,7 +6,6 @@ import {
   EuiPanel,
   EuiStat,
   EuiFlexItem,
-  EuiTitle,
   EuiFlexGroup,
   EuiText,
   EuiButton
@@ -28,7 +27,7 @@ function Event({ event }) {
     <EuiPanel onClick={toggleShowDetails}>
       <EuiFlexGroup gutterSize="m">
         <EuiFlexItem grow={1}>
-          <EuiStat title={event.day} description={event.month_year} textAlign="center" />
+          <EuiStat title={event.day} description={event.month_year} textAlign="center" reverse />
         </EuiFlexItem>
         <EuiFlexItem grow={10}>
           <EuiText size="l">
@@ -42,34 +41,19 @@ function Event({ event }) {
         <EuiFlexItem grow={false}>
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
-              <EuiButton>
-                <Link
-                  to={`/event/update/${event.id}`}
-                  className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
-                >
-                  Editar
-                </Link>
-              </EuiButton>
+              <Link to={`/event/update/${event.id}`}>
+                <EuiButton>Editar</EuiButton>
+              </Link>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiButton>
-                <Link
-                  to={`/event/${event.id}/assistants`}
-                  className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
-                >
-                  Invitados
-                </Link>
-              </EuiButton>
+              <Link to={`/event/${event.id}/assistants`}>
+                <EuiButton>Invitados</EuiButton>
+              </Link>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiButton>
-                <Link
-                  to={`/event/${event.id}/menu`}
-                  className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
-                >
-                  Menu
-                </Link>
-              </EuiButton>
+              <Link to={`/event/${event.id}/menu`}>
+                <EuiButton>Menu</EuiButton>
+              </Link>
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFlexItem>

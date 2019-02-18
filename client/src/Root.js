@@ -8,13 +8,11 @@ import Layout from "./components/layout"
 
 const Root = () => (
   <ConnectedRouter history={history}>
-    <Layout>
       <Switch>
         {routes.map((route, i) => {
           return <Route key={i} path={route.path} exact={route.exact} component={route.component} />
         })}
       </Switch>
-    </Layout>
   </ConnectedRouter>
 )
 
