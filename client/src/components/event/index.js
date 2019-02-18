@@ -2,6 +2,15 @@ import React, { useState } from "react"
 import { DateTime } from "luxon"
 import { useTransition } from "react-spring"
 import { Link } from "react-router-dom"
+import {
+  EuiPanel,
+  EuiStat,
+  EuiFlexItem,
+  EuiTitle,
+  EuiFlexGroup,
+  EuiText,
+  EuiButton
+} from "@elastic/eui"
 import Details from "./details"
 
 function Event({ event }) {
@@ -16,46 +25,61 @@ function Event({ event }) {
   })
 
   return (
-    <div className="rounded shadow bg-white max-w-2xl p-6 my-6">
-      <div className="flex justify-between cursor-pointer" onClick={toggleShowDetails}>
-        <div className="flex flex-row">
-          <div className="h-24 w-24 bg-orange-lighter rounded flex flex-col items-center justify-center mr-4">
-            <p className="text-5xl text-orange-dark font-thin">{event.day}</p>
-            <p className="text-xl text-orange-dark font-thin">{event.month_year}</p>
-          </div>
-          <div className="flex flex-col justify-around">
-            <p className="text-xl text-grey-darkest font-bold">{event.name}</p>
+    <EuiPanel onClick={toggleShowDetails}>
+      <EuiFlexGroup gutterSize="m">
+        <EuiFlexItem grow={1}>
+          <EuiStat title={event.day} description={event.month_year} textAlign="center" />
+        </EuiFlexItem>
+        <EuiFlexItem grow={10}>
+          <EuiText size="l">
+            <h3>{event.name}</h3>
             <p>
               {event.date.toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas
             </p>
             <p>{event.location}</p>
-          </div>
-        </div>
-        <div className="flex flex-row justify-around items-center">
-          <Link
-            to={`/event/update/${event.id}`}
-            className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
-          >
-            Editar
-          </Link>
-          <Link
-            to={`/event/${event.id}/assistants`}
-            className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
-          >
-            Invitados
-          </Link>
-          <Link
-            to={`/event/${event.id}/menu`}
-            className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
-          >
-            Menu
-          </Link>
-        </div>
-      </div>
-      {animatedDetails.map(({ item, props, key }) => {
-        return showDetails && <Details key={key} styles={props} summary={event.summary} />
-      })}
-    </div>
+          </EuiText>
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiFlexGroup alignItems="center">
+            <EuiFlexItem>
+              <EuiButton>
+                <Link
+                  to={`/event/update/${event.id}`}
+                  className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
+                >
+                  Editar
+                </Link>
+              </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiButton>
+                <Link
+                  to={`/event/${event.id}/assistants`}
+                  className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
+                >
+                  Invitados
+                </Link>
+              </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <EuiButton>
+                <Link
+                  to={`/event/${event.id}/menu`}
+                  className="bg-white hover:bg-orange-lightest text-grey-darkest font-semibold py-2 px-4 rounded shadow no-underline"
+                >
+                  Menu
+                </Link>
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      <EuiFlexGroup>
+        {animatedDetails.map(({ item, props, key }) => {
+          return showDetails && <Details key={key} styles={props} summary={event.summary} />
+        })}
+      </EuiFlexGroup>
+    </EuiPanel>
   )
 }
 

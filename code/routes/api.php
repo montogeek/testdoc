@@ -139,14 +139,22 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         ];
 
         $event['assistants'] = $event->assistant;
-        $event['menu'] = [
-            'food' => [
-                'id' => $foodItems[0]->category->id,
-                'name' => $foodItems[0]->category->name,
-                'items' => $foodMenu,
-            ],
-            'other' => $otherMenu
-        ];
+
+        if ($foodMenu->isNotEmpty()) {
+            $event['menu'] = [
+                'food' => [
+                    'id' => $foodItems[0]->category->id,
+                    'name' => $foodItems[0]->category->name,
+                    'items' => $foodMenu,
+                ],
+                'other' => $otherMenu
+            ];
+        } else {
+            $event['menu'] = [
+                'food' => [],
+                'other' => []
+            ];
+        }
 
         return $event;
     });

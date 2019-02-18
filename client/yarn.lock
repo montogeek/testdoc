@@ -910,10 +910,10 @@
   dependencies:
     tslib "^1.9.3"
 
-"@elastic/eui@6.10.2":
-  version "6.10.2"
-  resolved "https://registry.yarnpkg.com/@elastic/eui/-/eui-6.10.2.tgz#2eeaf71cb21f0b2b704c1c5e43757bf9a1a9157b"
-  integrity sha512-L5BpbggbK21pU4HRVSR284Y+qtuDNuTxPGcrIck32SC9Ex6nC8VPJgb8TmIMp+IamgSiZGoe3ebt6ey5hvfu5g==
+"@elastic/eui@7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@elastic/eui/-/eui-7.1.0.tgz#0c5d26b5e43048de93bdde0878187442c3593fa6"
+  integrity sha512-B+ANn2zviDvdcgtZc+a8FbmAvfNTjgpkmEPHknRwVdZSnXIRHphdIWRYRKQTkBHsOKy5wmyMaBS06ENAKNBFFg==
   dependencies:
     "@types/lodash" "^4.14.116"
     "@types/numeral" "^0.0.25"
@@ -923,7 +923,7 @@
     highlight.js "^9.12.0"
     html "^1.0.0"
     keymirror "^0.1.1"
-    lodash "npm:@elastic/lodash@3.10.1-kibana1"
+    lodash "^4.17.11"
     numeral "^2.0.6"
     prop-types "^15.6.0"
     react-ace "^5.5.0"
@@ -1433,10 +1433,10 @@ ant-design-palettes@^1.1.3:
   dependencies:
     tinycolor2 "^1.4.1"
 
-antd@3.13.2:
-  version "3.13.2"
-  resolved "https://registry.yarnpkg.com/antd/-/antd-3.13.2.tgz#66541c58a9009c54dfe09f5a374863c6783f30f9"
-  integrity sha512-6wA0iQgyDjmDrIy59Dwbt4+vt9F3RYh8DwSF7yIxEquT6Cmzou/0wGVqLNzY11ErewnjxgB8w60cQ5VejSecIQ==
+antd@3.13.4:
+  version "3.13.4"
+  resolved "https://registry.yarnpkg.com/antd/-/antd-3.13.4.tgz#8d9afb182a4c9e2d7d0e43bed8661513159e56b2"
+  integrity sha512-tdnL+XKneuCoigOrQhHxUt2IediQUt4lQVePLMGUmGyPRCwK7ozirAHSsDG2ciK8L9TIG0cxMIn5SuQsDGTH7w==
   dependencies:
     "@ant-design/icons" "~1.1.16"
     "@ant-design/icons-react" "~1.1.2"
@@ -4642,10 +4642,10 @@ form-data@~2.3.2:
     combined-stream "1.0.6"
     mime-types "^2.1.12"
 
-formik@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/formik/-/formik-1.5.0.tgz#d2d31086834fd1b788077e451deca2b6fce14084"
-  integrity sha512-xSrikKwW2lcnOo4m0qe0GJZo4owclEHAsRzfYuzHL6coeAKDE80UjVwaRf5SdOhA3ac6/w/0jelzh5zDeJMZdQ==
+formik@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/formik/-/formik-1.5.1.tgz#ef5687e1ade5b1fe5f1d51435b422238aad107e9"
+  integrity sha512-FBWGBKQkcCE4d5b5l2fKccD9d1QxNxw/0bQTRvp3EjzA8Bnjmsm9H/Oy0375UA8P3FPmfJkF4cXLLdEqK7fP5A==
   dependencies:
     create-react-context "^0.2.2"
     deepmerge "^2.1.1"
@@ -6847,11 +6847,6 @@ lodash@>4.17.4, "lodash@>=3.5 <5", lodash@^4.0.0, lodash@^4.0.1, lodash@^4.13.1,
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
-"lodash@npm:@elastic/lodash@3.10.1-kibana1":
-  version "3.10.1-kibana1"
-  resolved "https://registry.yarnpkg.com/@elastic/lodash/-/lodash-3.10.1-kibana1.tgz#9baa52c296ec06a52461f8516bb94172ef53a7fe"
-  integrity sha512-JIL1V6Kd9mhm7OCO5nmpMF8hW2iw1godcXgBikhIlTvsu6hBA8Xnxfc/AukdysTfJo4zWaZ8PzlJX/hKN/DlDA==
-
 loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
@@ -6885,10 +6880,10 @@ lru-cache@^4.0.1, lru-cache@^4.1.3:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
-luxon@1.11.2:
-  version "1.11.2"
-  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.11.2.tgz#0073566e8b6f493d68891c6b871dd72196547c24"
-  integrity sha512-dD6sJotzprPhqJAp9eZbc1y1cc0CMiwRabsaEfFBJT2lRkWdOqJe3QmxB8GNwjOHZ6fciuGiLK3htgxZgphGxA==
+luxon@1.11.3:
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.11.3.tgz#e1542026473f708b03b102d475be64b2a3055a6e"
+  integrity sha512-/0jMa+JfTRBx1ixsSBs5ZPAQ32H+TPeP9BvgRf0Gi4VxCqhUpRNWagwupy6wA8MckazneKWBLCcwwAH8hkQamg==
 
 make-dir@^1.0.0:
   version "1.3.0"
