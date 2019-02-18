@@ -10,6 +10,7 @@
   "dependencies": {
     "@elastic/datemath": "5.0.2",
     "@elastic/eui": "7.1.0",
+    "antd": "3.13.2",
     "classnames": "2.2.6",
     "connected-react-router": "6.3.1",
     "formik": "1.5.1",
