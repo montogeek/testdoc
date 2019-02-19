@@ -16,7 +16,7 @@ import {
 
 import Event from "../components/event/"
 import { getEvents } from "../redux/actions/events"
-import { EuiSpacer } from "@elastic/eui";
+import { EuiSpacer } from "@elastic/eui"
 
 class Dashboard extends React.Component {
   async componentDidMount() {
@@ -46,6 +46,13 @@ class Dashboard extends React.Component {
             <EuiTitle size="l">
               <h1>Eventos</h1>
             </EuiTitle>
+          </EuiPageHeaderSection>
+          <EuiPageHeaderSection>
+            <Link to="/event/create">
+              <EuiButton color="primary" fill>
+                Crear evento
+              </EuiButton>
+            </Link>
           </EuiPageHeaderSection>
         </EuiPageHeader>
         <EuiPageContent>
