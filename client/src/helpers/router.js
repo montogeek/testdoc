@@ -1,7 +1,7 @@
 import React from "react"
 import { Redirect } from "react-router-dom"
 import { connect } from "react-redux"
-import Layout from "../components/Layout";
+import Layout from "../components/PrivateLayout"
 
 const RedirectRoute = props => {
   const { Component, user, ...rest } = props
