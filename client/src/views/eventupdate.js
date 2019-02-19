@@ -3,6 +3,8 @@ import { connect } from "react-redux"
 import { Formik, Form, Field } from "formik"
 import DateTimePicker from "react-datetime-picker"
 import { push } from "connected-react-router"
+import { EuiDatePicker, EuiFormRow, EuiSelect } from "@elastic/eui"
+
 import { updateEvent } from "../redux/actions/events"
 
 class EventUpdate extends Component {
@@ -40,11 +42,11 @@ class EventUpdate extends Component {
         enableReinitialize
         initialValues={{ name, date, location }}
         onSubmit={values => {
-          return updateEvent({
-            ...values,
-            date: values.date.toISOString(),
-            id
-          })
+          // return updateEvent({
+          //   ...values,
+          //   date: values.date.toISOString(),
+          //   id
+          // })
         }}
       >
         {({ values }) => (
@@ -101,6 +103,9 @@ class EventUpdate extends Component {
                 Actualizar
               </button>
             </div>
+            <EuiFormRow label="Select a date">
+              <EuiDatePicker />
+            </EuiFormRow>
           </Form>
         )}
       </Formik>

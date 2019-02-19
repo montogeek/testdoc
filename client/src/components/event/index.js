@@ -27,7 +27,7 @@ function Event({ event }) {
           <EuiText size="m">
             <h3>{event.name}</h3>
             <p>
-              {event.date.toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas
+              {event.startDate.toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas
             </p>
             {event.location}
           </EuiText>

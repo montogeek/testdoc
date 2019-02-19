@@ -354,7 +354,6 @@ let RegisterForm = props => {
           </EuiButton>
         </EuiFormRow>
       </form>
-      <DisplayFormikState {...props} />
     </EuiForm>
   )
 }
@@ -444,7 +443,7 @@ class Home extends React.Component {
               </EuiPageContentHeaderSection>
             </EuiPageContentHeader>
             <EuiPageContentBody>
-              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[1]} expand={true} />
+              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[0]} expand={true} />
             </EuiPageContentBody>
           </EuiPageContent>
         </EuiPageBody>

@@ -31,7 +31,7 @@ export function getEvents() {
 
 export function createEvent(data) {
   return async function(dispatch, getState) {
-    dispatch({ type: CREATE_EVENT_REQUEST })
+    dispatch({ type: CREATE_EVENT_REQUEST, loading: true })
     try {
       const res = await ky.post(`${process.env.REACT_APP_API_URL}/api/events`, {
         json: data,

@@ -19,8 +19,8 @@ class EventsTableSeeder extends Seeder
 
             DB::table('events')->insert([
                 'name' => $faker->sentence(6),
-                'date' => $date,
-                'duration' => $duration,
+                'startDate' => $date,
+                'endDate' => $duration,
                 'location' => $faker->streetAddress,
                 'user_id' => 1
             ]);

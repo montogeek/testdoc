@@ -46,7 +46,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         ];
     };
 
-    $data = $request->user()->events->sortBy('date')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
+    $data = $request->user()->events("items.category", "categories.items")->get()->sortBy('startDate')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
         $foodShare = $event->items->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
             return $calculateShare($item, $event);
         })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
@@ -71,15 +71,21 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 //            ];
 //        });
 
+//        dd($event->categories->first()->budget);
+
         $budget = $event->categories->values()->map(function ($category) use ($event) {
             $budget = $category->budget->budget;
             $cost = $category->items()->where("event_id", "=", $event->id)->sum('cost');
 
+
+
             return [
                 'name' => $category->name,
                 'count' => $category->items()->where("event_id", "=", $event->id)->count(),
+                'count2' => $event->items->count(),
                 'budget' => $budget,
                 'cost' => $cost,
+                'cost2' => $event->items->sum('cost'),
                 'diff' => $budget - $cost
             ];
         });

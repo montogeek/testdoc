@@ -1,96 +1,173 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Formik, Form, Field } from "formik"
-import DateTimePicker from "react-datetime-picker"
+import { withFormik } from "formik"
 import { push } from "connected-react-router"
+import {
+  EuiForm,
+  EuiCallOut,
+  EuiFormRow,
+  EuiFieldText,
+  EuiButton,
+  EuiDatePicker,
+  EuiDatePickerRange
+} from "@elastic/eui"
+import moment from "moment"
+
 import { createEvent } from "../redux/actions/events"
 
-class EventCreate extends Component {
-  constructor() {
-    super()
+const DisplayFormikState = props => (
+  <div style={{ margin: "1rem 0" }}>
+    <h3 style={{ fontFamily: "monospace" }} />
+    <pre
+      style={{
+        background: "#f6f8fa",
+        fontSize: ".65rem",
+        padding: ".5rem"
+      }}
+    >
+      <strong>props</strong> = {JSON.stringify(props, null, 2)}
+    </pre>
+  </div>
+)
 
-    this.state = {
-      date: ""
-    }
-  }
+let EventCreate = props => {
+  const {
+    values,
+    touched,
+    errors,
+    status,
+    isValid,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    loading,
+    setValues
+  } = props
 
-  render() {
-    const { createEvent } = this.props
-
-    return (
-      <Formik
-        initialValues={{ name: "", date: "", location: "" }}
-        onSubmit={values => {
-          return createEvent({
-            ...values,
-            date: values.date.toISOString()
-          })
-        }}
-      >
-        <Form className="bg-white px-8 pt-6 pb-8 mb-4">
-          <h1 className="text-lg font-semibold mb-6">Crear evento</h1>
-          <div className="mb-6">
-            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="name">
-              Nombre
-            </label>
-            <Field
-              type="name"
-              name="name"
-              className="shadow appearance-none border {{ $errors->has('email') ? 'border-red' : ''}} rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="name"
-              required
-              autoFocus
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="date">
-              Fecha
-            </label>
-            <Field
-              component={props => (
-                <DateTimePicker
-                  name="date"
-                  minDate={new Date()}
-                  required
-                  className="shadow appearance-none border {{ $errors->has('email') ? 'border-red' : ''}} rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                  onChange={date => props.form.setFieldValue("date", date)}
-                  value={props.form.values.date}
-                />
-              )}
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="location">
-              Ubicacion
-            </label>
-            <Field
-              type="location"
-              name="location"
-              className="shadow appearance-none border {{ $errors->has('email') ? 'border-red' : ''}} rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="location"
-              required
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Crear
-            </button>
-          </div>
-        </Form>
-      </Formik>
-    )
-  }
+  return (
+    <EuiForm>
+      <form onSubmit={handleSubmit}>
+        {status && status.error && (
+          <EuiCallOut size="s" title={status.error} color="danger" className="euiForm__errors">
+            {Array.isArray(errors) && (
+              <ul>
+                {errors.map((error, i) => (
+                  <li className="euiForm__error" key={i}>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </EuiCallOut>
+        )}
+        <EuiFormRow
+          label="Nombre"
+          isInvalid={!isValid && errors.name && touched.name}
+          error={errors.name}
+          id="name"
+        >
+          <EuiFieldText
+            icon="user"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.name}
+            isInvalid={!isValid && errors.name && touched.name}
+          />
+        </EuiFormRow>
+        <EuiFormRow
+          label="Fecha"
+          isInvalid={!isValid && errors.startDate && touched.startDate}
+          error={errors.startDate}
+          id="date"
+        >
+          <EuiDatePickerRange
+            startDateControl={
+              <EuiDatePicker
+                selected={values.startDate}
+                onChange={value =>
+                  setValues({
+                    ...values,
+                    startDate: value
+                  })
+                }
+                startDate={values.startDate}
+                endDate={values.endDate}
+                isInvalid={!isValid && errors.startDate && touched.startDate}
+                showTimeSelect
+                inline
+                minDate={moment()}
+              />
+            }
+            endDateControl={
+              <EuiDatePicker
+                selected={values.endDate}
+                onChange={value =>
+                  setValues({
+                    ...values,
+                    endDate: value
+                  })
+                }
+                startDate={values.startDate}
+                endDate={values.endDate}
+                isInvalid={!isValid && errors.endDate && touched.endDate}
+                showTimeSelect
+                inline
+                minDate={moment()}
+              />
+            }
+          />
+        </EuiFormRow>
+        <EuiFormRow
+          label="Ubicacion"
+          isInvalid={!isValid && errors.location && touched.location}
+          error={errors.location}
+          id="location"
+        >
+          <EuiFieldText
+            icon="mapMarker"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.location}
+            isInvalid={!isValid && errors.location && touched.location}
+          />
+        </EuiFormRow>
+        <EuiFormRow hasEmptyLabelSpace>
+          <EuiButton type="submit" isDisabled={isSubmitting} isLoading={loading} fill>
+            Crear evento
+          </EuiButton>
+        </EuiFormRow>
+      </form>
+      <DisplayFormikState {...props} />
+    </EuiForm>
+  )
 }
 
+EventCreate = withFormik({
+  mapPropsToValues: () => ({
+    name: "",
+    startDate: moment(),
+    endDate: moment(),
+    location: ""
+  }),
+  handleSubmit: (values, { props, setSubmitting, setStatus, setErrors }) => {
+    props
+      .createEvent(values)
+      .then(() => {
+        props.push("/dashboard")
+      })
+      .catch(e => {
+        setSubmitting(false)
+        setStatus({ error: "Error creando evento" })
+        setErrors(e)
+      })
+  }
+})(EventCreate)
+
 export default connect(
-  () => ({}),
+  ({ events }) => ({ loading: events.loading }),
   dispatch => ({
-    createEvent: async data => {
-      await dispatch(createEvent(data))
-      dispatch(push("/dashboard"))
-    }
+    createEvent: data => dispatch(createEvent(data)),
+    push: () => dispatch(push("/dashboard"))
   })
 )(EventCreate)

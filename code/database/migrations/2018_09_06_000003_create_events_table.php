@@ -25,8 +25,8 @@ class CreateEventsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name', 100);
-            $table->dateTime('date');
-            $table->dateTime('duration');
+            $table->dateTime('startDate');
+            $table->dateTime('endDate');
             $table->string('location', 45)->nullable();
             $table->json('extras')->nullable();
             $table->timestamps();

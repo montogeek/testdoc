@@ -11,13 +11,13 @@ class Event extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['month_year', 'day', 'kids', 'adults'];
+    protected $appends = ['month_year', 'day', 'kids', 'adults', 'duration'];
 
     protected $hidden = ['assistant', 'items', 'categories'];
 
     protected $casts = [
-        'date' => 'datetime:Y-m-d H:i:s',
-        'duration' => 'datetime:Y-m-d H:i:s'
+        'startDate' => 'datetime:Y-m-d H:i:s',
+        'endDate' => 'datetime:Y-m-d H:i:s'
     ];
 
     protected $dates = ['deleted_at'];
@@ -44,12 +44,12 @@ class Event extends Model
 
     public function getDayAttribute()
     {
-        return Carbon::parse($this->date)->day;
+        return Carbon::parse($this->startDate)->day;
     }
 
     public function getMonthYearAttribute()
     {
-        return Carbon::parse($this->date)->shortEnglishMonth . ' ' . Carbon::parse($this->date)->year;
+        return Carbon::parse($this->startDate)->shortEnglishMonth . ' ' . Carbon::parse($this->startDate)->year;
     }
 
     public function getKidsAttribute()
@@ -71,8 +71,8 @@ class Event extends Model
         return $this->adults + $this->kids;
     }
 
-    public function getDurationAttribute($value)
+    public function getDurationAttribute()
     {
-        return Carbon::parse($value)->diffInHours($this->date);
+        return Carbon::parse($this->endDate)->diffInHours($this->startDate);
     }
 }
