@@ -9,11 +9,15 @@ import {
   EuiFieldText,
   EuiButton,
   EuiDatePicker,
-  EuiDatePickerRange
+  EuiDatePickerRange,
+  EuiFlexGroup,
+  EuiFlexItem
 } from "@elastic/eui"
 import moment from "moment"
 
 import { createEvent } from "../redux/actions/events"
+import Page from "../components/Page"
+import { ReactComponent as CreateEventIllustration } from "../styles/illustrations/undraw_events_2p66.svg"
 
 const DisplayFormikState = props => (
   <div style={{ margin: "1rem 0" }}>
@@ -46,100 +50,113 @@ let EventCreate = props => {
   } = props
 
   return (
-    <EuiForm>
-      <form onSubmit={handleSubmit}>
-        {status && status.error && (
-          <EuiCallOut size="s" title={status.error} color="danger" className="euiForm__errors">
-            {Array.isArray(errors) && (
-              <ul>
-                {errors.map((error, i) => (
-                  <li className="euiForm__error" key={i}>
-                    {error}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </EuiCallOut>
-        )}
-        <EuiFormRow
-          label="Nombre"
-          isInvalid={!isValid && errors.name && touched.name}
-          error={errors.name}
-          id="name"
-        >
-          <EuiFieldText
-            icon="user"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.name}
-            isInvalid={!isValid && errors.name && touched.name}
-          />
-        </EuiFormRow>
-        <EuiFormRow
-          label="Fecha"
-          isInvalid={!isValid && errors.startDate && touched.startDate}
-          error={errors.startDate}
-          id="date"
-        >
-          <EuiDatePickerRange
-            startDateControl={
-              <EuiDatePicker
-                selected={values.startDate}
-                onChange={value =>
-                  setValues({
-                    ...values,
-                    startDate: value
-                  })
-                }
-                startDate={values.startDate}
-                endDate={values.endDate}
+    <Page title="Crear evento" loading={loading}>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiForm>
+            <form onSubmit={handleSubmit}>
+              {status && status.error && (
+                <EuiCallOut
+                  size="s"
+                  title={status.error}
+                  color="danger"
+                  className="euiForm__errors"
+                >
+                  {Array.isArray(errors) && (
+                    <ul>
+                      {errors.map((error, i) => (
+                        <li className="euiForm__error" key={i}>
+                          {error}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </EuiCallOut>
+              )}
+              <EuiFormRow
+                label="Nombre"
+                isInvalid={!isValid && errors.name && touched.name}
+                error={errors.name}
+                id="name"
+              >
+                <EuiFieldText
+                  icon="user"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.name}
+                  isInvalid={!isValid && errors.name && touched.name}
+                />
+              </EuiFormRow>
+              <EuiFormRow
+                label="Fecha"
                 isInvalid={!isValid && errors.startDate && touched.startDate}
-                showTimeSelect
-                inline
-                minDate={moment()}
-              />
-            }
-            endDateControl={
-              <EuiDatePicker
-                selected={values.endDate}
-                onChange={value =>
-                  setValues({
-                    ...values,
-                    endDate: value
-                  })
-                }
-                startDate={values.startDate}
-                endDate={values.endDate}
-                isInvalid={!isValid && errors.endDate && touched.endDate}
-                showTimeSelect
-                inline
-                minDate={moment()}
-              />
-            }
-          />
-        </EuiFormRow>
-        <EuiFormRow
-          label="Ubicacion"
-          isInvalid={!isValid && errors.location && touched.location}
-          error={errors.location}
-          id="location"
-        >
-          <EuiFieldText
-            icon="mapMarker"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.location}
-            isInvalid={!isValid && errors.location && touched.location}
-          />
-        </EuiFormRow>
-        <EuiFormRow hasEmptyLabelSpace>
-          <EuiButton type="submit" isDisabled={isSubmitting} isLoading={loading} fill>
-            Crear evento
-          </EuiButton>
-        </EuiFormRow>
-      </form>
-      <DisplayFormikState {...props} />
-    </EuiForm>
+                error={errors.startDate}
+                id="date"
+              >
+                <EuiDatePickerRange
+                  startDateControl={
+                    <EuiDatePicker
+                      selected={values.startDate}
+                      onChange={value =>
+                        setValues({
+                          ...values,
+                          startDate: value
+                        })
+                      }
+                      startDate={values.startDate}
+                      endDate={values.endDate}
+                      isInvalid={!isValid && errors.startDate && touched.startDate}
+                      showTimeSelect
+                      inline
+                      minDate={moment()}
+                    />
+                  }
+                  endDateControl={
+                    <EuiDatePicker
+                      selected={values.endDate}
+                      onChange={value =>
+                        setValues({
+                          ...values,
+                          endDate: value
+                        })
+                      }
+                      startDate={values.startDate}
+                      endDate={values.endDate}
+                      isInvalid={!isValid && errors.endDate && touched.endDate}
+                      showTimeSelect
+                      inline
+                      minDate={moment()}
+                    />
+                  }
+                />
+              </EuiFormRow>
+              <EuiFormRow
+                label="Ubicacion"
+                isInvalid={!isValid && errors.location && touched.location}
+                error={errors.location}
+                id="location"
+              >
+                <EuiFieldText
+                  icon="mapMarker"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.location}
+                  isInvalid={!isValid && errors.location && touched.location}
+                />
+              </EuiFormRow>
+              <EuiFormRow hasEmptyLabelSpace>
+                <EuiButton type="submit" isDisabled={isSubmitting} isLoading={loading} fill>
+                  Crear evento
+                </EuiButton>
+              </EuiFormRow>
+            </form>
+          </EuiForm>
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <CreateEventIllustration width="500px" />
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    </Page>
   )
 }
 
