@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { DateTime } from "luxon"
-import { useTransition } from "react-spring"
 import { Link } from "react-router-dom"
 import { EuiPanel, EuiStat, EuiFlexItem, EuiFlexGroup, EuiText, EuiButton } from "@elastic/eui"
 
@@ -10,12 +9,6 @@ function Event({ event }) {
   const [showDetails, setShowDetails] = useState(false)
 
   const toggleShowDetails = () => setShowDetails(showDetails => !showDetails)
-
-  const animatedDetails = useTransition(showDetails, null, {
-    from: { overflow: "hidden", opacity: 0, height: 0 },
-    enter: { opacity: 1, height: "auto" },
-    leave: { opacity: 0, height: 0 }
-  })
 
   return (
     <EuiPanel>
@@ -54,9 +47,6 @@ function Event({ event }) {
       </EuiFlexGroup>
       {showDetails && (
         <EuiFlexGroup>
-          {/* {animatedDetails.map(({ item, props, key }) => { */}
-            {/* return showDetails && <Details key={key} styles={props} summary={event.summary} /> */}
-          {/* })} */}
           <Details summary={event.summary} />
         </EuiFlexGroup>
       )}

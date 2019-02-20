@@ -44,10 +44,7 @@ export function loginUser(email, password) {
 
       throw res
     } catch (e) {
-      console.log(e)
       const error = await e.json()
-
-      console.log(error)
 
       dispatch({
         type: LOGIN_USER_FAILURE,

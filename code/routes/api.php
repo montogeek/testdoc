@@ -55,24 +55,6 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             return $items->sum('cost');
         })->sum();
 
-
-//        $budget = $event->items->groupBy('category_id')->values()->map(function ($items) {
-//            $budget = $items[0]->category->budget;
-//            $cost = $items->sum('cost');
-//            $diff = $budget - $cost;
-//
-//            return [
-//                'name' => $items[0]->category->name,
-//                'count' => $items->count(),
-//                'budget' => $budget,
-//                'cost' => $cost,
-//                'diff' => $diff,
-//                'balance' => $diff !== 0 ? $diff > 0 ? true : false : null
-//            ];
-//        });
-
-//        dd($event->categories->first()->budget);
-
         $budget = $event->categories->values()->map(function ($category) use ($event) {
             $budget = $category->budget->budget;
             $cost = $category->items()->where("event_id", "=", $event->id)->sum('cost');
@@ -108,7 +90,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'cost' => 0,
             'diff' => 0
         ]);
-//
+
         $otherTotal = round($otherShare / max($event->adults + $event->kids, 1), 2);
 
         $adults = [
