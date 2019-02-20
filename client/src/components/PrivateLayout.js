@@ -76,171 +76,7 @@ class Layout extends React.Component {
         iconType: "canvasApp",
         size: "s",
         style: { color: "inherit" },
-        "aria-label": "Eventos",
-        extraAction: {
-          color: "subdued",
-          iconType: "pinFilled",
-          iconSize: "s",
-          "aria-label": "Pin to top",
-          alwaysShow: true
-        }
-      },
-      {
-        label: "Discover",
-        href: "/#/layout/nav-drawer",
-        iconType: "discoverApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Discover",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Visualize",
-        href: "/#/layout/nav-drawer",
-        iconType: "visualizeApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Visualize",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Dashboard",
-        href: "/#/layout/nav-drawer",
-        iconType: "dashboardApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Dashboard",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Machine learning",
-        href: "/#/layout/nav-drawer",
-        iconType: "machineLearningApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Machine learning",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Graph",
-        href: "/#/layout/nav-drawer",
-        iconType: "graphApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Graph",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      }
-    ]
-
-    this.solutionsLinks = [
-      {
-        label: "APM",
-        href: "/#/layout/nav-drawer",
-        iconType: "apmApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "APM",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Infrastructure",
-        href: "/#/layout/nav-drawer",
-        iconType: "infraApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Infra",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Log viewer",
-        href: "/#/layout/nav-drawer",
-        iconType: "loggingApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Logs",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Uptime",
-        href: "/#/layout/nav-drawer",
-        iconType: "upgradeAssistantApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Graph",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "Maps",
-        href: "/#/layout/nav-drawer",
-        iconType: "gisApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "Maps",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
-      },
-      {
-        label: "SIEM",
-        href: "/#/layout/nav-drawer",
-        iconType: "securityAnalyticsApp",
-        size: "s",
-        style: { color: "inherit" },
-        "aria-label": "SIEM",
-        extraAction: {
-          color: "subdued",
-          iconType: "pin",
-          iconSize: "s",
-          "aria-label": "Pin to top"
-        }
+        "aria-label": "Eventos"
       }
     ]
   }
@@ -459,11 +295,11 @@ class Layout extends React.Component {
               <EuiNavDrawerMenu id="navDrawerMenu">
                 <EuiListGroup>
                   {this.sidebar.map((link, i) => {
-                    return <EuiListGroupItem key={i} {...link} isActive={this.isActive(link.href)} />
+                    return (
+                      <EuiListGroupItem key={i} {...link} isActive={this.isActive(link.href)} />
+                    )
                   })}
                 </EuiListGroup>
-                <EuiHorizontalRule margin="none" />
-                <EuiListGroup listItems={this.solutionsLinks} />
               </EuiNavDrawerMenu>
               <EuiNavDrawerFlyout
                 id="navDrawerFlyout"
