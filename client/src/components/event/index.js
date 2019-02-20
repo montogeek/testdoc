@@ -1,55 +1,71 @@
 import React, { useState } from "react"
 import { DateTime } from "luxon"
 import { Link } from "react-router-dom"
-import { EuiPanel, EuiStat, EuiFlexItem, EuiFlexGroup, EuiText, EuiButton } from "@elastic/eui"
+import {
+  EuiPanel,
+  EuiStat,
+  EuiFlexItem,
+  EuiFlexGroup,
+  EuiText,
+  EuiButton,
+  EuiAccordion
+} from "@elastic/eui"
 
 import Details from "./details"
 
+import "./index.scss"
+
 function Event({ event }) {
-  const [showDetails, setShowDetails] = useState(false)
-
-  const toggleShowDetails = () => setShowDetails(showDetails => !showDetails)
-
   return (
     <EuiPanel>
-      <EuiFlexGroup gutterSize="l" onClick={toggleShowDetails}>
-        <EuiFlexItem grow={1}>
-          <EuiStat title={event.day} description={event.month_year} textAlign="center" reverse />
-        </EuiFlexItem>
-        <EuiFlexItem grow={10}>
-          <EuiText size="m">
-            <h3>{event.name}</h3>
-            <p>
-              {event.startDate.toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas
-            </p>
-            {event.location}
-          </EuiText>
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiFlexGroup alignItems="center">
-            <EuiFlexItem>
-              <Link to={`/event/update/${event.id}`}>
-                <EuiButton>Editar</EuiButton>
-              </Link>
+      <EuiAccordion
+        id={event.id}
+        paddingSize="xl"
+        buttonContent={
+          <EuiFlexGroup gutterSize="l">
+            <EuiFlexItem grow={1}>
+              <EuiStat
+                title={event.day}
+                description={event.month_year}
+                textAlign="center"
+                reverse
+              />
             </EuiFlexItem>
-            <EuiFlexItem>
-              <Link to={`/event/${event.id}/assistants`}>
-                <EuiButton>Invitados</EuiButton>
-              </Link>
+            <EuiFlexItem grow={10}>
+              <EuiText size="m">
+                <h3>{event.name}</h3>
+                <p>
+                  {event.startDate.toLocaleString(DateTime.TIME_SIMPLE)} - {event.duration} horas
+                </p>
+                {event.location}
+              </EuiText>
             </EuiFlexItem>
-            <EuiFlexItem>
-              <Link to={`/event/${event.id}/menu`}>
-                <EuiButton>Menu</EuiButton>
-              </Link>
+            <EuiFlexItem grow={false}>
+              <EuiFlexGroup alignItems="center">
+                <EuiFlexItem>
+                  <Link to={`/event/update/${event.id}`}>
+                    <EuiButton>Editar</EuiButton>
+                  </Link>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                  <Link to={`/event/${event.id}/assistants`}>
+                    <EuiButton>Invitados</EuiButton>
+                  </Link>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                  <Link to={`/event/${event.id}/menu`}>
+                    <EuiButton>Menu</EuiButton>
+                  </Link>
+                </EuiFlexItem>
+              </EuiFlexGroup>
             </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-      {showDetails && (
+        }
+      >
         <EuiFlexGroup>
           <Details summary={event.summary} />
         </EuiFlexGroup>
-      )}
+      </EuiAccordion>
     </EuiPanel>
   )
 }
