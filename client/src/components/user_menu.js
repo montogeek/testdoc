@@ -23,8 +23,10 @@ class Usermenu extends Component {
   }
 
   componentDidMount() {
-    const { getUser } = this.props
-    getUser()
+    const { getUser, user } = this.props
+    if (user.data.isAuthenticated && !user.data.name) {
+      getUser()
+    }
   }
 
   onMenuButtonClick = () => {
@@ -81,7 +83,9 @@ class Usermenu extends Component {
                 <EuiFlexItem>
                   <EuiFlexGroup justifyContent="spaceBetween">
                     <EuiFlexItem grow={false}>
-                      <EuiLink href="" onClick={() => logoutUser()}>Cerrar sesion</EuiLink>
+                      <EuiLink href="" onClick={() => logoutUser()}>
+                        Cerrar sesion
+                      </EuiLink>
                     </EuiFlexItem>
                   </EuiFlexGroup>
                 </EuiFlexItem>
