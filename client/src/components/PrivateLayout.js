@@ -1,6 +1,5 @@
 import React, { Fragment } from "react"
 import { Link } from "react-router-dom"
-import { connect } from "react-redux"
 import {
   EuiPage,
   EuiPageBody,
@@ -12,36 +11,14 @@ import {
   EuiHeaderLogo,
   EuiIcon,
   EuiShowFor,
-  EuiSideNav,
+  EuiSideNav
 } from "@elastic/eui"
 
 import UserMenu from "./user_menu"
-import { getUser, logout } from "../redux/actions/user"
 
 import Styles from "./PrivateLayout.module.scss"
 
-const LogoutComponent = ({ logout }) => {
-  return (
-    <>
-      <button onClick={logout}>Cerrar sesion</button>
-    </>
-  )
-}
-
-const Logout = connect(
-  () => ({}),
-  { logout }
-)(LogoutComponent)
-
-const User = ({ user }) => {
-  return (
-    <div className="border-l-2 py-6 px-6">
-      Hola, {user.name}! <Logout />
-    </div>
-  )
-}
-
-class Layout extends React.Component {
+class PrivateLayout extends React.Component {
   constructor(props) {
     super(props)
 
@@ -158,7 +135,11 @@ class Layout extends React.Component {
                 toggleOpenOnMobile={this.toggleOpen}
                 isOpenOnMobile={openOnMobile}
                 items={this.sidebarItems}
-                renderItem={item => <Link to={item.href} className={item.className}>{item.children}</Link>}
+                renderItem={item => (
+                  <Link to={item.href} className={item.className}>
+                    {item.children}
+                  </Link>
+                )}
               />
             </aside>
             <main className={Styles["body"]}>
@@ -173,9 +154,4 @@ class Layout extends React.Component {
   }
 }
 
-export default connect(
-  ({ user }) => ({ user }),
-  {
-    getUser
-  }
-)(Layout)
+export default PrivateLayout

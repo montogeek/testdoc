@@ -108,7 +108,7 @@ export function getUser() {
       })
 
       if (!res.ok) {
-        dispatch(logout())
+        dispatch(logoutUser())
         dispatch(push("/"))
       }
 
@@ -119,7 +119,7 @@ export function getUser() {
   }
 }
 
-export function logout() {
+export function logoutUser() {
   return async function(dispatch, getState) {
     dispatch({ type: LOGOUT_REQUEST, loading: true })
 
