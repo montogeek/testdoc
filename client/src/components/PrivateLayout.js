@@ -46,7 +46,7 @@ class Layout extends React.Component {
     super(props)
 
     this.state = {
-      mobileIsHidden: true
+      openOnMobile: false
     }
 
     this.sidebarItems = [
@@ -118,7 +118,7 @@ class Layout extends React.Component {
 
   toggleOpen = () => {
     this.setState({
-      mobileIsHidden: !this.state.mobileIsHidden
+      openOnMobile: !this.state.openOnMobile
     })
   }
 
@@ -127,7 +127,7 @@ class Layout extends React.Component {
   }
 
   render() {
-    const { mobileIsHidden } = this.state
+    const { openOnMobile } = this.state
     const { children } = this.props
 
     return (
@@ -151,12 +151,12 @@ class Layout extends React.Component {
               </EuiHeaderSectionItem>
             </EuiHeaderSection>
           </EuiHeader>
-          <EuiPage style={{ paddingTop: "0" }}>
+          <EuiPage style={{ padding: "0" }}>
             <aside className={Styles["aside"]}>
               <EuiSideNav
                 mobileTitle="Navegacion"
                 toggleOpenOnMobile={this.toggleOpen}
-                isOpenOnMobile={mobileIsHidden}
+                isOpenOnMobile={openOnMobile}
                 items={this.sidebarItems}
                 renderItem={item => <Link to={item.href} className={item.className}>{item.children}</Link>}
               />

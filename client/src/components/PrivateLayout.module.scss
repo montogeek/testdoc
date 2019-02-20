@@ -1,8 +1,19 @@
+@import '@elastic/eui/src/global_styling/functions/_index.scss';
+@import '@elastic/eui/src/global_styling/variables/_index.scss';
+@import '@elastic/eui/src/global_styling/mixins/_index.scss';
+
 .aside {
   flex: 1;
   max-width: 16rem;
   padding: 32px 16px;
   border-right: 1px solid #d3dae6;
+
+  @include euiBreakpoint('xs', 's', 'm') {
+    padding: 0;
+    max-width: none;
+    border-right: none;
+    margin-bottom: -0.5625rem;
+  }
 }
 
 .body {
