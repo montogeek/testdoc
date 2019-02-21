@@ -69,7 +69,7 @@ class Usermenu extends Component {
         <div style={{ width: 320 }}>
           <EuiFlexGroup gutterSize="m" className="euiHeaderProfile" responsive={false}>
             <EuiFlexItem grow={false}>
-              <EuiAvatar name={user.data.name} size="xl" />
+              <EuiAvatar name={user.data.name || ""} size="xl" />
             </EuiFlexItem>
 
             <EuiFlexItem>

@@ -94,7 +94,8 @@ class EventController extends Controller
 
         $event = Event::find($id);
         $event->name = $data['name'];
-        $event->date = Carbon::parse($data['date'])->format('Y-m-d H:i:s');
+        $event->startDate = Carbon::parse($data['startDate'])->format('Y-m-d H:i:s');
+        $event->endDate = Carbon::parse($data['endDate'])->format('Y-m-d H:i:s');
         $event->location = $data['location'];
 
         $event->save();

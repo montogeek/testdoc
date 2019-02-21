@@ -49,7 +49,7 @@ export function createEvent(data) {
 
 export function updateEvent(data) {
   return async function(dispatch, getState) {
-    dispatch({ type: UPDATE_EVENT_REQUEST })
+    dispatch({ type: UPDATE_EVENT_REQUEST, loading: true })
     try {
       const res = await ky.put(`${process.env.REACT_APP_API_URL}/api/events/${data.id}`, {
         json: data,
