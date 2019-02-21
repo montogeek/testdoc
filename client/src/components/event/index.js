@@ -63,7 +63,7 @@ function Event({ event }) {
         }
       >
         <EuiFlexGroup>
-          <Details summary={event.summary} />
+          <Details summary={event.summary || {}} />
         </EuiFlexGroup>
       </EuiAccordion>
     </EuiPanel>

@@ -97,12 +97,15 @@ let EventCreate = props => {
                   startDateControl={
                     <EuiDatePicker
                       selected={values.startDate}
-                      onChange={value =>
+                      onChange={value => {
+                        const endDate = value.isAfter(values.endDate) ? value : values.endDate
+
                         setValues({
                           ...values,
-                          startDate: value
+                          startDate: value,
+                          endDate
                         })
-                      }
+                      }}
                       startDate={values.startDate}
                       endDate={values.endDate}
                       isInvalid={!isValid && errors.startDate && touched.startDate}
@@ -125,7 +128,7 @@ let EventCreate = props => {
                       isInvalid={!isValid && errors.endDate && touched.endDate}
                       showTimeSelect
                       inline
-                      minDate={moment()}
+                      minDate={values.startDate}
                     />
                   }
                 />

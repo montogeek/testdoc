@@ -70,13 +70,13 @@ class Details extends Component {
           <EuiFlexItem>
             <EuiText size="m">
               <h3>Asistentes Confirmados</h3>
-              <EuiBasicTable items={summary.assistants} columns={assistantsColumns} />
+              <EuiBasicTable items={summary.assistants || []} columns={assistantsColumns} />
             </EuiText>
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiText size="m">
               <h3>Presupuesto</h3>
-              <EuiBasicTable items={summary.budget} columns={budgetColumns} />
+              <EuiBasicTable items={summary.budget || []} columns={budgetColumns} />
             </EuiText>
           </EuiFlexItem>
         </EuiFlexGroup>

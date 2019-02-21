@@ -13,7 +13,7 @@ function Page(props) {
   }
 
   if (props.error) {
-    return <EuiErrorBoundary>{JSON.stringify(props.error)}</EuiErrorBoundary>
+    return <EuiErrorBoundary>{props.error.message || "Error"}</EuiErrorBoundary>
   }
 
   return (
