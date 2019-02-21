@@ -19,8 +19,27 @@ function Event({ event }) {
   return (
     <EuiPanel>
       <EuiAccordion
-        id={event.id}
+        id={event.id.toString()}
         paddingSize="xl"
+        extraAction={
+          <EuiFlexGroup alignItems="center">
+            <EuiFlexItem>
+              <Link to={`/event/update/${event.id}`}>
+                <EuiButton>Editar</EuiButton>
+              </Link>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <Link to={`/event/${event.id}/assistants`}>
+                <EuiButton>Invitados</EuiButton>
+              </Link>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <Link to={`/event/${event.id}/menu`}>
+                <EuiButton>Menu</EuiButton>
+              </Link>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        }
         buttonContent={
           <EuiFlexGroup gutterSize="l">
             <EuiFlexItem grow={1}>
@@ -39,25 +58,6 @@ function Event({ event }) {
                 </p>
                 {event.location}
               </EuiText>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiFlexGroup alignItems="center">
-                <EuiFlexItem>
-                  <Link to={`/event/update/${event.id}`}>
-                    <EuiButton>Editar</EuiButton>
-                  </Link>
-                </EuiFlexItem>
-                <EuiFlexItem>
-                  <Link to={`/event/${event.id}/assistants`}>
-                    <EuiButton>Invitados</EuiButton>
-                  </Link>
-                </EuiFlexItem>
-                <EuiFlexItem>
-                  <Link to={`/event/${event.id}/menu`}>
-                    <EuiButton>Menu</EuiButton>
-                  </Link>
-                </EuiFlexItem>
-              </EuiFlexGroup>
             </EuiFlexItem>
           </EuiFlexGroup>
         }
