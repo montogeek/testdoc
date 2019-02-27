@@ -520,7 +520,9 @@ import {
   EuiTableSortMobile,
   EuiTableHeaderMobile,
   EuiBasicTable,
-  EuiInMemoryTable
+  EuiInMemoryTable,
+  EuiFieldText,
+  EuiFieldNumber
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -528,14 +530,32 @@ import { connect } from "react-redux"
 import Page from "../Page"
 import { getEvents } from "../../redux/actions/events"
 import { updateAssistant, removeAssistant } from "../../redux/actions/assistants"
+import { withFormik } from "formik"
+import { sort } from "semver"
 
-class Assistants extends Component {
+const DisplayFormikState = props => (
+  <div style={{ margin: "1rem 0" }}>
+    <h3 style={{ fontFamily: "monospace" }} />
+    <pre
+      style={{
+        background: "#f6f8fa",
+        fontSize: ".65rem",
+        padding: ".5rem"
+      }}
+    >
+      <strong>props</strong> = {JSON.stringify(props, null, 2)}
+    </pre>
+  </div>
+)
+
+let Assistants = class Assistants extends Component {
   state = {
     pageIndex: 0,
     pageSize: 10,
     sortField: "name",
     sortDirection: "asc",
-    confirmationOpen: false
+    confirmationOpen: {},
+    editingId: null
   }
 
   columns = [
@@ -543,68 +563,164 @@ class Assistants extends Component {
       name: "Invitado",
       field: "name",
       sortable: true,
-      editable: true
+      render: (name, item) => {
+        const isEditing = this.isEditing(item.id)
+        return isEditing ? (
+          <EuiFieldText
+            name={`assistants.${item.id}.name`}
+            value={name}
+            onChange={this.handleChange}
+          />
+        ) : (
+          name
+        )
+      }
     },
     {
       name: "Direccion",
       field: "address",
       sortable: true,
-      editable: true
+      render: (address, item) => {
+        const isEditing = this.isEditing(item.id)
+        return isEditing ? (
+          <EuiFieldText
+            name={`assistants.${item.id}.address`}
+            value={address}
+            onChange={this.handleChange}
+          />
+        ) : (
+          address
+        )
+      }
     },
     {
       name: "Telefono",
       field: "phonenumber",
       sortable: true,
-      editable: true
+      render: (phonenumber, item) => {
+        const isEditing = this.isEditing(item.id)
+        return isEditing ? (
+          <EuiFieldText
+            name={`assistants.${item.id}.phonenumber`}
+            value={phonenumber}
+            onChange={this.handleChange}
+          />
+        ) : (
+          phonenumber
+        )
+      }
     },
     {
       name: "Email",
       field: "email",
       sortable: true,
-      editable: true
+      render: (email, item) => {
+        const isEditing = this.isEditing(item.id)
+        return isEditing ? (
+          <EuiFieldText
+            name={`assistants.${item.id}.email`}
+            value={email}
+            onChange={this.handleChange}
+          />
+        ) : (
+          email
+        )
+      }
     },
     {
       name: "Asistira?",
       field: "rsvp",
       sortable: true,
-      render: (rsvp, item) =>
-        rsvp ? (
+      render: (rsvp, item) => {
+        const isEditing = this.isEditing(item.id)
+        return isEditing ? (
+          <EuiCheckbox
+            id={`assistants.${item.id}.rsvp`}
+            checked={Boolean(this.props.values.assistants[item.id].rsvp)}
+            onChange={this.handleChange}
+          />
+        ) : rsvp ? (
           <EuiIcon type="checkInCircleFilled" color="secondary" />
         ) : (
           <EuiIcon type="crossInACircleFilled" color="danger" />
-        ),
-      editable: true
+        )
+      }
     },
     {
       name: "Niños",
       field: "kids",
       sortable: true,
-      editable: true
+      render: (kids, item) => {
+        const isEditing = this.isEditing(item.id)
+        return isEditing ? (
+          <EuiFieldNumber
+            name={`assistants.${item.id}.kids`}
+            value={kids}
+            onChange={this.handleChange}
+          />
+        ) : (
+          kids
+        )
+      }
     },
     {
       name: "Adultos",
       field: "adults",
       sortable: true,
-      editable: true
+      render: (adults, item) => {
+        const isEditing = this.isEditing(item.id)
+        return isEditing ? (
+          <EuiFieldNumber
+            name={`assistants.${item.id}.adults`}
+            value={adults}
+            onChange={this.handleChange}
+          />
+        ) : (
+          adults
+        )
+      }
     },
     {
       name: "Total",
       field: "total",
-      sortable: true
+      sortable: true,
+      render: (total, item) => item.kids + item.adults
     },
     {
       name: "Actions",
       actions: [
         {
-          name: "Editar",
-          description: "Editar invitado",
-          type: "icon",
-          icon: "pencil",
-          onClick: () => ""
+          render: item => {
+            const isEditing = this.isEditing(item.id)
+            return isEditing ? (
+              <EuiLink
+                color="secondary"
+                onClick={() => {
+                  this.props.handleSubmit()
+                  this.setState({ editingId: null })
+                }}
+              >
+                Guardar
+              </EuiLink>
+            ) : (
+              <EuiIcon onClick={() => this.edit(item.id)} type="pencil" />
+            )
+          }
         },
         {
           render: item => {
-            return (
+            const isEditing = this.isEditing(item.id)
+            return isEditing ? (
+              <EuiLink
+                color="secondary"
+                onClick={() => {
+                  this.props.resetForm()
+                  this.setState({ editingId: null })
+                }}
+              >
+                Cancelar
+              </EuiLink>
+            ) : (
               <EuiPopover
                 id="popover"
                 button={
@@ -633,6 +749,16 @@ class Assistants extends Component {
     const { getEvents } = this.props
     getEvents()
   }
+
+  handleChange = event => {
+    this.props.handleChange(event)
+  }
+
+  isEditing = id => {
+    return this.state.editingId === id
+  }
+
+  edit = id => this.setState({ editingId: id })
 
   showConfirmation = id => {
     this.setState({
@@ -663,36 +789,37 @@ class Assistants extends Component {
     })
   }
 
-  getRowProps = item => {
-    const { id } = item
+  getCellProps = () => {
     return {
-      className: "customRowClass",
-      onClick: () => console.log(`Clicked row ${id}`)
-    }
-  }
-
-  getCellProps = (item, column) => {
-    const { id } = item
-    const { field } = column
-    return {
-      className: "customCellClass",
       textOnly: true
     }
   }
 
   getPageItems = (pageIndex, pageSize, sortField, sortDirection) => {
     const {
-      event: { assistants }
+      values: { assistants }
     } = this.props
+    const { editingId } = this.state
+
+    const isEditing = editingId !== null
+
+    let sortableAssistants = assistants
+    let currentId
+
+    if (isEditing) {
+      ;({ [editingId]: currentId, ...sortableAssistants } = assistants)
+    }
+
+    let copyAssistants = Object.keys(sortableAssistants).map(key => assistants[key])
 
     let items
 
     if (sortField) {
-      items = assistants
+      items = copyAssistants
         .slice(0)
         .sort(Comparators.property(sortField, Comparators.default(sortDirection)))
     } else {
-      items = assistants
+      items = copyAssistants
     }
 
     let pageOfItems
@@ -705,36 +832,45 @@ class Assistants extends Component {
     }
 
     return {
-      pageOfItems,
+      pageOfItems: isEditing ? [currentId].concat(pageOfItems) : pageOfItems,
       totalItemCount: items.length
     }
   }
 
   render() {
     const { event, loading } = this.props
-    const { pageIndex, pageSize, sortField, sortDirection } = this.state
+    const { pageIndex, pageSize, sortField, sortDirection, editingId } = this.state
 
     if (!event) return null
 
-    const { pageOfItems, totalItemCount } = this.getPageItems(
+    let sorting = {
+      sort: {
+        field: sortField,
+        direction: sortDirection
+      }
+    }
+
+    let { pageOfItems, totalItemCount } = this.getPageItems(
       pageIndex,
       pageSize,
       sortField,
       sortDirection
     )
 
+    if (editingId !== null) {
+      ;({ pageOfItems, totalItemCount } = this.getPageItems(
+        pageIndex,
+        pageSize,
+        sortField,
+        sortDirection
+      ))
+    }
+
     const pagination = {
       pageIndex,
       pageSize,
       totalItemCount,
       hidePerPageOptions: true
-    }
-
-    const sorting = {
-      sort: {
-        field: sortField,
-        direction: sortDirection
-      }
     }
 
     return (
@@ -746,13 +882,34 @@ class Assistants extends Component {
           sorting={sorting}
           onChange={this.onTableChange}
           hasActions={true}
-          rowProps={this.getRowProps}
           cellProps={this.getCellProps}
         />
+        <DisplayFormikState {...this.props} />
       </Page>
     )
   }
 }
+
+Assistants = withFormik({
+  mapPropsToValues: ({ event }) => {
+    return event && event.assistants.length !== 0
+      ? {
+          assistants: event.assistants.reduce((acc, assistant) => {
+            acc[assistant.id] = assistant
+            return acc
+          }, {})
+        }
+      : { assistants: [] }
+  },
+  handleSubmit: (values, { setSubmitting }) => {
+    setTimeout(() => {
+      console.log(values)
+      setSubmitting(false)
+    }, 1000)
+  },
+  enableReinitialize: true,
+  displayName: "assistant"
+})(Assistants)
 
 export default connect(
   ({ events }, props) => ({
