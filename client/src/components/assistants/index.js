@@ -799,18 +799,8 @@ let Assistants = class Assistants extends Component {
     const {
       values: { assistants }
     } = this.props
-    const { editingId } = this.state
 
-    const isEditing = editingId !== null
-
-    let sortableAssistants = assistants
-    let currentId
-
-    if (isEditing) {
-      ;({ [editingId]: currentId, ...sortableAssistants } = assistants)
-    }
-
-    let copyAssistants = Object.keys(sortableAssistants).map(key => assistants[key])
+    let copyAssistants = Object.keys(assistants).map(key => assistants[key])
 
     let items
 
@@ -832,39 +822,21 @@ let Assistants = class Assistants extends Component {
     }
 
     return {
-      pageOfItems: isEditing ? [currentId].concat(pageOfItems) : pageOfItems,
+      pageOfItems,
       totalItemCount: items.length
     }
   }
 
   render() {
     const { event, loading } = this.props
-    const { pageIndex, pageSize, sortField, sortDirection, editingId } = this.state
+    const { pageIndex, pageSize, sortField, sortDirection } = this.state
 
     if (!event) return null
 
-    let sorting = {
-      sort: {
-        field: sortField,
-        direction: sortDirection
-      }
-    }
-
     let { pageOfItems, totalItemCount } = this.getPageItems(
       pageIndex,
-      pageSize,
-      sortField,
-      sortDirection
+      pageSize
     )
-
-    if (editingId !== null) {
-      ;({ pageOfItems, totalItemCount } = this.getPageItems(
-        pageIndex,
-        pageSize,
-        sortField,
-        sortDirection
-      ))
-    }
 
     const pagination = {
       pageIndex,
@@ -879,7 +851,6 @@ let Assistants = class Assistants extends Component {
           items={pageOfItems}
           columns={this.columns}
           pagination={pagination}
-          sorting={sorting}
           onChange={this.onTableChange}
           hasActions={true}
           cellProps={this.getCellProps}
