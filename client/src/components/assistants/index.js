@@ -512,7 +512,7 @@ import { updateAssistant, removeAssistant } from "../../redux/actions/assistants
 import { withFormik } from "formik"
 import { mapValues } from "lodash"
 
-const DisplayFormikState = ({ event, values, initialValues, touched, ...props }) => (
+const DisplayFormikState = ({ event, ...props }) => (
   <div style={{ margin: "1rem 0" }}>
     <h3 style={{ fontFamily: "monospace" }} />
     <pre
@@ -703,7 +703,7 @@ let Assistants = class Assistants extends Component {
       render: (total, item) => item.kids + item.adults
     },
     {
-      name: "Actions",
+      name: "Acciones",
       actions: [
         {
           render: item => {
@@ -716,7 +716,9 @@ let Assistants = class Assistants extends Component {
                 fill
                 isDisabled={!isValid}
                 onClick={() => {
+                  this.props.setFieldValue("id", item.id, false)
                   this.props.handleSubmit()
+
                   this.setState({ editingId: null })
                 }}
               >
@@ -746,11 +748,7 @@ let Assistants = class Assistants extends Component {
               <EuiPopover
                 id="popover"
                 button={
-                  <EuiButton
-                    color="danger"
-                    size="s"
-                    onClick={() => this.showConfirmation(item.id)}
-                  >
+                  <EuiButton color="danger" size="s" onClick={() => this.showConfirmation(item.id)}>
                     Eliminar
                   </EuiButton>
                 }
@@ -877,7 +875,7 @@ let Assistants = class Assistants extends Component {
     }
 
     return (
-      <Page loading={loading} title="Asistentes">
+      <Page loading={!event} title="Asistentes">
         <EuiBasicTable
           items={pageOfItems}
           columns={this.columns}
@@ -921,11 +919,10 @@ Assistants = withFormik({
         }
       : { assistants: [] }
   },
-  handleSubmit: (values, { setSubmitting }) => {
-    setTimeout(() => {
-      console.log(values)
-      setSubmitting(false)
-    }, 1000)
+  handleSubmit: (values, { props, setSubmitting }) => {
+    const assistant = values.assistants[values.id]
+    props.updateAssistant(assistant)
+    setSubmitting(false)
   },
   isInitialValid: true,
   enableReinitialize: true,
