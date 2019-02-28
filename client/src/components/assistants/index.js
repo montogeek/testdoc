@@ -496,10 +496,11 @@ import {
   EuiLink,
   EuiPopover,
   EuiToolTip,
-  EuiTextColor,
+  EuiButton,
   EuiBasicTable,
   EuiFieldText,
-  EuiFieldNumber
+  EuiFieldNumber,
+  EuiFormErrorText
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -540,13 +541,19 @@ let Assistants = class Assistants extends Component {
       field: "name",
       sortable: true,
       render: (name, item) => {
+        const { isInvalid, errorMessage } = this.getErrorMessage("name", item.id)
         const isEditing = this.isEditing(item.id)
+
         return isEditing ? (
-          <EuiFieldText
-            name={`assistants.${item.id}.name`}
-            value={name}
-            onChange={this.handleChange}
-          />
+          <>
+            <EuiFieldText
+              name={`assistants.${item.id}.name`}
+              value={name}
+              isInvalid={isInvalid}
+              onChange={this.handleChange}
+            />
+            {errorMessage}
+          </>
         ) : (
           name
         )
@@ -557,13 +564,19 @@ let Assistants = class Assistants extends Component {
       field: "address",
       sortable: true,
       render: (address, item) => {
+        const { isInvalid, errorMessage } = this.getErrorMessage("address", item.id)
         const isEditing = this.isEditing(item.id)
+
         return isEditing ? (
-          <EuiFieldText
-            name={`assistants.${item.id}.address`}
-            value={address}
-            onChange={this.handleChange}
-          />
+          <>
+            <EuiFieldText
+              name={`assistants.${item.id}.address`}
+              value={address}
+              isInvalid={isInvalid}
+              onChange={this.handleChange}
+            />
+            {errorMessage}
+          </>
         ) : (
           address
         )
@@ -574,13 +587,19 @@ let Assistants = class Assistants extends Component {
       field: "phonenumber",
       sortable: true,
       render: (phonenumber, item) => {
+        const { isInvalid, errorMessage } = this.getErrorMessage("phonenumber", item.id)
         const isEditing = this.isEditing(item.id)
+
         return isEditing ? (
-          <EuiFieldText
-            name={`assistants.${item.id}.phonenumber`}
-            value={phonenumber}
-            onChange={this.handleChange}
-          />
+          <>
+            <EuiFieldText
+              name={`assistants.${item.id}.phonenumber`}
+              value={phonenumber}
+              isInvalid={isInvalid}
+              onChange={this.handleChange}
+            />
+            {errorMessage}
+          </>
         ) : (
           phonenumber
         )
@@ -591,13 +610,19 @@ let Assistants = class Assistants extends Component {
       field: "email",
       sortable: true,
       render: (email, item) => {
+        const { isInvalid, errorMessage } = this.getErrorMessage("email", item.id)
         const isEditing = this.isEditing(item.id)
+
         return isEditing ? (
-          <EuiFieldText
-            name={`assistants.${item.id}.email`}
-            value={email}
-            onChange={this.handleChange}
-          />
+          <>
+            <EuiFieldText
+              name={`assistants.${item.id}.email`}
+              value={email}
+              isInvalid={isInvalid}
+              onChange={this.handleChange}
+            />
+            {errorMessage}
+          </>
         ) : (
           email
         )
@@ -609,10 +634,11 @@ let Assistants = class Assistants extends Component {
       sortable: true,
       render: (rsvp, item) => {
         const isEditing = this.isEditing(item.id)
+
         return isEditing ? (
           <EuiCheckbox
             id={`assistants.${item.id}.rsvp`}
-            checked={Boolean(this.props.values.assistants[item.id].rsvp)}
+            checked={Boolean(rsvp)}
             onChange={this.handleChange}
           />
         ) : rsvp ? (
@@ -627,27 +653,19 @@ let Assistants = class Assistants extends Component {
       field: "kids",
       sortable: true,
       render: (kids, item) => {
-        const isInvalid =
-          this.props.errors.assistants &&
-          this.props.errors.assistants[item.id] &&
-          this.props.errors.assistants[item.id].kids !== undefined
-
-        const errorMessage =
-          this.props.errors.assistants &&
-          this.props.errors.assistants[item.id] &&
-          this.props.errors.assistants[item.id].kids
-
+        const { isInvalid, errorMessage } = this.getErrorMessage("kids", item.id)
         const isEditing = this.isEditing(item.id)
 
         return isEditing ? (
           <>
             <EuiFieldNumber
+              min={0}
               name={`assistants.${item.id}.kids`}
               value={kids}
               isInvalid={isInvalid}
               onChange={this.handleChange}
             />
-            {errorMessage && <EuiTextColor color="danger">{errorMessage}</EuiTextColor>}
+            {errorMessage}
           </>
         ) : (
           kids
@@ -659,13 +677,20 @@ let Assistants = class Assistants extends Component {
       field: "adults",
       sortable: true,
       render: (adults, item) => {
+        const { isInvalid, errorMessage } = this.getErrorMessage("adults", item.id)
         const isEditing = this.isEditing(item.id)
+
         return isEditing ? (
-          <EuiFieldNumber
-            name={`assistants.${item.id}.adults`}
-            value={adults}
-            onChange={this.handleChange}
-          />
+          <>
+            <EuiFieldNumber
+              min={0}
+              name={`assistants.${item.id}.adults`}
+              value={adults}
+              isInvalid={isInvalid}
+              onChange={this.handleChange}
+            />
+            {errorMessage}
+          </>
         ) : (
           adults
         )
@@ -683,18 +708,24 @@ let Assistants = class Assistants extends Component {
         {
           render: item => {
             const isEditing = this.isEditing(item.id)
+            const isValid = this.props.isValid
+
             return isEditing ? (
-              <EuiLink
-                color="secondary"
+              <EuiButton
+                size="s"
+                fill
+                isDisabled={!isValid}
                 onClick={() => {
                   this.props.handleSubmit()
                   this.setState({ editingId: null })
                 }}
               >
                 Guardar
-              </EuiLink>
+              </EuiButton>
             ) : (
-              <EuiIcon onClick={() => this.edit(item.id)} type="pencil" />
+              <EuiButton size="s" fill onClick={() => this.edit(item.id)}>
+                Editar
+              </EuiButton>
             )
           }
         },
@@ -702,26 +733,26 @@ let Assistants = class Assistants extends Component {
           render: item => {
             const isEditing = this.isEditing(item.id)
             return isEditing ? (
-              <EuiLink
-                color="secondary"
+              <EuiButton
+                size="s"
                 onClick={() => {
                   this.props.resetForm()
                   this.setState({ editingId: null })
                 }}
               >
                 Cancelar
-              </EuiLink>
+              </EuiButton>
             ) : (
               <EuiPopover
                 id="popover"
                 button={
-                  <EuiToolTip content="Eliminar invitado" position="left">
-                    <EuiIcon
-                      onClick={() => this.showConfirmation(item.id)}
-                      type="trash"
-                      color="danger"
-                    />
-                  </EuiToolTip>
+                  <EuiButton
+                    color="danger"
+                    size="s"
+                    onClick={() => this.showConfirmation(item.id)}
+                  >
+                    Eliminar
+                  </EuiButton>
                 }
                 isOpen={this.state.confirmationOpen[item.id]}
                 closePopover={() => this.hideConfirmation(item.id)}
@@ -739,6 +770,18 @@ let Assistants = class Assistants extends Component {
   componentDidMount() {
     const { getEvents } = this.props
     getEvents()
+  }
+
+  getErrorMessage = (field, id) => {
+    const {
+      errors: { assistants }
+    } = this.props
+
+    const isInvalid = assistants && assistants[id] && assistants[id][field] !== undefined
+    const error = assistants && assistants[id] && assistants[id][field]
+    const errorMessage = error && <EuiFormErrorText color="danger">{error}</EuiFormErrorText>
+
+    return { isInvalid, errorMessage }
   }
 
   handleChange = event => {
@@ -884,6 +927,7 @@ Assistants = withFormik({
       setSubmitting(false)
     }, 1000)
   },
+  isInitialValid: true,
   enableReinitialize: true,
   displayName: "assistant"
 })(Assistants)
