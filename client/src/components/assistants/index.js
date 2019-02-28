@@ -491,49 +491,27 @@
 
 import React, { Component } from "react"
 import {
-  EuiBadge,
-  EuiHealth,
-  EuiButton,
-  EuiButtonIcon,
   EuiCheckbox,
-  EuiContextMenuItem,
-  EuiContextMenuPanel,
-  EuiFieldSearch,
-  EuiFlexGroup,
-  EuiFlexItem,
   EuiIcon,
   EuiLink,
   EuiPopover,
-  EuiSpacer,
-  EuiTable,
-  EuiTableBody,
-  EuiTableFooter,
-  EuiTableFooterCell,
   EuiToolTip,
-  EuiTableHeader,
-  EuiTableHeaderCell,
-  EuiTableHeaderCellCheckbox,
-  EuiTablePagination,
-  EuiTableRow,
-  EuiTableRowCell,
-  EuiTableRowCellCheckbox,
-  EuiTableSortMobile,
-  EuiTableHeaderMobile,
+  EuiTextColor,
   EuiBasicTable,
-  EuiInMemoryTable,
   EuiFieldText,
   EuiFieldNumber
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
+import * as Yup from "yup"
 
 import Page from "../Page"
 import { getEvents } from "../../redux/actions/events"
 import { updateAssistant, removeAssistant } from "../../redux/actions/assistants"
 import { withFormik } from "formik"
-import { sort } from "semver"
+import { mapValues } from "lodash"
 
-const DisplayFormikState = props => (
+const DisplayFormikState = ({ event, values, initialValues, touched, ...props }) => (
   <div style={{ margin: "1rem 0" }}>
     <h3 style={{ fontFamily: "monospace" }} />
     <pre
@@ -552,8 +530,6 @@ let Assistants = class Assistants extends Component {
   state = {
     pageIndex: 0,
     pageSize: 10,
-    sortField: "name",
-    sortDirection: "asc",
     confirmationOpen: {},
     editingId: null
   }
@@ -651,13 +627,28 @@ let Assistants = class Assistants extends Component {
       field: "kids",
       sortable: true,
       render: (kids, item) => {
+        const isInvalid =
+          this.props.errors.assistants &&
+          this.props.errors.assistants[item.id] &&
+          this.props.errors.assistants[item.id].kids !== undefined
+
+        const errorMessage =
+          this.props.errors.assistants &&
+          this.props.errors.assistants[item.id] &&
+          this.props.errors.assistants[item.id].kids
+
         const isEditing = this.isEditing(item.id)
+
         return isEditing ? (
-          <EuiFieldNumber
-            name={`assistants.${item.id}.kids`}
-            value={kids}
-            onChange={this.handleChange}
-          />
+          <>
+            <EuiFieldNumber
+              name={`assistants.${item.id}.kids`}
+              value={kids}
+              isInvalid={isInvalid}
+              onChange={this.handleChange}
+            />
+            {errorMessage && <EuiTextColor color="danger">{errorMessage}</EuiTextColor>}
+          </>
         ) : (
           kids
         )
@@ -829,14 +820,11 @@ let Assistants = class Assistants extends Component {
 
   render() {
     const { event, loading } = this.props
-    const { pageIndex, pageSize, sortField, sortDirection } = this.state
+    const { pageIndex, pageSize } = this.state
 
     if (!event) return null
 
-    let { pageOfItems, totalItemCount } = this.getPageItems(
-      pageIndex,
-      pageSize
-    )
+    let { pageOfItems, totalItemCount } = this.getPageItems(pageIndex, pageSize)
 
     const pagination = {
       pageIndex,
@@ -862,6 +850,24 @@ let Assistants = class Assistants extends Component {
 }
 
 Assistants = withFormik({
+  validationSchema: Yup.object().shape({
+    assistants: Yup.lazy(obj =>
+      Yup.object(
+        mapValues(obj, () =>
+          Yup.object({
+            name: Yup.string().required("Requerido"),
+            address: Yup.string().required("Requerido"),
+            phonenumber: Yup.string().required("Requerido"),
+            email: Yup.string()
+              .email("Email invalido")
+              .required("Requerido"),
+            kids: Yup.number().min(0, "Debe ser mayor a 0"),
+            adults: Yup.number().min(0, "Debe ser mayor a 0")
+          })
+        )
+      )
+    )
+  }),
   mapPropsToValues: ({ event }) => {
     return event && event.assistants.length !== 0
       ? {
