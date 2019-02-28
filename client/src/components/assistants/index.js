@@ -493,14 +493,13 @@ import React, { Component } from "react"
 import {
   EuiCheckbox,
   EuiIcon,
-  EuiLink,
-  EuiPopover,
-  EuiToolTip,
   EuiButton,
   EuiBasicTable,
   EuiFieldText,
   EuiFieldNumber,
-  EuiFormErrorText
+  EuiFormErrorText,
+  EuiConfirmModal,
+  EuiOverlayMask
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -734,6 +733,7 @@ let Assistants = class Assistants extends Component {
         {
           render: item => {
             const isEditing = this.isEditing(item.id)
+
             return isEditing ? (
               <EuiButton
                 size="s"
@@ -745,19 +745,26 @@ let Assistants = class Assistants extends Component {
                 Cancelar
               </EuiButton>
             ) : (
-              <EuiPopover
-                id="popover"
-                button={
-                  <EuiButton color="danger" size="s" onClick={() => this.showConfirmation(item.id)}>
-                    Eliminar
-                  </EuiButton>
-                }
-                isOpen={this.state.confirmationOpen[item.id]}
-                closePopover={() => this.hideConfirmation(item.id)}
-                anchorPosition="upCenter"
-              >
-                Yes, no
-              </EuiPopover>
+              <>
+                <EuiButton color="danger" size="s" onClick={() => this.showConfirmation(item.id)}>
+                  Eliminar
+                </EuiButton>
+                {this.state.confirmationOpen[item.id] && (
+                  <EuiOverlayMask>
+                    <EuiConfirmModal
+                      title="¿Eliminar invitado?"
+                      onCancel={() => this.hideConfirmation(item.id)}
+                      onConfirm={() => {
+                        this.props.removeAssistant(item.id, this.props.event.id)
+                      }}
+                      cancelButtonText="Cancelar"
+                      confirmButtonText="Confirmar"
+                    >
+                      <p>Esta seguro de eliminar este invitado</p>
+                    </EuiConfirmModal>
+                  </EuiOverlayMask>
+                )}
+              </>
             )
           }
         }
@@ -860,7 +867,7 @@ let Assistants = class Assistants extends Component {
   }
 
   render() {
-    const { event, loading } = this.props
+    const { event } = this.props
     const { pageIndex, pageSize } = this.state
 
     if (!event) return null
