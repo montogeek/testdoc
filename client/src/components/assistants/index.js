@@ -503,6 +503,7 @@ import {
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
+import { Link } from "react-router-dom"
 import * as Yup from "yup"
 
 import Page from "../Page"
@@ -882,7 +883,13 @@ let Assistants = class Assistants extends Component {
     }
 
     return (
-      <Page loading={!event} title="Asistentes">
+      <Page loading={!event} title="Asistentes" titleRight={
+        <Link to={`/event/${event.id}/assistants/create`}>
+          <EuiButton color="primary" fill>
+            Agregar asistente
+          </EuiButton>
+        </Link>
+      }>
         <EuiBasicTable
           items={pageOfItems}
           columns={this.columns}

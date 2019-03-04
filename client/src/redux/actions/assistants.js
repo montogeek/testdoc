@@ -61,9 +61,17 @@ export function addAssistant(data, event_id) {
         }
       })
 
-      return dispatch({ type: ADD_ASSISTANT_SUCCESS, loading: false, data: await res.json() })
+      if (res.ok) {
+        return dispatch({ type: ADD_ASSISTANT_SUCCESS, loading: false, data: await res.json() })
+      }
+
+      throw res
     } catch (e) {
-      return dispatch({ type: ADD_ASSISTANT_FAILURE, loading: false, error: e })
+      const error = await e.json()
+
+      dispatch({ type: ADD_ASSISTANT_FAILURE, loading: false, error: error.message })
+
+      throw e
     }
   }
 }
