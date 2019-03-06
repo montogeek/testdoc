@@ -1,207 +1,552 @@
+// import React, { Component } from "react"
+// import { Table, Modal, Form, Input, InputNumber, Button } from "antd"
+// import { connect } from "react-redux"
+// import { addItem } from "../../redux/actions/items"
+
+// const FormItem = Form.Item
+
+// class AddItem extends React.Component {
+//   constructor() {
+//     super()
+//     this.handleSubmit = this.handleSubmit.bind(this)
+//   }
+
+//   handleSubmit() {
+//     const { validateFields } = this.props.form
+//     const { id } = this.props.event
+//     const { addItem, category_id } = this.props
+
+//     validateFields(async (error, values) => {
+//       if (error) return
+//       await addItem(values, id, category_id)
+//       this.props.onOk()
+//     })
+//   }
+
+//   render() {
+//     const { getFieldDecorator } = this.props.form
+//     const { visible } = this.props
+//     const { loading, onCancel } = this.props
+//     return (
+//       <Modal
+//         visible={visible}
+//         onOk={this.handleSubmit}
+//         onCancel={onCancel}
+//         confirmLoading={loading}
+//         destroyOnClose
+//         title="Agregar item"
+//       >
+//         <Form onSubmit={this.handleSubmit}>
+//           <FormItem label="Nombre">
+//             {getFieldDecorator("name", {
+//               rules: [
+//                 {
+//                   required: true
+//                 }
+//               ]
+//             })(<Input />)}
+//           </FormItem>
+//           <FormItem label="Coste total">
+//             {getFieldDecorator("cost", {
+//               rules: [
+//                 {
+//                   required: true,
+//                   type: "number"
+//                 }
+//               ]
+//             })(<InputNumber />)}
+//           </FormItem>
+//           <FormItem label="Racion por nino">
+//             {getFieldDecorator("shareKid", {
+//               rules: [
+//                 {
+//                   required: true,
+//                   type: "number"
+//                 }
+//               ]
+//             })(<InputNumber />)}
+//           </FormItem>
+//           <FormItem label="Racion por adulto">
+//             {getFieldDecorator("shareAdult", {
+//               rules: [
+//                 {
+//                   required: true,
+//                   type: "number"
+//                 }
+//               ]
+//             })(<InputNumber />)}
+//           </FormItem>
+//           <FormItem label="Notas">
+//             {getFieldDecorator("notes", {
+//               rules: [
+//                 {
+//                   required: false
+//                 }
+//               ]
+//             })(<Input />)}
+//           </FormItem>
+//         </Form>
+//       </Modal>
+//     )
+//   }
+// }
+
+// const AddItemForm = Form.create()(
+//   connect(
+//     ({ events }) => ({ loading: events.loading }),
+//     {
+//       addItem
+//     }
+//   )(AddItem)
+// )
+
+// class FoodList extends Component {
+//   constructor() {
+//     super()
+//     this.state = {
+//       visibleModal: false
+//     }
+//     this.columns = [
+//       {
+//         title: "Articulo",
+//         dataIndex: "name",
+//         key: "name",
+//         editable: true
+//       },
+//       {
+//         title: "Coste total",
+//         dataIndex: "cost",
+//         key: "cost",
+//         editable: true
+//       },
+//       {
+//         title: "Racion por nino",
+//         dataIndex: "shareKid",
+//         key: "shareKid",
+//         editable: true
+//       },
+//       {
+//         title: "Racion por adulto",
+//         dataIndex: "shareAdult",
+//         key: "shareAdult",
+//         editable: true
+//       },
+//       {
+//         title: "Total de raciones",
+//         dataIndex: "totalshare",
+//         key: "totalshare"
+//       },
+//       {
+//         title: "Coste por racion",
+//         dataIndex: "costShare",
+//         key: "costShare"
+//       },
+//       {
+//         title: "Coste por nino",
+//         dataIndex: "costKid",
+//         key: "costKid",
+//         render: (_, record) => record.costShare * record.shareKid
+//       },
+//       {
+//         title: "Coste por adulto",
+//         dataIndex: "costAdult",
+//         key: "costAdult",
+//         render: (_, record) => record.costShare * record.shareAdult
+//       },
+//       {
+//         title: "Notas",
+//         dataIndex: "notes",
+//         key: "notes"
+//       }
+//     ]
+//     this.showModal = this.showModal.bind(this)
+//     this.handleOk = this.handleOk.bind(this)
+//     this.handleCancel = this.handleCancel.bind(this)
+//   }
+
+//   showModal() {
+//     this.setState({
+//       visibleModal: true
+//     })
+//   }
+
+//   handleOk() {
+//     this.setState({
+//       visibleModal: false
+//     })
+//   }
+
+//   handleCancel() {
+//     this.setState({
+//       visibleModal: false
+//     })
+//   }
+
+//   render() {
+//     const { name, items, loading } = this.props
+//     const { visibleModal } = this.state
+
+//     return (
+//       <div>
+//         <h1>{name}</h1>
+//         <Button
+//           type="dashed"
+//           style={{ width: "100%", marginBottom: 8 }}
+//           icon="plus"
+//           onClick={this.showModal}
+//         >
+//           Agregar item
+//         </Button>
+//         <AddItemForm visible={visibleModal} onCancel={this.handleCancel} onOk={this.handleOk} />
+//         <Table dataSource={items} loading={loading} columns={this.columns} />
+//       </div>
+//     )
+//   }
+// }
+
+// export default FoodList
+
 import React, { Component } from "react"
-import { Table, Modal, Form, Input, InputNumber, Button } from "antd"
+import {
+  EuiCheckbox,
+  EuiIcon,
+  EuiButton,
+  EuiBasicTable,
+  EuiFieldText,
+  EuiFieldNumber,
+  EuiFormErrorText,
+  EuiConfirmModal,
+  EuiOverlayMask,
+  EuiTitle
+} from "@elastic/eui"
+import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
-import { addItem } from "../../redux/actions/items"
+import { Link } from "react-router-dom"
+import * as Yup from "yup"
+import { withFormik } from "formik"
+import { mapValues } from "lodash"
 
-const FormItem = Form.Item
-
-class AddItem extends React.Component {
-  constructor() {
-    super()
-    this.handleSubmit = this.handleSubmit.bind(this)
+let FoodList = class FoodList extends Component {
+  state = {
+    pageIndex: 0,
+    pageSize: 10,
+    confirmationOpen: {},
+    editingId: null
   }
 
-  handleSubmit() {
-    const { validateFields } = this.props.form
-    const { id } = this.props.event
-    const { addItem, category_id } = this.props
-
-    validateFields(async (error, values) => {
-      if (error) return
-      await addItem(values, id, category_id)
-      this.props.onOk()
-    })
-  }
-
-  render() {
-    const { getFieldDecorator } = this.props.form
-    const { visible } = this.props
-    const { loading, onCancel } = this.props
-    return (
-      <Modal
-        visible={visible}
-        onOk={this.handleSubmit}
-        onCancel={onCancel}
-        confirmLoading={loading}
-        destroyOnClose
-        title="Agregar item"
-      >
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem label="Nombre">
-            {getFieldDecorator("name", {
-              rules: [
-                {
-                  required: true
-                }
-              ]
-            })(<Input />)}
-          </FormItem>
-          <FormItem label="Coste total">
-            {getFieldDecorator("cost", {
-              rules: [
-                {
-                  required: true,
-                  type: "number"
-                }
-              ]
-            })(<InputNumber />)}
-          </FormItem>
-          <FormItem label="Racion por nino">
-            {getFieldDecorator("shareKid", {
-              rules: [
-                {
-                  required: true,
-                  type: "number"
-                }
-              ]
-            })(<InputNumber />)}
-          </FormItem>
-          <FormItem label="Racion por adulto">
-            {getFieldDecorator("shareAdult", {
-              rules: [
-                {
-                  required: true,
-                  type: "number"
-                }
-              ]
-            })(<InputNumber />)}
-          </FormItem>
-          <FormItem label="Notas">
-            {getFieldDecorator("notes", {
-              rules: [
-                {
-                  required: false
-                }
-              ]
-            })(<Input />)}
-          </FormItem>
-        </Form>
-      </Modal>
-    )
-  }
-}
-
-const AddItemForm = Form.create()(
-  connect(
-    ({ events }) => ({ loading: events.loading }),
+  columns = [
     {
-      addItem
-    }
-  )(AddItem)
-)
+      name: "Articulo",
+      field: "name",
+      render: (value, item) => this.renderCell(value, item, "name", "text")
+    },
+    {
+      name: "Coste total",
+      field: "cost",
+      render: (value, item) => this.renderCell(value, item, "cost", "number")
+    },
+    {
+      name: "Racion por nino",
+      field: "shareKid",
+      render: (value, item) => this.renderCell(value, item, "shareKid", "number")
+    },
+    {
+      name: "Racion por adulto",
+      field: "shareAdult",
+      render: (value, item) => this.renderCell(value, item, "shareAdult", "number")
+    },
+    {
+      name: "Total de raciones",
+      field: "totalshare",
+      render: (value, item) =>
+        this.formatNumber(
+          item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults
+        )
+    },
+    {
+      name: "Costo por racion",
+      field: "costShare",
+      render: (value, item) =>
+        this.formatNumber(
+          item.cost /
+            (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)
+        )
+    },
+    {
+      name: "Costo por niño",
+      field: "costKid",
+      render: (costKid, item) =>
+        this.formatNumber(
+          (item.cost /
+            (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)) *
+            item.shareKid
+        )
+    },
+    {
+      name: "Costo por adulto",
+      field: "costKid",
+      render: (costKid, item) =>
+        this.formatNumber(
+          (item.cost /
+            (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)) *
+            item.shareAdult
+        )
+    },
+    {
+      name: "Notas",
+      field: "notes",
+      render: (value, item) => this.renderCell(value, item, "notes", "text")
+    },
+    {
+      name: "Acciones",
+      actions: [
+        {
+          render: item => {
+            const isEditing = this.isEditing(item.id)
+            const isValid = this.props.isValid
 
-class FoodList extends Component {
-  constructor() {
-    super()
-    this.state = {
-      visibleModal: false
+            return isEditing ? (
+              <EuiButton
+                size="s"
+                fill
+                isDisabled={!isValid}
+                onClick={() => {
+                  // this.props.setFieldValue("id", item.id, false)
+                  // this.props.handleSubmit()
+
+                  this.setState({ editingId: null })
+                }}
+              >
+                Guardar
+              </EuiButton>
+            ) : (
+              <EuiButton size="s" fill onClick={() => this.edit(item.id)}>
+                Editar
+              </EuiButton>
+            )
+          }
+        },
+        {
+          render: item => {
+            const isEditing = this.isEditing(item.id)
+
+            return isEditing ? (
+              <EuiButton
+                size="s"
+                onClick={() => {
+                  this.props.resetForm()
+                  this.setState({ editingId: null })
+                }}
+              >
+                Cancelar
+              </EuiButton>
+            ) : (
+              <>
+                <EuiButton color="danger" size="s" onClick={() => this.showConfirmation(item.id)}>
+                  Eliminar
+                </EuiButton>
+                {this.state.confirmationOpen[item.id] && (
+                  <EuiOverlayMask>
+                    <EuiConfirmModal
+                      title="¿Eliminar item?"
+                      onCancel={() => this.hideConfirmation(item.id)}
+                      onConfirm={() => {
+                        // this.props.removeAssistant(item.id, this.props.event.id)
+                      }}
+                      cancelButtonText="Cancelar"
+                      confirmButtonText="Confirmar"
+                    >
+                      <p>Esta seguro de eliminar este item</p>
+                    </EuiConfirmModal>
+                  </EuiOverlayMask>
+                )}
+              </>
+            )
+          }
+        }
+      ]
     }
-    this.columns = [
-      {
-        title: "Articulo",
-        dataIndex: "name",
-        key: "name",
-        editable: true
-      },
-      {
-        title: "Coste total",
-        dataIndex: "cost",
-        key: "cost",
-        editable: true
-      },
-      {
-        title: "Racion por nino",
-        dataIndex: "shareKid",
-        key: "shareKid",
-        editable: true
-      },
-      {
-        title: "Racion por adulto",
-        dataIndex: "shareAdult",
-        key: "shareAdult",
-        editable: true
-      },
-      {
-        title: "Total de raciones",
-        dataIndex: "totalshare",
-        key: "totalshare"
-      },
-      {
-        title: "Coste por racion",
-        dataIndex: "costShare",
-        key: "costShare"
-      },
-      {
-        title: "Coste por nino",
-        dataIndex: "costKid",
-        key: "costKid",
-        render: (_, record) => record.costShare * record.shareKid
-      },
-      {
-        title: "Coste por adulto",
-        dataIndex: "costAdult",
-        key: "costAdult",
-        render: (_, record) => record.costShare * record.shareAdult
-      },
-      {
-        title: "Notas",
-        dataIndex: "notes",
-        key: "notes"
+  ]
+
+  formatNumber = value => parseFloat(Math.round(value * 100) / 100).toFixed(2)
+
+  renderCell = (value, item, column, inputType) => {
+    const { isInvalid, errorMessage } = this.getErrorMessage(column, item.id)
+    const isEditing = this.isEditing(item.id)
+
+    return isEditing ? (
+      <>
+        {inputType === "text" ? (
+          <EuiFieldText
+            name={`foodList.${item.id}.${column}`}
+            value={value}
+            isInvalid={isInvalid}
+            onChange={this.handleChange}
+          />
+        ) : (
+          <EuiFieldNumber
+            min={0}
+            name={`foodList.${item.id}.${column}`}
+            value={value}
+            isInvalid={isInvalid}
+            onChange={this.handleChange}
+          />
+        )}
+
+        {errorMessage}
+      </>
+    ) : (
+      value
+    )
+  }
+
+  getErrorMessage = (field, id) => {
+    const {
+      errors: { foodList }
+    } = this.props
+
+    const isInvalid = foodList && foodList[id] && foodList[id][field] !== undefined
+    const error = foodList && foodList[id] && foodList[id][field]
+    const errorMessage = error && <EuiFormErrorText color="danger">{error}</EuiFormErrorText>
+
+    return { isInvalid, errorMessage }
+  }
+  handleChange = event => {
+    this.props.handleChange(event)
+  }
+
+  isEditing = id => {
+    return this.state.editingId === id
+  }
+
+  edit = id => this.setState({ editingId: id })
+
+  showConfirmation = id => {
+    this.setState({
+      confirmationOpen: {
+        [id]: true
       }
-    ]
-    this.showModal = this.showModal.bind(this)
-    this.handleOk = this.handleOk.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
-  }
-
-  showModal() {
-    this.setState({
-      visibleModal: true
     })
   }
 
-  handleOk() {
+  hideConfirmation = id => {
     this.setState({
-      visibleModal: false
+      confirmationOpen: {
+        [id]: false
+      }
     })
   }
 
-  handleCancel() {
+  onTableChange = ({ page = {}, sort = {} }) => {
+    const { index: pageIndex, size: pageSize } = page
+
+    const { field: sortField, direction: sortDirection } = sort
+
     this.setState({
-      visibleModal: false
+      pageIndex,
+      pageSize,
+      sortField,
+      sortDirection
     })
+  }
+
+  getCellProps = () => {
+    return {
+      textOnly: true
+    }
+  }
+
+  getPageItems = (pageIndex, pageSize, sortField, sortDirection) => {
+    const {
+      values: { foodList }
+    } = this.props
+
+    let copyItems = Object.keys(foodList).map(key => foodList[key])
+
+    let items
+
+    if (sortField) {
+      items = copyItems
+        .slice(0)
+        .sort(Comparators.property(sortField, Comparators.default(sortDirection)))
+    } else {
+      items = copyItems
+    }
+
+    let pageOfItems
+
+    if (!pageIndex && !pageSize) {
+      pageOfItems = items
+    } else {
+      const startIndex = pageIndex * pageSize
+      pageOfItems = items.slice(startIndex, Math.min(startIndex + pageSize, items.length))
+    }
+
+    return {
+      pageOfItems,
+      totalItemCount: items.length
+    }
   }
 
   render() {
-    const { name, items, loading } = this.props
-    const { visibleModal } = this.state
+    const { name } = this.props
+    const { pageIndex, pageSize } = this.state
+
+    let { pageOfItems, totalItemCount } = this.getPageItems(pageIndex, pageSize)
+
+    const pagination = {
+      pageIndex,
+      pageSize,
+      totalItemCount,
+      hidePerPageOptions: true
+    }
 
     return (
-      <div>
-        <h1>{name}</h1>
-        <Button
-          type="dashed"
-          style={{ width: "100%", marginBottom: 8 }}
-          icon="plus"
-          onClick={this.showModal}
-        >
-          Agregar item
-        </Button>
-        <AddItemForm visible={visibleModal} onCancel={this.handleCancel} onOk={this.handleOk} />
-        <Table dataSource={items} loading={loading} columns={this.columns} />
-      </div>
+      <>
+        <EuiTitle>
+          <h2>{name}</h2>
+        </EuiTitle>
+        <EuiBasicTable
+          items={pageOfItems}
+          columns={this.columns}
+          pagination={pagination}
+          onChange={this.onTableChange}
+          hasActions={true}
+          cellProps={this.getCellProps}
+        />
+      </>
     )
   }
 }
+
+FoodList = withFormik({
+  validationSchema: Yup.object().shape({
+    foodList: Yup.lazy(obj =>
+      Yup.object(
+        mapValues(obj, () =>
+          Yup.object({
+            name: Yup.string().required("Requerido"),
+            cost: Yup.number().min(0, "Debe ser mayor a 0"),
+            shareKid: Yup.number().min(0, "Debe ser mayor a 0"),
+            shareAdult: Yup.number().min(0, "Debe ser mayor a 0")
+          })
+        )
+      )
+    )
+  }),
+  mapPropsToValues: ({ items }) => {
+    return items && items.length !== 0
+      ? {
+          foodList: items.reduce((acc, food) => {
+            acc[food.id] = food
+            return acc
+          }, {})
+        }
+      : { foodList: [] }
+  },
+  displayName: "foodList"
+})(FoodList)
+
+FoodList = connect()(FoodList)
 
 export default FoodList

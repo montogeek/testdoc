@@ -26,7 +26,7 @@ function Page(props) {
         </EuiPageHeaderSection>
         {props.titleRight && <EuiPageHeaderSection>{props.titleRight}</EuiPageHeaderSection>}
       </EuiPageHeader>
-      {props.children}
+      {typeof props.children === "function" ? props.children() : props.children}
     </>
   )
 }

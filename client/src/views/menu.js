@@ -1,32 +1,47 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Table } from "antd"
+
+import { getEvents } from "../redux/actions/events"
 import FoodList from "../components/menu/foodlist"
 import OtherList from "../components/menu/otherlist"
+import Page from "../components/Page"
 
 class Menu extends Component {
+  componentDidMount() {
+    const { getEvents } = this.props
+    getEvents()
+  }
+
   render() {
     const { event, loading } = this.props
 
-    if (!event) return "loading"
-
     return (
-      <div className="rounded shadow bg-white max-w-4xl p-6 my-6">
-        <FoodList {...event.menu.food} />
+      <Page title="Menu" loading={!event}>
+        {() => (
+          <>
+            <FoodList {...event.menu.food} totalKids={event.kids} totalAdults={event.adults} />
 
-        {event.menu.other.map(category => {
-          return <OtherList loading={loading} {...category} />
-        })}
-      </div>
+            {/* {event.menu.other.map(category => {
+              return <OtherList loading={loading} {...category} />
+            })} */}
+          </>
+        )}
+      </Page>
     )
   }
 }
 
-export default connect(({ events }, props) => {
-  const event = events.data.find(event => event.id === parseInt(props.match.params.id, 10))
+export default connect(
+  ({ events }, props) => {
+    const event = events.data.find(event => event.id === parseInt(props.match.params.id, 10))
 
-  return {
-    event: event,
-    loading: events.loading
+    return {
+      event: event,
+      loading: events.loading
+    }
+  },
+  {
+    getEvents
   }
-})(Menu)
+)(Menu)
