@@ -1,6 +1,7 @@
 import React from "react"
 import { withFormik } from "formik"
 import { connect } from "react-redux"
+import { push } from "connected-react-router"
 import {
   EuiForm,
   EuiCallOut,
@@ -12,10 +13,12 @@ import {
   EuiFlexGroup,
   EuiFlexItem
 } from "@elastic/eui"
+import * as Yup from "yup"
 
 import { ReactComponent as AssistantCreateIllustration } from "../../styles/illustrations/undraw_team_spirit_hrr4.svg"
 import Page from "../Page"
 import { addAssistant } from "../../redux/actions/assistants"
+import { dispatch } from "rxjs/internal/observable/range"
 
 const DisplayFormikState = props => (
   <div style={{ margin: "1rem 0" }}>
@@ -227,6 +230,19 @@ let AssistantCreate = props => {
 }
 
 AssistantCreate = withFormik({
+  validationSchema: Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    address: Yup.string().required("Requerido"),
+    city: Yup.string().required("Requerido"),
+    state: Yup.string().required("Requerido"),
+    zip: Yup.number().required("Requerido"),
+    phonenumber: Yup.number().required("Requerido"),
+    email: Yup.string()
+      .email("Email invalido")
+      .required("Requerido"),
+    kids: Yup.number().min(0, "Debe ser mayor a 0"),
+    adults: Yup.number().min(0, "Debe ser mayor a 0")
+  }),
   mapPropsToValues: () => ({
     name: "",
     address: "",
@@ -243,8 +259,7 @@ AssistantCreate = withFormik({
     props
       .addAssistant(values, props.match.params.id)
       .then(() => {
-        console.log("all good")
-        // props.push("/dashboard")
+        props.push(`/event/${props.match.params.id}/assistants`)
       })
       .catch(e => {
         setSubmitting(false)
@@ -257,7 +272,8 @@ AssistantCreate = withFormik({
 
 export default connect(
   null,
-  {
-    addAssistant
-  }
+  dispatch => ({
+    addAssistant: (data, id) => dispatch(addAssistant(data, id)),
+    push: path => dispatch(push(path))
+  })
 )(AssistantCreate)
