@@ -19,7 +19,10 @@ import {
   ADD_ASSISTANT_FAILURE,
   ADD_ITEM_REQUEST,
   ADD_ITEM_SUCCESS,
-  ADD_ITEM_FAILURE
+  ADD_ITEM_FAILURE,
+  UPDATE_ITEM_REQUEST,
+  UPDATE_ITEM_SUCCESS,
+  UPDATE_ITEM_FAILURE
 } from "../constants"
 
 const initialState = {
@@ -189,6 +192,65 @@ export default function events(state = initialState, action) {
       }
 
     case ADD_ITEM_FAILURE:
+      return { ...state, loading: action.loading, error: action.error }
+
+    case UPDATE_ITEM_REQUEST:
+      return { ...state, loading: action.loading }
+
+    case UPDATE_ITEM_SUCCESS:
+      return {
+        ...state,
+        loading: action.loading,
+        data: state.data.map(event => {
+          if (event.id === action.data.event_id) {
+            if (action.data.category_id === 1) {
+              return {
+                ...event,
+                menu: {
+                  ...event.menu,
+                  food: {
+                    ...event.menu.food,
+                    items: event.menu.food.items.map(item => {
+                      if (item.id === action.data.id) {
+                        return {
+                          ...item,
+                          ...action.data
+                        }
+                      }
+
+                      return item
+                    })
+                  }
+                }
+              }
+            } else {
+              return {
+                ...event,
+                menu: {
+                  ...event.menu,
+                  other: {
+                    ...event.menu.other,
+                    items: event.menu.other.items.map(item => {
+                      if (item.id === action.data.id) {
+                        return {
+                          ...item,
+                          ...action.data
+                        }
+                      }
+
+                      return item
+                    })
+                  }
+                }
+              }
+            }
+          }
+
+          return event
+        })
+      }
+
+    case UPDATE_ITEM_FAILURE:
       return { ...state, loading: action.loading, error: action.error }
 
     default:

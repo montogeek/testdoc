@@ -167,6 +167,7 @@ Route::middleware('auth:api')->put('/assistants/{id}', 'AssistantController@upda
 Route::middleware('auth:api')->delete('/assistants/{id}', 'AssistantController@destroy');
 
 Route::middleware('auth:api')->post('/items', 'MenuController@store');
+Route::middleware("auth:api")->put('/items/{id}', "MenuController@update");
 
 
 Route::middleware('auth:api')->post('/logout', 'LoginController@logout')->name('logout');

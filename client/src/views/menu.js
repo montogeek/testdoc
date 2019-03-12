@@ -10,8 +10,6 @@ class Menu extends Component {
   componentDidMount() {
     const { getEvents, event } = this.props
 
-    console.log(event)
-
     if (typeof event === "undefined") {
       getEvents()
     }

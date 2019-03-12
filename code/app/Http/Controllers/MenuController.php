@@ -81,9 +81,20 @@ class MenuController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Item $item)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $item = Item::find($id);
+        $item->name = $data['name'];
+        $item->cost = $data['cost'];
+        $item->shareKid = $data['shareKid'];
+        $item->shareAdult = $data['shareAdult'];
+        $item->notes = $data['notes'];
+
+        $item->save();
+
+        return $item;
     }
 
     /**

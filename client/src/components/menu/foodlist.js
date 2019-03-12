@@ -16,6 +16,8 @@ import * as Yup from "yup"
 import { withFormik } from "formik"
 import { mapValues } from "lodash"
 
+import { updateItem } from "../../redux/actions/items"
+
 let FoodList = class FoodList extends Component {
   state = {
     pageIndex: 0,
@@ -57,10 +59,6 @@ let FoodList = class FoodList extends Component {
       name: "Costo por racion",
       field: "costShare",
       render: (value, item) =>
-        console.log(
-          item.cost /
-            (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)
-        ) ||
         this.formatNumber(
           item.cost /
             (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)
@@ -105,8 +103,8 @@ let FoodList = class FoodList extends Component {
                 fill
                 isDisabled={!isValid}
                 onClick={() => {
-                  // this.props.setFieldValue("id", item.id, false)
-                  // this.props.handleSubmit()
+                  this.props.setFieldValue("id", item.id, false)
+                  this.props.handleSubmit()
 
                   this.setState({ editingId: null })
                 }}
@@ -346,9 +344,19 @@ FoodList = withFormik({
         }
       : { foodList: [] }
   },
+  handleSubmit: (values, { props, setSubmitting }) => {
+    const item = values.foodList[values.id]
+    props.updateItem(item)
+    setSubmitting(false)
+  },
   displayName: "foodList"
 })(FoodList)
 
-FoodList = connect()(FoodList)
+FoodList = connect(
+  null,
+  {
+    updateItem
+  }
+)(FoodList)
 
 export default FoodList
