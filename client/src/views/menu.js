@@ -8,18 +8,33 @@ import Page from "../components/Page"
 
 class Menu extends Component {
   componentDidMount() {
-    const { getEvents } = this.props
-    getEvents()
+    const { getEvents, event } = this.props
+
+    console.log(event)
+
+    if (typeof event === "undefined") {
+      getEvents()
+    }
   }
 
   render() {
-    const { event, loading, match: { params } } = this.props
+    const {
+      event,
+      loading,
+      match: { params }
+    } = this.props
 
     return (
       <Page title="Menu" loading={!event}>
         {() => (
           <>
-            <FoodList {...event.menu.food} id={params.id} totalKids={event.kids} totalAdults={event.adults} />
+            <FoodList
+              {...event.menu.food}
+              categoryId={event.menu.food.id}
+              eventId={params.id}
+              totalKids={event.kids}
+              totalAdults={event.adults}
+            />
 
             {event.menu.other.map((category, index) => {
               return <OtherList key={index} loading={loading} {...category} />

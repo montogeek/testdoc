@@ -282,10 +282,9 @@ let FoodList = class FoodList extends Component {
   render() {
     const {
       name,
-      id
+      eventId,
+      categoryId
     } = this.props
-
-    console.log(this.props)
 
     const { pageIndex, pageSize } = this.state
 
@@ -303,7 +302,7 @@ let FoodList = class FoodList extends Component {
         <EuiTitle>
           <h2>{name}</h2>
         </EuiTitle>
-        <Link to={`/event/${id}/menu/create`}>
+        <Link to={`/event/${eventId}/menu/create`}>
           <EuiButton color="primary" fill>
             Agregar item
           </EuiButton>

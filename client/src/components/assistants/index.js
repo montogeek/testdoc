@@ -268,8 +268,11 @@ let Assistants = class Assistants extends Component {
   ]
 
   componentDidMount() {
-    const { getEvents } = this.props
-    getEvents()
+    const { getEvents, event } = this.props
+
+    if (typeof event === "undefined") {
+      getEvents()
+    }
   }
 
   getErrorMessage = (field, id) => {
@@ -362,10 +365,10 @@ let Assistants = class Assistants extends Component {
   }
 
   render() {
-    const { event } = this.props
+    const { event, loading } = this.props
     const { pageIndex, pageSize } = this.state
 
-    if (!event) return null
+    // if (!event) return null
 
     let { pageOfItems, totalItemCount } = this.getPageItems(pageIndex, pageSize)
 
@@ -377,13 +380,17 @@ let Assistants = class Assistants extends Component {
     }
 
     return (
-      <Page loading={!event} title="Asistentes" titleRight={
-        <Link to={`/event/${event.id}/assistants/create`}>
-          <EuiButton color="primary" fill>
-            Agregar asistente
-          </EuiButton>
-        </Link>
-      }>
+      <Page
+        loading={!event}
+        title="Asistentes"
+        titleRight={() => (
+          <Link to={`/event/${event.id}/assistants/create`}>
+            <EuiButton color="primary" fill>
+              Agregar asistente
+            </EuiButton>
+          </Link>
+        )}
+      >
         <EuiBasicTable
           items={pageOfItems}
           columns={this.columns}

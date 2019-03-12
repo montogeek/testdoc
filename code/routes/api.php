@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 /*
@@ -31,8 +32,9 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 
         // Racion * (Coste total / Total de raciones)
         $adults = round($item->shareAdult * ($item->cost / max($shareTotal, 1)), 2);
-        $kids = number_format($item->shareKid * ($item->cost / max($shareTotal, 1)), 2);
+        $kids = round(number_format($item->shareKid * ($item->cost / max($shareTotal, 1)), 2), 2);
 
+        
         return [
             'adults' => $adults,
             'kids' => $kids
@@ -46,7 +48,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         ];
     };
 
-    $data = $request->user()->events("items.category", "categories.items")->where('id', '=', 25)->get()->sortBy('startDate')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
+    $data = $request->user()->events("items.category", "categories.items")->get()->sortBy('startDate')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
         $foodShare = $event->items->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
             return $calculateShare($item, $event);
         })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
@@ -58,8 +60,6 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         $budget = $event->categories->values()->map(function ($category) use ($event) {
             $budget = $category->budget->budget;
             $cost = $category->items()->where("event_id", "=", $event->id)->sum('cost');
-
-
 
             return [
                 'name' => $category->name,
@@ -125,16 +125,16 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             return $item;
         });
 
-        $otherMenu = $event->items->where('category.name', '!==', 'Comida y bebidas')->sortBy('category.id')->groupBy('category.name')->values()->map(function ($items) {
-            return [
-                'id' => $items[0]->category->id,
-                'name' => $items[0]->category->name,
-                'items' => $items
-            ];
+
+        $otherMenu = Category::where('name', '!=', 'Comida y bebidas')->get()->values()->map(function ($category) use ($event) {
+           return [
+               'id' => $category->id,
+               'name' => $category->name,
+               'items' => $event->items->where('category.id', "=", $category->id)->values()->toArray()
+           ];
         });
-//
-//        // $event['categories'] = $event->categories;
-//
+
+
         $event['summary'] = [
             'assistants' => [$adults, $kids, $total],
             'budget' => $budget->push($budgetTotal)
@@ -142,21 +142,15 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 
         $event['assistants'] = $event->assistants;
 
-        if ($foodMenu->isNotEmpty()) {
-            $event['menu'] = [
-                'food' => [
-                    'id' => $foodItems[0]->category->id,
-                    'name' => $foodItems[0]->category->name,
-                    'items' => $foodMenu,
-                ],
-                'other' => $otherMenu
-            ];
-        } else {
-            $event['menu'] = [
-                'food' => [],
-                'other' => []
-            ];
-        }
+
+        $event['menu'] = [
+            'food' => [
+                'id' => 1,
+                'name' => "Comidas y bebidas",
+                'items' => $foodMenu->isEmpty() ? [] : $foodMenu,
+            ],
+            'other' => $otherMenu
+        ];
 
         return $event;
     });

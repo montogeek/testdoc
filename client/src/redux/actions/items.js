@@ -13,9 +13,17 @@ export function addItem(data, event_id, category_id) {
         }
       })
 
-      return dispatch({ type: ADD_ITEM_SUCCESS, loading: false, data: await res.json() })
+      if (res.ok) {
+        return dispatch({ type: ADD_ITEM_SUCCESS, loading: false, data: await res.json() })
+      }
+
+      throw res
     } catch (e) {
-      return dispatch({ type: ADD_ITEM_FAILURE, loading: false, error: e })
+      const error = await e.json()
+
+      dispatch({ type: ADD_ITEM_FAILURE, loading: false, error: error.message })
+
+      throw e
     }
   }
 }

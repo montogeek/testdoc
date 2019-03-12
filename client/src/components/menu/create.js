@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { withFormik } from "formik"
 import { connect } from "react-redux"
 import { push } from "connected-react-router"
@@ -17,6 +17,7 @@ import * as Yup from "yup"
 import { ReactComponent as AssistantCreateIllustration } from "../../styles/illustrations/undraw_team_spirit_hrr4.svg"
 import Page from "../Page"
 import { addItem } from "../../redux/actions/items"
+import { getEvents } from "../../redux/actions/events"
 
 const DisplayFormikState = props => (
   <div style={{ margin: "1rem 0" }}>
@@ -45,11 +46,19 @@ let MenuItemCreate = props => {
     handleBlur,
     handleSubmit,
     loading,
-    setValues
+    setValues,
+    getEvents,
+    categoryId
   } = props
 
+  useEffect(() => {
+    if (categoryId === null) {
+      getEvents()
+    }
+  }, [])
+
   return (
-    <Page title="Agregar item">
+    <Page title="Agregar item" loading={loading}>
       <EuiFlexGroup>
         <EuiFlexItem>
           <EuiForm>
@@ -165,7 +174,7 @@ MenuItemCreate = withFormik({
     cost: Yup.number().min(0, "Debe ser mayor a 0"),
     shareKid: Yup.number().min(0, "Debe ser mayor a 0"),
     shareAdult: Yup.number().min(0, "Debe ser mayor a 0"),
-    notes: Yup.string().required("Requerido"),
+    notes: Yup.string().required("Requerido")
   }),
   mapPropsToValues: () => ({
     name: "",
@@ -176,13 +185,13 @@ MenuItemCreate = withFormik({
   }),
   handleSubmit: (values, { props, setSubmitting, setStatus, setErrors }) => {
     props
-      .addItem(values, props.match.params.id, 1)
+      .addItem(values, props.match.params.id, props.categoryId)
       .then(() => {
         props.push(`/event/${props.match.params.id}/menu`)
       })
       .catch(e => {
         setSubmitting(false)
-        setStatus({ error: "Error agregando invitado" })
+        setStatus({ error: "Error agregando item" })
         setErrors(e)
       })
   },
@@ -190,9 +199,17 @@ MenuItemCreate = withFormik({
 })(MenuItemCreate)
 
 export default connect(
-  null,
+  ({ events }, props) => {
+    const event = events.data.find(event => event.id === parseInt(props.match.params.id, 10))
+
+    return {
+      loading: events.loading,
+      categoryId: event ? event.menu.food.id : null
+    }
+  },
   dispatch => ({
-    addItem: (data, id, category_id) => dispatch(addItem(data, id, category_id)),
-    push: path => dispatch(push(path))
+    addItem: (data, id, categoryId) => dispatch(addItem(data, id, categoryId)),
+    push: path => dispatch(push(path)),
+    getEvents: () => dispatch(getEvents())
   })
 )(MenuItemCreate)
