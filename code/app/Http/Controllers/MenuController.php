@@ -103,8 +103,12 @@ class MenuController extends Controller
      * @param  \App\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy($id)
     {
-        //
+        $item = Item::find($id);
+
+        $item->delete();
+
+        return response()->json([], 200);
     }
 }

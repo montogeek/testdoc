@@ -16,7 +16,7 @@ import * as Yup from "yup"
 import { withFormik } from "formik"
 import { mapValues } from "lodash"
 
-import { updateItem } from "../../redux/actions/items"
+import { updateItem, removeItem } from "../../redux/actions/items"
 
 let FoodList = class FoodList extends Component {
   state = {
@@ -143,7 +143,11 @@ let FoodList = class FoodList extends Component {
                       title="¿Eliminar item?"
                       onCancel={() => this.hideConfirmation(item.id)}
                       onConfirm={() => {
-                        // this.props.removeAssistant(item.id, this.props.event.id)
+                        this.props.removeItem(
+                          item.id,
+                          parseInt(this.props.eventId, 10),
+                          this.props.categoryId
+                        )
                       }}
                       cancelButtonText="Cancelar"
                       confirmButtonText="Confirmar"
@@ -349,13 +353,15 @@ FoodList = withFormik({
     props.updateItem(item)
     setSubmitting(false)
   },
+  enableReinitialize: true,
   displayName: "foodList"
 })(FoodList)
 
 FoodList = connect(
   null,
   {
-    updateItem
+    updateItem,
+    removeItem
   }
 )(FoodList)
 

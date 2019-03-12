@@ -365,7 +365,7 @@ let Assistants = class Assistants extends Component {
   }
 
   render() {
-    const { event, loading } = this.props
+    const { event } = this.props
     const { pageIndex, pageSize } = this.state
 
     let { pageOfItems, totalItemCount } = this.getPageItems(pageIndex, pageSize)
@@ -379,7 +379,7 @@ let Assistants = class Assistants extends Component {
 
     return (
       <Page
-        loading={loading}
+        loading={!event}
         title="Asistentes"
         titleRight={() => (
           <Link to={`/event/${event.id}/assistants/create`}>

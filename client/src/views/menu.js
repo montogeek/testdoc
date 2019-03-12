@@ -22,6 +22,8 @@ class Menu extends Component {
       match: { params }
     } = this.props
 
+    // console.log("Menu", event.menu.food.items.length)
+
     return (
       <Page title="Menu" loading={!event}>
         {() => (

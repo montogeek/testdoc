@@ -22,7 +22,9 @@ import {
   ADD_ITEM_FAILURE,
   UPDATE_ITEM_REQUEST,
   UPDATE_ITEM_SUCCESS,
-  UPDATE_ITEM_FAILURE
+  UPDATE_ITEM_FAILURE,
+  REMOVE_ITEM_REQUEST,
+  REMOVE_ITEM_SUCCESS
 } from "../constants"
 
 const initialState = {
@@ -252,6 +254,44 @@ export default function events(state = initialState, action) {
 
     case UPDATE_ITEM_FAILURE:
       return { ...state, loading: action.loading, error: action.error }
+
+    case REMOVE_ITEM_REQUEST:
+      return { ...state, loading: action.loading }
+
+    case REMOVE_ITEM_SUCCESS:
+      return {
+        ...state,
+        loading: action.loading,
+        data: state.data.map(event => {
+          if (event.id === action.data.eventId) {
+            if (action.data.categoryId === 1) {
+              return {
+                ...event,
+                menu: {
+                  ...event.menu,
+                  food: {
+                    ...event.menu.food,
+                    items: event.menu.food.items.filter(item => item.id !== action.data.id)
+                  }
+                }
+              }
+            } else {
+              return {
+                ...event,
+                menu: {
+                  ...event.menu,
+                  other: {
+                    ...event.menu.other,
+                    items: event.menu.other.items.filter(item => item.id !== action.data.id)
+                  }
+                }
+              }
+            }
+          }
+
+          return event
+        })
+      }
 
     default:
       return state
