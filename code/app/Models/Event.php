@@ -27,7 +27,7 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function assistant()
+    public function assistants()
     {
         return $this->hasMany(Assistant::class);
     }
@@ -54,14 +54,14 @@ class Event extends Model
 
     public function getKidsAttribute()
     {
-        return $this->assistant->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
+        return $this->assistants->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
             return $carry + $assistant->kids;
         }, 0);
     }
 
     public function getAdultsAttribute()
     {
-        return $this->assistant->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
+        return $this->assistants->where('rsvp', '=', true)->reduce(function ($carry, $assistant) {
             return $carry + $assistant->adults;
         }, 0);
     }

@@ -46,7 +46,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         ];
     };
 
-    $data = $request->user()->events("items.category", "categories.items")->get()->sortBy('startDate')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
+    $data = $request->user()->events("items.category", "categories.items")->where('id', '=', 25)->get()->sortBy('startDate')->values()->map(function ($event) use ($sumTotal, $calculateShare) {
         $foodShare = $event->items->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
             return $calculateShare($item, $event);
         })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
@@ -125,7 +125,6 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             return $item;
         });
 
-
         $otherMenu = $event->items->where('category.name', '!==', 'Comida y bebidas')->sortBy('category.id')->groupBy('category.name')->values()->map(function ($items) {
             return [
                 'id' => $items[0]->category->id,
@@ -141,7 +140,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
             'budget' => $budget->push($budgetTotal)
         ];
 
-        $event['assistants'] = $event->assistant;
+        $event['assistants'] = $event->assistants;
 
         if ($foodMenu->isNotEmpty()) {
             $event['menu'] = [
@@ -171,6 +170,8 @@ Route::middleware('auth:api')->put('/events/{id}', 'EventController@update');
 Route::middleware('auth:api')->post('/assistants', 'AssistantController@store');
 Route::middleware('auth:api')->put('/assistants/{id}', 'AssistantController@update');
 Route::middleware('auth:api')->delete('/assistants/{id}', 'AssistantController@destroy');
+
+Route::middleware('auth:api')->post('/items', 'MenuController@store');
 
 
 Route::middleware('auth:api')->post('/logout', 'LoginController@logout')->name('logout');

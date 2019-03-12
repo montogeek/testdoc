@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Table } from "antd"
 
 import { getEvents } from "../redux/actions/events"
 import FoodList from "../components/menu/foodlist"
@@ -14,17 +13,17 @@ class Menu extends Component {
   }
 
   render() {
-    const { event, loading } = this.props
+    const { event, loading, match: { params } } = this.props
 
     return (
       <Page title="Menu" loading={!event}>
         {() => (
           <>
-            <FoodList {...event.menu.food} totalKids={event.kids} totalAdults={event.adults} />
+            <FoodList {...event.menu.food} id={params.id} totalKids={event.kids} totalAdults={event.adults} />
 
-            {/* {event.menu.other.map(category => {
-              return <OtherList loading={loading} {...category} />
-            })} */}
+            {event.menu.other.map((category, index) => {
+              return <OtherList key={index} loading={loading} {...category} />
+            })}
           </>
         )}
       </Page>

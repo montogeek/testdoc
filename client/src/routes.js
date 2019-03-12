@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard"
 import Assistants from "./components/assistants"
 import AssistantCreate from "./components/assistants/create"
 import Menu from "./views/menu"
+import MenuItemCreate from "./components/menu/create";
 import Home from "./pages/Home"
 
 const routes = [
@@ -35,14 +36,19 @@ const routes = [
     component: PrivateRoute(Assistants)
   },
   {
+    path: "/event/:id/assistants/create",
+    exact: true,
+    component: PrivateRoute(AssistantCreate)
+  },
+  {
     path: "/event/:id/menu",
     exact: true,
     component: PrivateRoute(Menu)
   },
   {
-    path: "/event/:id/assistants/create",
+    path: "/event/:id/menu/create",
     exact: true,
-    component: PrivateRoute(AssistantCreate)
+    component: PrivateRoute(MenuItemCreate)
   },
   {
     path: "*",

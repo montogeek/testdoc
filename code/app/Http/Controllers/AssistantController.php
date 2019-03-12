@@ -51,7 +51,7 @@ class AssistantController extends Controller
         $assistant->kids = $data['kids'];
         $assistant->adults = $data['adults'];
 
-        $event->assistant()->save($assistant);
+        $event->assistants()->save($assistant);
 
         return $assistant;
     }
