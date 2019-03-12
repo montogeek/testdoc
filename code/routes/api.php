@@ -34,7 +34,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         $adults = round($item->shareAdult * ($item->cost / max($shareTotal, 1)), 2);
         $kids = round(number_format($item->shareKid * ($item->cost / max($shareTotal, 1)), 2), 2);
 
-        
+
         return [
             'adults' => $adults,
             'kids' => $kids
@@ -52,6 +52,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
         $foodShare = $event->items->where('category_id', '=', 1)->values()->map(function ($item) use ($calculateShare, $event) {
             return $calculateShare($item, $event);
         })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
+
 
         $otherShare = $event->items->where('category_id', '!=', 1)->groupBy('category_id')->values()->map(function ($items) {
             return $items->sum('cost');

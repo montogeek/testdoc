@@ -57,6 +57,10 @@ let FoodList = class FoodList extends Component {
       name: "Costo por racion",
       field: "costShare",
       render: (value, item) =>
+        console.log(
+          item.cost /
+            (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)
+        ) ||
         this.formatNumber(
           item.cost /
             (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)
@@ -158,7 +162,8 @@ let FoodList = class FoodList extends Component {
     }
   ]
 
-  formatNumber = value => parseFloat(Math.round(value * 100) / 100).toFixed(2)
+  formatNumber = value =>
+    value === Infinity ? 0 : parseFloat(Math.round(value * 100) / 100).toFixed(2)
 
   renderCell = (value, item, column, inputType) => {
     const { isInvalid, errorMessage } = this.getErrorMessage(column, item.id)
@@ -280,11 +285,7 @@ let FoodList = class FoodList extends Component {
   }
 
   render() {
-    const {
-      name,
-      eventId,
-      categoryId
-    } = this.props
+    const { name, eventId } = this.props
 
     const { pageIndex, pageSize } = this.state
 
