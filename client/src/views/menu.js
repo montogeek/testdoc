@@ -39,9 +39,9 @@ class Menu extends Component {
                 <OtherList
                   key={index}
                   loading={loading}
-                  items={category.items}
                   categoryId={category.id}
                   eventId={params.id}
+                  {...category}
                 />
               )
             })}

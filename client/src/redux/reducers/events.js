@@ -180,10 +180,16 @@ export default function events(state = initialState, action) {
                 ...event,
                 menu: {
                   ...event.menu,
-                  other: {
-                    ...event.menu.other,
-                    items: [action.data, ...event.menu.food.other]
-                  }
+                  other: event.menu.other.map(category => {
+                    if (category.id === action.data.category_id) {
+                      return {
+                        ...category,
+                        items: [action.data, ...category.items]
+                      }
+                    }
+
+                    return category
+                  })
                 }
               }
             }

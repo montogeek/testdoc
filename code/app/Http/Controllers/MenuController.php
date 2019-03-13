@@ -46,6 +46,7 @@ class MenuController extends Controller
         $item->shareAdult = $data['shareAdult'];
         $item->notes = $data['notes'];
         $item->category_id = $data['category_id'];
+        $item->bought = $data['bought'];
 
         $event->items()->save($item);
 

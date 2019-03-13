@@ -10,7 +10,8 @@ import {
   EuiButton,
   EuiFieldNumber,
   EuiFlexGroup,
-  EuiFlexItem
+  EuiFlexItem,
+  EuiCheckbox
 } from "@elastic/eui"
 import * as Yup from "yup"
 
@@ -46,10 +47,12 @@ let MenuItemCreate = props => {
     handleBlur,
     handleSubmit,
     loading,
-    setValues,
     getEvents,
-    categoryId
+    categoryId,
+    location: { state }
   } = props
+
+  const otherCategory = state && state.category !== 1
 
   useEffect(() => {
     if (categoryId === null) {
@@ -95,48 +98,81 @@ let MenuItemCreate = props => {
                   isInvalid={!isValid && errors.name && touched.name}
                 />
               </EuiFormRow>
-              <EuiFormRow
-                label="Coste total"
-                isInvalid={!isValid && errors.cost && touched.cost}
-                error={errors.cost}
-                id="cost"
-              >
-                <EuiFieldNumber
-                  min={0}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  values={values.cost}
-                  isInvalid={!isValid && errors.cost && touched.cost}
-                />
-              </EuiFormRow>
-              <EuiFormRow
-                label="Racion por niño"
-                isInvalid={!isValid && errors.shareKid && touched.shareKid}
-                error={errors.shareKid}
-                id="shareKid"
-              >
-                <EuiFieldNumber
-                  min={0}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  values={values.shareKid}
-                  isInvalid={!isValid && errors.shareKid && touched.shareKid}
-                />
-              </EuiFormRow>
-              <EuiFormRow
-                label="Racion por adulto"
-                isInvalid={!isValid && errors.shareAdult && touched.shareAdult}
-                error={errors.shareAdult}
-                id="shareAdult"
-              >
-                <EuiFieldNumber
-                  min={0}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  values={values.shareAdult}
-                  isInvalid={!isValid && errors.shareAdult && touched.shareAdult}
-                />
-              </EuiFormRow>
+              {otherCategory ? (
+                <>
+                  <EuiFormRow
+                    label="Coste"
+                    isInvalid={!isValid && errors.cost && touched.cost}
+                    error={errors.cost}
+                    id="cost"
+                  >
+                    <EuiFieldNumber
+                      min={0}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      values={values.cost}
+                      isInvalid={!isValid && errors.cost && touched.cost}
+                    />
+                  </EuiFormRow>
+                  <EuiFormRow
+                    label="Comprado"
+                    isInvalid={!isValid && errors.bought && touched.bought}
+                    error={errors.bought}
+                    id="bought"
+                  >
+                    <EuiCheckbox
+                      id={"bought"}
+                      checked={Boolean(values.bought)}
+                      onChange={handleChange}
+                    />
+                  </EuiFormRow>
+                </>
+              ) : (
+                <>
+                  <EuiFormRow
+                    label="Coste total"
+                    isInvalid={!isValid && errors.cost && touched.cost}
+                    error={errors.cost}
+                    id="cost"
+                  >
+                    <EuiFieldNumber
+                      min={0}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      values={values.cost}
+                      isInvalid={!isValid && errors.cost && touched.cost}
+                    />
+                  </EuiFormRow>
+                  <EuiFormRow
+                    label="Racion por niño"
+                    isInvalid={!isValid && errors.shareKid && touched.shareKid}
+                    error={errors.shareKid}
+                    id="shareKid"
+                  >
+                    <EuiFieldNumber
+                      min={0}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      values={values.shareKid}
+                      isInvalid={!isValid && errors.shareKid && touched.shareKid}
+                    />
+                  </EuiFormRow>
+                  <EuiFormRow
+                    label="Racion por adulto"
+                    isInvalid={!isValid && errors.shareAdult && touched.shareAdult}
+                    error={errors.shareAdult}
+                    id="shareAdult"
+                  >
+                    <EuiFieldNumber
+                      min={0}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      values={values.shareAdult}
+                      isInvalid={!isValid && errors.shareAdult && touched.shareAdult}
+                    />
+                  </EuiFormRow>
+                </>
+              )}
               <EuiFormRow
                 label="Notas"
                 isInvalid={!isValid && errors.notes && touched.notes}
@@ -169,16 +205,30 @@ let MenuItemCreate = props => {
 }
 
 MenuItemCreate = withFormik({
-  validationSchema: Yup.object().shape({
-    name: Yup.string().required("Requerido"),
-    cost: Yup.number().min(0, "Debe ser mayor a 0"),
-    shareKid: Yup.number().min(0, "Debe ser mayor a 0"),
-    shareAdult: Yup.number().min(0, "Debe ser mayor a 0"),
-    notes: Yup.string().required("Requerido")
-  }),
+  validationSchema: ({ location: { state } }) => {
+    if (state && state.category !== 1) {
+      return Yup.object().shape({
+        name: Yup.string().required("Requerido"),
+        cost: Yup.number()
+          .typeError("Debe ser un numero")
+          .min(0, "Debe ser mayor a 0"),
+        bought: Yup.boolean(),
+        notes: Yup.string().required("Requerido")
+      })
+    }
+
+    return Yup.object().shape({
+      name: Yup.string().required("Requerido"),
+      cost: Yup.number().min(0, "Debe ser mayor a 0"),
+      shareKid: Yup.number().min(0, "Debe ser mayor a 0"),
+      shareAdult: Yup.number().min(0, "Debe ser mayor a 0"),
+      notes: Yup.string().required("Requerido")
+    })
+  },
   mapPropsToValues: () => ({
     name: "",
     cost: null,
+    bought: false,
     shareKid: null,
     shareAdult: null,
     notes: ""
@@ -199,12 +249,17 @@ MenuItemCreate = withFormik({
 })(MenuItemCreate)
 
 export default connect(
-  ({ events }, props) => {
-    const event = events.data.find(event => event.id === parseInt(props.match.params.id, 10))
+  ({ events }, { match: { params }, location: { state } }) => {
+    const event = events.data.find(event => event.id === parseInt(params.id, 10))
+    const otherCategory = state && state.category !== 1
 
     return {
       loading: events.loading,
-      categoryId: event ? event.menu.food.id : null
+      categoryId: event
+        ? otherCategory
+          ? event.menu.other.find(cat => cat.id === state.category).id
+          : event.menu.food.id
+        : null
     }
   },
   dispatch => ({

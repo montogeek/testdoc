@@ -9,7 +9,10 @@ import {
   EuiConfirmModal,
   EuiOverlayMask,
   EuiTitle,
-  EuiIcon
+  EuiIcon,
+  EuiSpacer,
+  EuiFlexGroup,
+  EuiFlexItem
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -259,7 +262,7 @@ let OthersList = class OthersList extends Component {
   }
 
   render() {
-    const { name, items, loading, eventId } = this.props
+    const { name, items, loading, eventId, categoryId } = this.props
 
     const { pageIndex, pageSize } = this.state
 
@@ -274,14 +277,26 @@ let OthersList = class OthersList extends Component {
 
     return (
       <>
-        <EuiTitle>
-          <h2>{name}</h2>
-        </EuiTitle>
-        <Link to={`/event/${eventId}/menu/create`}>
-          <EuiButton color="primary" fill>
-            Agregar item
-          </EuiButton>
-        </Link>
+        <EuiFlexGroup alignItems={"center"}>
+          <EuiFlexItem grow={false}>
+            <EuiTitle>
+              <h2>{name}</h2>
+            </EuiTitle>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <Link to={{
+              pathname: `/event/${eventId}/menu/create`,
+              state: {
+                category: categoryId
+              }
+            }}>
+              <EuiButton color="primary" fill size="s">
+                Agregar item
+              </EuiButton>
+            </Link>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+        <EuiSpacer size="m" />
         <EuiBasicTable
           items={pageOfItems}
           columns={this.columns}
@@ -290,6 +305,7 @@ let OthersList = class OthersList extends Component {
           hasActions={true}
           cellProps={this.getCellProps}
         />
+        <EuiSpacer size="xxl" />
       </>
     )
   }
