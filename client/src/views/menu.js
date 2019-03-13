@@ -22,8 +22,6 @@ class Menu extends Component {
       match: { params }
     } = this.props
 
-    // console.log("Menu", event.menu.food.items.length)
-
     return (
       <Page title="Menu" loading={!event}>
         {() => (
@@ -37,7 +35,15 @@ class Menu extends Component {
             />
 
             {event.menu.other.map((category, index) => {
-              return <OtherList key={index} loading={loading} {...category} />
+              return (
+                <OtherList
+                  key={index}
+                  loading={loading}
+                  items={category.items}
+                  categoryId={category.id}
+                  eventId={params.id}
+                />
+              )
             })}
           </>
         )}

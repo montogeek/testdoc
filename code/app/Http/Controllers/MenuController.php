@@ -91,6 +91,7 @@ class MenuController extends Controller
         $item->shareKid = $data['shareKid'];
         $item->shareAdult = $data['shareAdult'];
         $item->notes = $data['notes'];
+        $item->bought = $data['bought'];
 
         $item->save();
 

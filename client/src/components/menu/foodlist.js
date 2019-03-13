@@ -48,6 +48,11 @@ let FoodList = class FoodList extends Component {
       render: (value, item) => this.renderCell(value, item, "shareAdult", "number")
     },
     {
+      name: "Notas",
+      field: "notes",
+      render: (value, item) => this.renderCell(value, item, "notes", "text")
+    },
+    {
       name: "Total de raciones",
       field: "totalshare",
       render: (value, item) =>
@@ -83,11 +88,6 @@ let FoodList = class FoodList extends Component {
             (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)) *
             item.shareAdult
         )
-    },
-    {
-      name: "Notas",
-      field: "notes",
-      render: (value, item) => this.renderCell(value, item, "notes", "text")
     },
     {
       name: "Acciones",

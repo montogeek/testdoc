@@ -230,19 +230,25 @@ export default function events(state = initialState, action) {
                 ...event,
                 menu: {
                   ...event.menu,
-                  other: {
-                    ...event.menu.other,
-                    items: event.menu.other.items.map(item => {
-                      if (item.id === action.data.id) {
-                        return {
-                          ...item,
-                          ...action.data
-                        }
-                      }
+                  other: event.menu.other.map(category => {
+                    if (category.id === action.data.category_id) {
+                      return {
+                        ...category,
+                        items: category.items.map(item => {
+                          if (item.id === action.data.id) {
+                            return {
+                              ...item,
+                              ...action.data
+                            }
+                          }
 
-                      return item
-                    })
-                  }
+                          return item
+                        })
+                      }
+                    }
+
+                    return category
+                  })
                 }
               }
             }
@@ -280,10 +286,16 @@ export default function events(state = initialState, action) {
                 ...event,
                 menu: {
                   ...event.menu,
-                  other: {
-                    ...event.menu.other,
-                    items: event.menu.other.items.filter(item => item.id !== action.data.id)
-                  }
+                  other: event.menu.other.map(category => {
+                    if (category.id === action.data.categoryId) {
+                      return {
+                        ...category,
+                        items: category.items.filter(item => item.id !== action.data.id)
+                      }
+                    }
+
+                    return category
+                  })
                 }
               }
             }

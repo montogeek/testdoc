@@ -70,6 +70,7 @@ export function removeItem(id, eventId, categoryId) {
 
       return dispatch({ type: REMOVE_ITEM_SUCCESS, loading: false, data: { id, eventId, categoryId } })
     } catch (e) {
+      throw e
       return dispatch({ type: REMOVE_ITEM_FAILURE, loading: false, error: e })
     }
   }
