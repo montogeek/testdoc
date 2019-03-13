@@ -304,6 +304,7 @@ let OthersList = class OthersList extends Component {
           onChange={this.onTableChange}
           hasActions={true}
           cellProps={this.getCellProps}
+          noItemsMessage={"No hay items, agrega uno!"}
         />
         <EuiSpacer size="xxl" />
       </>

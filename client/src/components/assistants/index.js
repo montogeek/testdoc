@@ -396,6 +396,7 @@ let Assistants = class Assistants extends Component {
           onChange={this.onTableChange}
           hasActions={true}
           cellProps={this.getCellProps}
+          noItemsMessage={"No hay invitados, invita uno!"}
         />
       </Page>
     )
