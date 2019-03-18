@@ -38,17 +38,20 @@ let FoodList = class FoodList extends Component {
     {
       name: "Coste total",
       field: "cost",
-      render: (value, item) => this.renderCell(value, item, "cost", "number")
+      render: (value, item) => this.renderCell(value, item, "cost", "number"),
+      footer: ({ items }) => <span>{items.reduce((acc, item) => acc + item.cost, 0)}</span>
     },
     {
       name: "Racion por nino",
       field: "shareKid",
-      render: (value, item) => this.renderCell(value, item, "shareKid", "number")
+      render: (value, item) => this.renderCell(value, item, "shareKid", "number"),
+      footer: ({ items }) => <span>{items.reduce((acc, item) => acc + item.shareKid, 0)}</span>
     },
     {
       name: "Racion por adulto",
       field: "shareAdult",
-      render: (value, item) => this.renderCell(value, item, "shareAdult", "number")
+      render: (value, item) => this.renderCell(value, item, "shareAdult", "number"),
+      footer: ({ items }) => <span>{items.reduce((acc, item) => acc + item.shareAdult, 0)}</span>
     },
     {
       name: "Notas",
@@ -61,7 +64,19 @@ let FoodList = class FoodList extends Component {
       render: (value, item) =>
         this.formatNumber(
           item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults
-        )
+        ),
+      footer: ({ items }) => (
+        <span>
+          {this.formatNumber(
+            items.reduce(
+              (acc, item) =>
+                acc +
+                (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults),
+              0
+            )
+          )}
+        </span>
+      )
     },
     {
       name: "Costo por racion",
@@ -70,7 +85,20 @@ let FoodList = class FoodList extends Component {
         this.formatNumber(
           item.cost /
             (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)
-        )
+        ),
+      footer: ({ items }) => (
+        <span>
+          {this.formatNumber(
+            items.reduce(
+              (acc, item) =>
+                acc +
+                item.cost /
+                  (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults),
+              0
+            )
+          )}
+        </span>
+      )
     },
     {
       name: "Costo por niño",
@@ -80,17 +108,47 @@ let FoodList = class FoodList extends Component {
           (item.cost /
             (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)) *
             item.shareKid
-        )
+        ),
+      footer: ({ items }) => (
+        <span>
+          {this.formatNumber(
+            items.reduce(
+              (acc, item) =>
+                acc +
+                (item.cost /
+                  (item.shareKid * this.props.totalKids +
+                    item.shareAdult * this.props.totalAdults)) *
+                  item.shareKid,
+              0
+            )
+          )}
+        </span>
+      )
     },
     {
       name: "Costo por adulto",
-      field: "costKid",
-      render: (costKid, item) =>
+      field: "costAdult",
+      render: (costAdult, item) =>
         this.formatNumber(
           (item.cost /
             (item.shareKid * this.props.totalKids + item.shareAdult * this.props.totalAdults)) *
             item.shareAdult
-        )
+        ),
+      footer: ({ items }) => (
+        <span>
+          {this.formatNumber(
+            items.reduce(
+              (acc, item) =>
+                acc +
+                (item.cost /
+                  (item.shareKid * this.props.totalKids +
+                    item.shareAdult * this.props.totalAdults)) *
+                  item.shareAdult,
+              0
+            )
+          )}
+        </span>
+      )
     },
     {
       name: "Acciones",

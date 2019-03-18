@@ -42,6 +42,7 @@ let OthersList = class OthersList extends Component {
     {
       name: "Coste",
       field: "cost",
+      footer: ({ items }) => <span>{items.reduce((acc, item) => acc + item.cost, 0)}</span>,
       render: (value, item) => this.renderCell(value, item, "cost", "number")
     },
     {
