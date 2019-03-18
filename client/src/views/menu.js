@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+import { Link } from "react-router-dom"
+import { EuiButton } from "@elastic/eui"
 
 import { getEvents } from "../redux/actions/events"
 import FoodList from "../components/menu/foodlist"
@@ -23,8 +25,51 @@ class Menu extends Component {
     } = this.props
 
     return (
-      <Page title="Menu" loading={!event}>
-        {() => (
+      <Page
+        title="Menu"
+        titleRight={
+          <Link to={`/event/assistants/create`}>
+            <EuiButton color="primary" fill>
+              Agregar categoria
+            </EuiButton>
+          </Link>
+        }
+        loading={!event}
+      >
+        {() => {
+          if (event.menu.length > 0) {
+            return event.menu.map(category => {
+              if (category.name === "Comida y bebidas") {
+                return (
+                  <FoodList
+                    name={category.name}
+                    items={category.items}
+                    budget={category.budget}
+                    categoryId={category.id}
+                    eventId={params.id}
+                    totalKids={event.kids}
+                    totalAdults={event.adults}
+                  />
+                )
+              }
+
+              return (
+                <OtherList
+                  key={category.id}
+                  name={category.name}
+                  items={category.items}
+                  budget={category.budget}
+                  categoryId={category.id}
+                  eventId={params.id}
+                  loading={loading}
+                />
+              )
+            })
+          }
+
+          return "No hay menu"
+        }}
+        {/* {() => (
           <>
             <FoodList
               {...event.menu.food}
@@ -46,7 +91,7 @@ class Menu extends Component {
               )
             })}
           </>
-        )}
+        )} */}
       </Page>
     )
   }

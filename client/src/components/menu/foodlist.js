@@ -290,7 +290,7 @@ let FoodList = class FoodList extends Component {
   }
 
   render() {
-    const { name, eventId } = this.props
+    const { name, budget, eventId } = this.props
 
     const { pageIndex, pageSize } = this.state
 
@@ -306,10 +306,19 @@ let FoodList = class FoodList extends Component {
     return (
       <>
         <EuiFlexGroup alignItems={"center"}>
-          <EuiFlexItem grow={false}>
-            <EuiTitle>
-              <h2>{name}</h2>
-            </EuiTitle>
+          <EuiFlexItem>
+            <EuiFlexGroup alignItems={"center"}>
+              <EuiFlexItem grow={false}>
+                <EuiTitle>
+                  <h2>{name}</h2>
+                </EuiTitle>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiTitle>
+                  <h2>{`$ ${budget}`}</h2>
+                </EuiTitle>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <Link to={`/event/${eventId}/menu/create`}>

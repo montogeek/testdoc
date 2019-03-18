@@ -12,7 +12,9 @@ import {
   EuiIcon,
   EuiSpacer,
   EuiFlexGroup,
-  EuiFlexItem
+  EuiFlexItem,
+  EuiTextColor,
+  EuiStat
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -262,7 +264,7 @@ let OthersList = class OthersList extends Component {
   }
 
   render() {
-    const { name, items, loading, eventId, categoryId } = this.props
+    const { name, budget, eventId, categoryId } = this.props
 
     const { pageIndex, pageSize } = this.state
 
@@ -278,18 +280,29 @@ let OthersList = class OthersList extends Component {
     return (
       <>
         <EuiFlexGroup alignItems={"center"}>
-          <EuiFlexItem grow={false}>
-            <EuiTitle>
-              <h2>{name}</h2>
-            </EuiTitle>
+          <EuiFlexItem>
+            <EuiFlexGroup alignItems={"center"}>
+              <EuiFlexItem grow={false}>
+                <EuiTitle>
+                  <h2>{name}</h2>
+                </EuiTitle>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiTitle>
+                  <h2>{`$ ${budget}`}</h2>
+                </EuiTitle>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <Link to={{
-              pathname: `/event/${eventId}/menu/create`,
-              state: {
-                category: categoryId
-              }
-            }}>
+            <Link
+              to={{
+                pathname: `/event/${eventId}/menu/create`,
+                state: {
+                  category: categoryId
+                }
+              }}
+            >
               <EuiButton color="primary" fill size="s">
                 Agregar item
               </EuiButton>
