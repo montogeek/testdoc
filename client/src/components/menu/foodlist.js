@@ -348,7 +348,7 @@ let FoodList = class FoodList extends Component {
   }
 
   render() {
-    const { name, budget, eventId } = this.props
+    const { name, budget, eventId, categoryId } = this.props
 
     const { pageIndex, pageSize } = this.state
 
@@ -379,7 +379,14 @@ let FoodList = class FoodList extends Component {
             </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <Link to={`/event/${eventId}/menu/create`}>
+          <Link
+              to={{
+                pathname: `/event/${eventId}/menu/create`,
+                state: {
+                  category: categoryId
+                }
+              }}
+            >
               <EuiButton color="primary" fill size="s">
                 Agregar item
               </EuiButton>

@@ -251,15 +251,11 @@ MenuItemCreate = withFormik({
 export default connect(
   ({ events }, { match: { params }, location: { state } }) => {
     const event = events.data.find(event => event.id === parseInt(params.id, 10))
-    const otherCategory = state && state.category !== 1
+    const categoryId = event ? event.menu.find(category => category.id === state.category).id : null
 
     return {
       loading: events.loading,
-      categoryId: event
-        ? otherCategory
-          ? event.menu.other.find(cat => cat.id === state.category).id
-          : event.menu.food.id
-        : null
+      categoryId
     }
   },
   dispatch => ({

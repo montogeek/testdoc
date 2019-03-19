@@ -25,6 +25,75 @@ import { mapValues } from "lodash"
 
 import { updateItem, removeItem } from "../../redux/actions/items"
 
+let CategoryTitle = class CategoryTitle extends Component {
+  state = {
+    editing: false
+  }
+
+  toggleEditing = () => {
+    this.setState(state => ({ editing: !state.editing }))
+  }
+
+  handleSubmit = () => {
+    this.toggleEditing()
+    this.props.handleSubmit()
+  }
+
+  render() {
+    const { name, budget, values, handleChange } = this.props
+    const { editing } = this.state
+
+    if (editing) {
+      return (
+        <>
+          <EuiFlexItem grow={9}>
+            <EuiFieldText name={"name"} value={values.name} onChange={handleChange} />
+            <EuiFieldNumber name={"budget"} value={values.budget} onChange={handleChange} />
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiIcon type="save" onClick={this.handleSubmit} size="l" />
+          </EuiFlexItem>
+        </>
+      )
+    }
+
+    return (
+      <>
+        <EuiFlexItem grow={9}>
+          <EuiTitle>
+            <h2>{name}</h2>
+          </EuiTitle>
+          <EuiStat title={`$ ${budget}`} description="" titleSize="m" titleColor="secondary" />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiIcon type="pencil" onClick={this.toggleEditing} size="l" />
+        </EuiFlexItem>
+      </>
+    )
+  }
+}
+
+CategoryTitle = withFormik({
+  validationSchema: Yup.object().shape({
+    name: Yup.string().required(),
+    budget: Yup.number().required()
+  }),
+  mapPropsToValues: ({ name, budget }) => ({ name, budget }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    props.updateCategory(values)
+    setSubmitting(false)
+  },
+  enableReinitialize: true,
+  displayName: "categoryTitle"
+})(CategoryTitle)
+
+CategoryTitle = connect(
+  null,
+  {
+    updateCategory
+  }
+)(CategoryTitle)
+
 let OthersList = class OthersList extends Component {
   state = {
     pageIndex: 0,
@@ -282,17 +351,8 @@ let OthersList = class OthersList extends Component {
       <>
         <EuiFlexGroup alignItems={"center"}>
           <EuiFlexItem>
-            <EuiFlexGroup alignItems={"center"}>
-              <EuiFlexItem grow={false}>
-                <EuiTitle>
-                  <h2>{name}</h2>
-                </EuiTitle>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiTitle>
-                  <h2>{`$ ${budget}`}</h2>
-                </EuiTitle>
-              </EuiFlexItem>
+            <EuiFlexGroup alignItems={"center"} direction="rowReverse">
+              <CategoryTitle name={name} budget={budget} />
             </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
