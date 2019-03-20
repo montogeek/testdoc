@@ -14,7 +14,8 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiStat,
-  EuiLoadingSpinner
+  EuiLoadingSpinner,
+  EuiButtonIcon
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -55,12 +56,12 @@ let CategoryTitle = class CategoryTitle extends Component {
     if (editing) {
       return (
         <>
-          <EuiFlexItem grow={9}>
+          <EuiFlexItem grow={1}>
             <EuiFieldText name={"name"} value={values.name} onChange={handleChange} />
             <EuiFieldNumber name={"budget"} value={values.budget} onChange={handleChange} />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiIcon type="save" onClick={this.handleSubmit} size="l" />
+            <EuiButtonIcon onClick={this.handleSubmit} iconType="save" iconSize="l" />
           </EuiFlexItem>
         </>
       )
@@ -68,13 +69,13 @@ let CategoryTitle = class CategoryTitle extends Component {
 
     return (
       <>
-        <EuiFlexItem grow={9}>
+        <EuiFlexItem grow={4}>
           <EuiTitle>
             <h2>{name}</h2>
           </EuiTitle>
           <EuiStat title={`$ ${budget}`} description="" titleSize="m" titleColor="secondary" />
         </EuiFlexItem>
-        <EuiFlexItem grow={false}>
+        <EuiFlexItem grow={8}>
           <EuiIcon type="pencil" onClick={this.toggleEditing} size="l" />
         </EuiFlexItem>
       </>
@@ -359,8 +360,8 @@ let OthersList = class OthersList extends Component {
     return (
       <>
         <EuiFlexGroup alignItems={"center"}>
-          <EuiFlexItem>
-            <EuiFlexGroup alignItems={"center"} direction="rowReverse">
+          <EuiFlexItem grow={5}>
+            <EuiFlexGroup alignItems={"center"}>
               <CategoryTitle
                 name={name}
                 budget={budget}
@@ -370,6 +371,7 @@ let OthersList = class OthersList extends Component {
               />
             </EuiFlexGroup>
           </EuiFlexItem>
+          <EuiFlexItem grow={8} />
           <EuiFlexItem grow={false}>
             <Link
               to={{
