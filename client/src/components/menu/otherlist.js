@@ -24,6 +24,7 @@ import { withFormik } from "formik"
 import { mapValues } from "lodash"
 
 import { updateItem, removeItem } from "../../redux/actions/items"
+import { updateCategory } from "../../redux/actions/categories";
 
 let CategoryTitle = class CategoryTitle extends Component {
   state = {
@@ -80,7 +81,7 @@ CategoryTitle = withFormik({
   }),
   mapPropsToValues: ({ name, budget }) => ({ name, budget }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    props.updateCategory(values)
+    props.updateCategory({ ...values, id: props.id }, props.eventId)
     setSubmitting(false)
   },
   enableReinitialize: true,
@@ -352,7 +353,7 @@ let OthersList = class OthersList extends Component {
         <EuiFlexGroup alignItems={"center"}>
           <EuiFlexItem>
             <EuiFlexGroup alignItems={"center"} direction="rowReverse">
-              <CategoryTitle name={name} budget={budget} />
+              <CategoryTitle name={name} budget={budget} id={categoryId} eventId={eventId} />
             </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
