@@ -24,7 +24,10 @@ import {
   UPDATE_ITEM_SUCCESS,
   UPDATE_ITEM_FAILURE,
   REMOVE_ITEM_REQUEST,
-  REMOVE_ITEM_SUCCESS
+  REMOVE_ITEM_SUCCESS,
+  UPDATE_CATEGORY_REQUEST,
+  UPDATE_CATEGORY_SUCCESS,
+  UPDATE_CATEGORY_FAILURE
 } from "../constants"
 
 const initialState = {
@@ -307,6 +310,33 @@ export default function events(state = initialState, action) {
             }
           }
 
+          return event
+        })
+      }
+
+    case UPDATE_CATEGORY_REQUEST:
+      return { ...state, loading: action.loading }
+
+    case UPDATE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: action.loading,
+        data: state.data.map(event => {
+          if (event.id === action.data.eventId) {
+            return {
+              ...event,
+              menu: event.menu.map(category => {
+                if (category.id === action.data.id) {
+                  return {
+                    ...category,
+                    name: action.data.name,
+                    budget: action.data.budget
+                  }
+                }
+                return category
+              })
+            }
+          }
           return event
         })
       }

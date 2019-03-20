@@ -1,4 +1,4 @@
-import ky from "ky";
+import ky from "ky"
 import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,

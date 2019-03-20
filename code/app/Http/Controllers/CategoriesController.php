@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class CategoriesController extends Controller
 {
@@ -71,14 +72,15 @@ class CategoriesController extends Controller
     {
         $data = $request->all();
 
-        $category = Category::find($id);
+        $category = Category::with('events')->find($id);
         $category->name = $data['name'];
 
         $category->save();
 
         $category->events()->updateExistingPivot($data['eventId'], ['budget' => $data['budget']]);
 
-        return $category;
+//        dd($category->events->budget); // TODO: Get Budget from relationship
+        return $category->toArray() + ['eventId' => (int)$data['eventId'], 'budget' => $data['budget']];
     }
 
     /**
