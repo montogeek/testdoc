@@ -13,8 +13,8 @@ import {
   EuiSpacer,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiTextColor,
-  EuiStat
+  EuiStat,
+  EuiLoadingSpinner
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -24,7 +24,7 @@ import { withFormik } from "formik"
 import { mapValues } from "lodash"
 
 import { updateItem, removeItem } from "../../redux/actions/items"
-import { updateCategory } from "../../redux/actions/categories";
+import { updateCategory } from "../../redux/actions/categories"
 
 let CategoryTitle = class CategoryTitle extends Component {
   state = {
@@ -41,8 +41,16 @@ let CategoryTitle = class CategoryTitle extends Component {
   }
 
   render() {
-    const { name, budget, values, handleChange } = this.props
+    const { name, budget, values, handleChange, loading } = this.props
     const { editing } = this.state
+
+    if (loading) {
+      return (
+        <EuiFlexItem>
+          <EuiLoadingSpinner size="xl" />
+        </EuiFlexItem>
+      )
+    }
 
     if (editing) {
       return (
@@ -335,7 +343,7 @@ let OthersList = class OthersList extends Component {
   }
 
   render() {
-    const { name, budget, eventId, categoryId } = this.props
+    const { name, budget, eventId, categoryId, loading } = this.props
 
     const { pageIndex, pageSize } = this.state
 
@@ -353,7 +361,13 @@ let OthersList = class OthersList extends Component {
         <EuiFlexGroup alignItems={"center"}>
           <EuiFlexItem>
             <EuiFlexGroup alignItems={"center"} direction="rowReverse">
-              <CategoryTitle name={name} budget={budget} id={categoryId} eventId={eventId} />
+              <CategoryTitle
+                name={name}
+                budget={budget}
+                id={categoryId}
+                eventId={eventId}
+                loading={loading}
+              />
             </EuiFlexGroup>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
@@ -421,7 +435,7 @@ OthersList = withFormik({
 })(OthersList)
 
 OthersList = connect(
-  null,
+  ({ events }) => ({ loading: events.loading }),
   {
     updateItem,
     removeItem
