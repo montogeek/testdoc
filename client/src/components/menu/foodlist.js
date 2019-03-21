@@ -20,6 +20,7 @@ import { withFormik } from "formik"
 import { mapValues } from "lodash"
 
 import { updateItem, removeItem } from "../../redux/actions/items"
+import Title from "./title"
 
 let FoodList = class FoodList extends Component {
   state = {
@@ -348,7 +349,7 @@ let FoodList = class FoodList extends Component {
   }
 
   render() {
-    const { name, budget, eventId, categoryId } = this.props
+    const { name, budget, eventId, categoryId, loading } = this.props
 
     const { pageIndex, pageSize } = this.state
 
@@ -364,22 +365,20 @@ let FoodList = class FoodList extends Component {
     return (
       <>
         <EuiFlexGroup alignItems={"center"}>
-          <EuiFlexItem>
+          <EuiFlexItem grow={5}>
             <EuiFlexGroup alignItems={"center"}>
-              <EuiFlexItem grow={false}>
-                <EuiTitle>
-                  <h2>{name}</h2>
-                </EuiTitle>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiTitle>
-                  <h2>{`$ ${budget}`}</h2>
-                </EuiTitle>
-              </EuiFlexItem>
+              <Title
+                name={name}
+                budget={budget}
+                id={categoryId}
+                eventId={eventId}
+                loading={loading}
+              />
             </EuiFlexGroup>
           </EuiFlexItem>
+          <EuiFlexItem grow={8} />
           <EuiFlexItem grow={false}>
-          <Link
+            <Link
               to={{
                 pathname: `/event/${eventId}/menu/create`,
                 state: {
@@ -444,7 +443,7 @@ FoodList = withFormik({
 })(FoodList)
 
 FoodList = connect(
-  null,
+  ({ events }) => ({ loading: events.loading }),
   {
     updateItem,
     removeItem
