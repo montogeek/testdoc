@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { DateTime } from "luxon"
 import { Link } from "react-router-dom"
 import {
@@ -21,6 +21,7 @@ function Event({ event }) {
       <EuiAccordion
         id={event.id.toString()}
         paddingSize="xl"
+        initialIsOpen={true}
         extraAction={
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
@@ -63,7 +64,7 @@ function Event({ event }) {
         }
       >
         <EuiFlexGroup>
-          <Details summary={event.summary || {}} />
+          <Details event={event} />
         </EuiFlexGroup>
       </EuiAccordion>
     </EuiPanel>

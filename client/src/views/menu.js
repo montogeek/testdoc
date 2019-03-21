@@ -39,7 +39,7 @@ class Menu extends Component {
         {() => {
           if (event.menu.length > 0) {
             return event.menu.map(category => {
-              if (category.name === "Comida y bebidas") {
+              if (category.name === "Comida y bebida") {
                 return (
                   <FoodList
                     name={category.name}

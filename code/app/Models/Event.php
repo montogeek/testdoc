@@ -75,4 +75,47 @@ class Event extends Model
     {
         return Carbon::parse($this->endDate)->diffInHours($this->startDate);
     }
+
+    public function getTotalFoodAttribute()
+    {
+        $calculateShare = function ($item, $event) {
+            // Puede ser 0
+            $shareTotal = $item->shareKid * $event->kids + $item->shareAdult * $event->adults;
+
+            // Racion * (Coste total / Total de raciones)
+            $adults = round($item->shareAdult * ($item->cost / max($shareTotal, 1)), 2);
+            $kids = round(number_format($item->shareKid * ($item->cost / max($shareTotal, 1)), 2), 2);
+
+
+            return [
+                'adults' => $adults,
+                'kids' => $kids
+            ];
+        };
+
+        $sumTotal = function ($carry, $item) {
+            return [
+                'adults' => $carry['adults'] + $item['adults'],
+                'kids' => $carry['kids'] + $item['kids']
+            ];
+        };
+
+
+        $data = $this->items()->where('category_id', '=', 1)->get()->values()->map(function ($item) use ($calculateShare) {
+            return $calculateShare($item, $this);
+        })->reduce($sumTotal, ['adults' => 0, 'kids' => 0]);
+
+        return $data;
+    }
+
+    public function getTotalOtherAttribute()
+    {
+        $totalOther = $this->items()->where('category_id', '!=', 1)->sum('cost');
+
+        return [
+            'totalOther' => $totalOther,
+            'totalAssistants' => $this->totalAssistants,
+            'value' => $totalOther / max($this->totalAssistants, 1)
+        ];
+    }
 }
