@@ -21,7 +21,11 @@ class Details extends Component {
     },
     {
       field: "total",
-      name: "Total"
+      name: "Total",
+      render: (_, item) => {
+        const total = (item.food + item.other, 1) * item.count
+        return !isNaN(total) ? total : 0
+      }
     }
   ]
 
@@ -78,6 +82,20 @@ class Details extends Component {
       count: event.assistants
         .filter(assistant => assistant.rsvp)
         .reduce((acc, assistant) => acc + assistant.adults, 0),
+      food: event.menu.reduce((acc, category) => {
+        if (category.id === 1) {
+          acc =
+            acc +
+            category.items.reduce((acc, item) => {
+              const shareTotal = item.shareKid * event.kids + item.shareAdult * event.adults
+              acc = acc + item.shareAdult * (item.cost / shareTotal)
+
+              return acc
+            }, 0)
+        }
+
+        return acc
+      }, 0),
       other:
         event.menu
           .filter(category => category.id !== 1)
@@ -94,6 +112,20 @@ class Details extends Component {
       count: event.assistants
         .filter(assistant => assistant.rsvp)
         .reduce((acc, assistant) => acc + assistant.kids, 0),
+      food: event.menu.reduce((acc, category) => {
+        if (category.id === 1) {
+          acc =
+            acc +
+            category.items.reduce((acc, item) => {
+              const shareTotal = item.shareKid * event.kids + item.shareAdult * event.adults
+              acc = acc + item.shareKid * (item.cost / shareTotal)
+
+              return acc
+            }, 0)
+        }
+
+        return acc
+      }, 0),
       other:
         event.menu
           .filter(category => category.id !== 1)
