@@ -167,34 +167,17 @@ export default function events(state = initialState, action) {
         loading: action.loading,
         data: state.data.map(event => {
           if (event.id === action.data.event_id) {
-            if (action.data.category_id === 1) {
-              return {
-                ...event,
-                menu: {
-                  ...event.menu,
-                  food: {
-                    ...event.menu.food,
-                    items: [action.data, ...event.menu.food.items]
+            return {
+              ...event,
+              menu: event.menu.map(category => {
+                if (category.id === action.data.category_id) {
+                  return {
+                    ...category,
+                    items: [action.data, ...category.items]
                   }
                 }
-              }
-            } else {
-              return {
-                ...event,
-                menu: {
-                  ...event.menu,
-                  other: event.menu.other.map(category => {
-                    if (category.id === action.data.category_id) {
-                      return {
-                        ...category,
-                        items: [action.data, ...category.items]
-                      }
-                    }
-
-                    return category
-                  })
-                }
-              }
+                return category
+              })
             }
           }
 
@@ -214,55 +197,27 @@ export default function events(state = initialState, action) {
         loading: action.loading,
         data: state.data.map(event => {
           if (event.id === action.data.event_id) {
-            if (action.data.category_id === 1) {
-              return {
-                ...event,
-                menu: {
-                  ...event.menu,
-                  food: {
-                    ...event.menu.food,
-                    items: event.menu.food.items.map(item => {
+            return {
+              ...event,
+              menu: event.menu.map(category => {
+                if (category.id === action.data.category_id) {
+                  return {
+                    ...category,
+                    items: category.items.map(item => {
                       if (item.id === action.data.id) {
                         return {
                           ...item,
                           ...action.data
                         }
                       }
-
                       return item
                     })
                   }
                 }
-              }
-            } else {
-              return {
-                ...event,
-                menu: {
-                  ...event.menu,
-                  other: event.menu.other.map(category => {
-                    if (category.id === action.data.category_id) {
-                      return {
-                        ...category,
-                        items: category.items.map(item => {
-                          if (item.id === action.data.id) {
-                            return {
-                              ...item,
-                              ...action.data
-                            }
-                          }
-
-                          return item
-                        })
-                      }
-                    }
-
-                    return category
-                  })
-                }
-              }
+                return category
+              })
             }
           }
-
           return event
         })
       }
@@ -279,34 +234,17 @@ export default function events(state = initialState, action) {
         loading: action.loading,
         data: state.data.map(event => {
           if (event.id === action.data.eventId) {
-            if (action.data.categoryId === 1) {
-              return {
-                ...event,
-                menu: {
-                  ...event.menu,
-                  food: {
-                    ...event.menu.food,
-                    items: event.menu.food.items.filter(item => item.id !== action.data.id)
+            return {
+              ...event,
+              menu: event.menu.map(category => {
+                if (category.id === action.data.categoryId) {
+                  return {
+                    ...category,
+                    items: category.items.filter(item => item.id !== action.data.id)
                   }
                 }
-              }
-            } else {
-              return {
-                ...event,
-                menu: {
-                  ...event.menu,
-                  other: event.menu.other.map(category => {
-                    if (category.id === action.data.categoryId) {
-                      return {
-                        ...category,
-                        items: category.items.filter(item => item.id !== action.data.id)
-                      }
-                    }
-
-                    return category
-                  })
-                }
-              }
+                return category
+              })
             }
           }
 

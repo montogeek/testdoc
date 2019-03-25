@@ -34,6 +34,7 @@ let FoodList = class FoodList extends Component {
     {
       name: "Articulo",
       field: "name",
+      footer: () => "Total",
       render: (value, item) => this.renderCell(value, item, "name", "text")
     },
     {

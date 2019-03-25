@@ -75,6 +75,7 @@ class Details extends Component {
 
     const budget = event.menu.map(category => {
       const cost = category.items.reduce((acc, item) => acc + item.cost, 0)
+
       return {
         name: category.name,
         count: category.items.length,

@@ -39,12 +39,14 @@ let OthersList = class OthersList extends Component {
     {
       name: "Articulo",
       field: "name",
+      footer: () => "Total",
       render: (value, item) => this.renderCell(value, item, "name", "text")
     },
     {
       name: "Coste",
       field: "cost",
-      footer: ({ items }) => <span>{items.reduce((acc, item) => acc + item.cost, 0)}</span>,
+      footer: ({ items, pagination }) =>
+        console.log(items, pagination) || items.reduce((acc, item) => acc + item.cost, 0),
       render: (value, item) => this.renderCell(value, item, "cost", "number")
     },
     {

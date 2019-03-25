@@ -6,6 +6,7 @@ import { EuiButton } from "@elastic/eui"
 import { getEvents } from "../redux/actions/events"
 import FoodList from "../components/menu/foodlist"
 import OtherList from "../components/menu/otherlist"
+import Details from "../components/event/details"
 import Page from "../components/Page"
 
 class Menu extends Component {
@@ -37,61 +38,44 @@ class Menu extends Component {
         loading={!event}
       >
         {() => {
-          if (event.menu.length > 0) {
-            return event.menu.map(category => {
-              if (category.name === "Comida y bebida") {
-                return (
-                  <FoodList
-                    name={category.name}
-                    items={category.items}
-                    budget={category.budget}
-                    categoryId={category.id}
-                    eventId={params.id}
-                    totalKids={event.kids}
-                    totalAdults={event.adults}
-                  />
-                )
-              }
+          const list =
+            event.menu.length > 0
+              ? event.menu.map(category => {
+                  if (category.name === "Comida y bebida") {
+                    return (
+                      <FoodList
+                        name={category.name}
+                        items={category.items}
+                        budget={category.budget}
+                        categoryId={category.id}
+                        eventId={params.id}
+                        totalKids={event.kids}
+                        totalAdults={event.adults}
+                      />
+                    )
+                  }
 
-              return (
-                <OtherList
-                  key={category.id}
-                  name={category.name}
-                  items={category.items}
-                  budget={category.budget}
-                  categoryId={category.id}
-                  eventId={params.id}
-                  loading={loading}
-                />
-              )
-            })
-          }
+                  return (
+                    <OtherList
+                      key={category.id}
+                      name={category.name}
+                      items={category.items}
+                      budget={category.budget}
+                      categoryId={category.id}
+                      eventId={params.id}
+                      loading={loading}
+                    />
+                  )
+                })
+              : "No hay menu"
 
-          return "No hay menu"
+          return (
+            <>
+              <Details event={event} />
+              {list}
+            </>
+          )
         }}
-        {/* {() => (
-          <>
-            <FoodList
-              {...event.menu.food}
-              categoryId={event.menu.food.id}
-              eventId={params.id}
-              totalKids={event.kids}
-              totalAdults={event.adults}
-            />
-
-            {event.menu.other.map((category, index) => {
-              return (
-                <OtherList
-                  key={index}
-                  loading={loading}
-                  categoryId={category.id}
-                  eventId={params.id}
-                  {...category}
-                />
-              )
-            })}
-          </>
-        )} */}
       </Page>
     )
   }
