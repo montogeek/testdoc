@@ -5,27 +5,34 @@ class Details extends Component {
   assistantsColumns = [
     {
       field: "name",
-      name: ""
+      name: "",
+      footer: () => "Total"
     },
     {
       field: "count",
-      name: ""
+      name: "",
+      footer: ({ items }) => items.reduce((acc, item) => acc + item.count, 0)
     },
     {
       field: "food",
-      name: "Comida"
+      name: "Comida",
+      footer: ({ items }) =>
+        items.reduce((acc, item, _, array) => acc + item.food, 0) / items.length
     },
     {
       field: "other",
-      name: "Otros"
+      name: "Otros",
+      footer: ({ items }) => items.reduce((acc, item) => acc + item.other, 0) / items.length
     },
     {
       field: "total",
       name: "Total",
       render: (_, item) => {
-        const total = (item.food + item.other, 1) * item.count
+        const total = (item.food + item.other) * item.count
         return !isNaN(total) ? total : 0
-      }
+      },
+      footer: ({ items }) =>
+        items.reduce((acc, item) => acc + (item.food + item.other) * item.count, 0)
     }
   ]
 
