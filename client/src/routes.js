@@ -1,3 +1,6 @@
+import HTML5Backend from 'react-dnd-html5-backend'
+import { DragDropContext } from 'react-dnd'
+
 import PrivateRoute from "./helpers/router"
 
 import EventCreate from "./views/eventcreate"
@@ -54,7 +57,7 @@ const routes = [
   {
     path: "/event/:id/layout",
     exact: true,
-    component: PrivateRoute(Layout)
+    component: PrivateRoute(DragDropContext(HTML5Backend)(Layout))
   },
   {
     path: "*",

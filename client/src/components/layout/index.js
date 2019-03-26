@@ -5,9 +5,16 @@ import { DragSource } from "react-dnd"
 // if they have the same string type.
 // You want to keep types in a separate file with
 // the rest of your app's constants.
-const Types = {
-  CARD: "card"
+const TYPES = {
+  ROUNDED140: "ROUNDED140",
+  ROUNDED150: "ROUNDED150",
+  ROUNDED180: "ROUNDED180",
+  SQUARED180: "SQUARED180",
+  SQUARED240: "SQUARED240",
+  TABLE: "table"
 }
+
+const SIZE = 2
 
 /**
  * Specifies the drag source contract.
@@ -47,21 +54,37 @@ function collect(connect, monitor) {
 
 function Card(props) {
   // Your component receives its own props as usual
-  const { id } = props
+  const { rounded, size } = props
 
   // These two props are injected by React DnD,
   // as defined by your `collect` function above:
   const { isDragging, connectDragSource } = props
 
+  const [width, height] = rounded ? [size / SIZE, size / SIZE] : [75, size / SIZE]
+
   return connectDragSource(
-    <div>
-      I am a draggable card number {id}
-      {isDragging && " (and I am being dragged now)"}
+    <div
+      style={{
+        backgroundColor: "#006BB4",
+        color: "#FFFFFF",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: rounded ? "50%" : 0,
+        width: `${width}px`,
+        height: `${height}px`
+      }}
+    >
+      {size}
     </div>
   )
 }
 
-const CardDrag = DragSource(Types.CARD, cardSource, collect)(Card)
+const Table = DragSource(TYPES.TABLE, cardSource, collect)(Card)
+// const Rounded150Drag = DragSource(Types.ROUNDED150, cardSource, collect)(Card)
+// const Rounded180Drag = DragSource(Types.ROUNDED180, cardSource, collect)(Card)
+// const Squared180Drag = DragSource(Types.SQUARED180, cardSource, collect)(Card)
+// const Squared240Drag = DragSource(Types.SQUARED240, cardSource, collect)(Card)
 
 class Layout extends Component {
   render() {
@@ -88,6 +111,11 @@ class Layout extends Component {
             </div>
           )
         })}
+        <Table rounded size={140} />
+        <Table rounded size={150} />
+        <Table rounded size={180} />
+        <Table size={180} />
+        <Table size={240} />
       </div>
     )
   }
