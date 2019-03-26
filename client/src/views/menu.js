@@ -71,7 +71,7 @@ class Menu extends Component {
 
           return (
             <>
-              <Details event={event} />
+              {/* <Details event={event} /> */}
               {list}
             </>
           )

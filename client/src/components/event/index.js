@@ -39,6 +39,11 @@ function Event({ event }) {
                 <EuiButton>Menu</EuiButton>
               </Link>
             </EuiFlexItem>
+            <EuiFlexItem>
+              <Link to={`/event/${event.id}/layout`}>
+                <EuiButton>Sillas</EuiButton>
+              </Link>
+            </EuiFlexItem>
           </EuiFlexGroup>
         }
         buttonContent={

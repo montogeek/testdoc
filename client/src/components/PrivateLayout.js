@@ -28,7 +28,7 @@ class PrivateLayout extends React.Component {
 
     this.sidebarItems = [
       {
-        id: "eventos",
+        id: "events",
         name: "Eventos",
         href: "/dashboard",
         icon: <EuiIcon type="canvasApp" />,
