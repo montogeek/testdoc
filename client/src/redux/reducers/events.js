@@ -27,7 +27,8 @@ import {
   REMOVE_ITEM_SUCCESS,
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
-  UPDATE_CATEGORY_FAILURE
+  UPDATE_CATEGORY_FAILURE,
+  MOVE_TABLE
 } from "../constants"
 
 const initialState = {
@@ -277,6 +278,15 @@ export default function events(state = initialState, action) {
           }
           return event
         })
+      }
+
+      case MOVE_TABLE:
+      return {
+        ...state,
+        layout: {
+          x: action.x,
+          y: action.y
+        }
       }
 
     default:
