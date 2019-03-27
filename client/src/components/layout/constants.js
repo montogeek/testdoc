@@ -22,14 +22,14 @@ function TablePiece(size, count, rounded) {
         height: `${height}px`
       }}
     >
-      {count} x {size}
+      {size} x {count}
     </div>
   )
 }
 
 export default {
   BoardTypes: {
-    SQUARE: "square"
+    TABLE: "TABLE"
   },
   TableTypes: {
     ROUNDED140: "ROUNDED140",

@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { DropTarget } from "react-dnd"
-import Square from "./Square"
+
+import Square from "../Square"
+import Constants from "../constants"
 
 const squareTarget = {
   canDrop(props) {
@@ -73,4 +75,4 @@ class BoardSquare extends Component {
   }
 }
 
-export default DropTarget("knight", squareTarget, collect)(BoardSquare)
+export default DropTarget(Constants.BoardTypes.TABLE, squareTarget, collect)(BoardSquare)

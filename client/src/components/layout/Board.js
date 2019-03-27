@@ -2,9 +2,12 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { DragDropContext } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
+
 import Knight from "./Knight"
-import BoardSquare from "./BoardSquare"
+import BoardSquare from "./Drop/BoardSquare"
 import { moveTable } from "../../redux/actions/layout"
+import Constants from "./constants"
+import TablePiece from "./Drag/TablePiece"
 
 class Board extends Component {
   canMove = (x, y) => {
@@ -48,15 +51,20 @@ class Board extends Component {
     }
 
     return (
-      <div
-        style={{
-          width: "800px",
-          height: "800px",
-          display: "flex",
-          flexWrap: "wrap"
-        }}
-      >
-        {squares}
+      <div style={{ display: "flex" }}>
+        <div
+          style={{
+            width: "800px",
+            height: "800px",
+            display: "flex",
+            flexWrap: "wrap"
+          }}
+        >
+          {squares}
+        </div>
+        {Object.keys(Constants.TableImage).map(type => (
+          <TablePiece type={type} image={Constants.TableImage[type]} />
+        ))}
       </div>
     )
   }
