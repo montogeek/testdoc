@@ -8,7 +8,9 @@ const boxSource = {
   beginDrag(props) {
     return {
       type: props.type,
-      config: props.config
+      config: props.config,
+      x: props.x,
+      y: props.y
     }
   }
 }
@@ -21,7 +23,7 @@ function collect(connect, monitor) {
 }
 
 export function Piece(props) {
-  const { rounded, size, count, isDragging } = props
+  const { rounded, size, count, isDragging, insideGrid } = props
 
   const [width, height] = rounded ? [size / SIZE, size / SIZE] : [75, size / SIZE]
 
@@ -37,7 +39,8 @@ export function Piece(props) {
         opacity: isDragging ? 0.5 : 1,
         borderRadius: rounded ? "50%" : 0,
         width: `${width}px`,
-        height: `${height}px`
+        height: `${height}px`,
+        position: insideGrid ? "absolute" : "relative"
       }}
     >
       {size} x {count}
@@ -47,12 +50,13 @@ export function Piece(props) {
 
 class TablePiece extends React.Component {
   render() {
-    const { connectDragSource, config } = this.props
+    const { connectDragSource, isDragging, config } = this.props
+    const insideGrid = this.props.x && this.props.y
 
     return connectDragSource(
       <div className="tablePiece">
         {/* {config}2 */}
-        <Piece {...config} />
+        <Piece {...config} insideGrid={insideGrid} isDragging={isDragging} />
       </div>
     )
   }

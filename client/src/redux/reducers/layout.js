@@ -19,10 +19,17 @@ export default function layout(state = initialState, action) {
       return {
         ...state,
         squares: state.squares.map(square => {
-          if(square.x === action.position.kx && square.y === action.position.ky) {
+          if (square.x === action.position.kx && square.y === action.position.ky) {
             return {
               ...square,
-              piece: action.piece
+              piece: action.piece.config
+            }
+          }
+
+          if (square.x === action.piece.x && square.y === action.piece.y) {
+            return {
+              ...square,
+              piece: null
             }
           }
 

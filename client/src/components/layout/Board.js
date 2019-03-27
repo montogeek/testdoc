@@ -20,12 +20,12 @@ class Board extends Component {
 
   movePiece = (x, y, item) => {
     // if (!this.canMove(x, y)) return false
-    this.props.moveTable(x, y, this.props.event.id, item.config)
+    this.props.moveTable(x, y, this.props.event.id, item)
   }
 
   renderPiece(x, y, piece) {
     if (piece !== null) {
-      return <TablePiece config={piece} />
+      return <TablePiece x={x} y={y} config={piece} />
     }
 
     return null
@@ -66,9 +66,11 @@ class Board extends Component {
         >
           {squares.map(square => this.renderSquare(square))}
         </div>
-        {Object.keys(Constants.TableImage).map(type => (
-          <TablePiece type={type} config={Constants.TableImage[type]} />
-        ))}
+        <div style={{ position: "relative" }}>
+          {Object.keys(Constants.TableImage).map(type => (
+            <TablePiece type={type} config={Constants.TableImage[type]} />
+          ))}
+        </div>
       </div>
     )
   }
