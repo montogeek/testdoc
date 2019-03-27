@@ -48,11 +48,7 @@ export default function events(state = initialState, action) {
         loading: action.loading,
         data: action.data.map(event => ({
           ...event,
-          date: DateTime.fromSQL(event.date, { zone: "utc" }).toLocal(),
-          position: {
-            kx: 0,
-            ky: 0
-          }
+          date: DateTime.fromSQL(event.date, { zone: "utc" }).toLocal()
         }))
       }
 
@@ -291,7 +287,8 @@ export default function events(state = initialState, action) {
           if (event.id === action.eventId) {
             return {
               ...event,
-              position: action.position
+              position: action.position,
+              config: action.config
             }
           }
           return event

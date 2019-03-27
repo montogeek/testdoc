@@ -2,17 +2,14 @@ import React from "react"
 
 class Square extends React.Component {
   render() {
-    const { black } = this.props
-    const fill = black ? "black" : "white"
-    const stroke = black ? "white" : "black"
-
     return (
       <div
         style={{
-          backgroundColor: fill,
-          color: stroke,
-          width: "100%",
-          height: "100%"
+          // border: "1px solid grey"
+          // borderTop: "1px solid #69707D",
+          // borderRight: "1px solid #69707D",
+          // borderLeft: i === 0 ? "1px solid #69707D" : "none",
+          // borderBottom: j === size - 1 ? "1px solid #69707D" : "none",
         }}
       >
         {this.props.children}

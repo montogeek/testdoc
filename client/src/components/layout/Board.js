@@ -7,7 +7,7 @@ import Knight from "./Knight"
 import BoardSquare from "./Drop/BoardSquare"
 import { moveTable } from "../../redux/actions/layout"
 import Constants from "./constants"
-import TablePiece from "./Drag/TablePiece"
+import TablePiece, { Piece } from "./Drag/TablePiece"
 
 class Board extends Component {
   canMove = (x, y) => {
@@ -19,16 +19,24 @@ class Board extends Component {
     return (Math.abs(dx) === 2 && Math.abs(dy) === 1) || (Math.abs(dx) === 1 && Math.abs(dy) === 2)
   }
 
-  movePiece = (x, y) => {
-    if (!this.canMove(x, y)) return false
-    this.props.moveTable(x, y, this.props.event.id)
+  movePiece = (x, y, item) => {
+    // if (!this.canMove(x, y)) return false
+    this.props.moveTable(x, y, this.props.event.id, item.config)
   }
 
   renderPiece(x, y) {
-    const { kx, ky } = this.props.event.position
-    if (x === kx && y === ky) {
-      return <Knight />
+    const { event } = this.props
+    if (event && event.position) {
+      const { kx, ky } = event.position
+      const { config } = event
+
+      if (x === kx && y === ky) {
+        // return "hi"
+        return <TablePiece config={config} />
+      }
     }
+
+    return null
   }
 
   renderSquare(i) {
@@ -36,7 +44,17 @@ class Board extends Component {
     const y = Math.floor(i / 16)
 
     return (
-      <div key={i} style={{ width: "50px", height: "50px" }}>
+      <div
+        key={i}
+        style={{
+          width: "50px",
+          height: "50px",
+          borderTop: "1px solid #69707D",
+          borderRight: "1px solid #69707D",
+          borderLeft: x === 0 ? "1px solid #69707D" : "none", // first column
+          borderBottom: y === 15 ? "1px solid #69707D" : "none" // last row
+        }}
+      >
         <BoardSquare canMovePiece={this.canMove} movePiece={this.movePiece} position={{ x, y }}>
           {this.renderPiece(x, y)}
         </BoardSquare>
@@ -63,7 +81,7 @@ class Board extends Component {
           {squares}
         </div>
         {Object.keys(Constants.TableImage).map(type => (
-          <TablePiece type={type} image={Constants.TableImage[type]} />
+          <TablePiece type={type} config={Constants.TableImage[type]} />
         ))}
       </div>
     )

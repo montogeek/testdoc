@@ -5,28 +5,31 @@ import Square from "../Square"
 import Constants from "../constants"
 
 const squareTarget = {
-  canDrop(props) {
-    const {
-      canMovePiece,
-      position: { x, y }
-    } = props
-    return canMovePiece(x, y)
-  },
+  // canDrop(props) {
+  //   const {
+  //     canMovePiece,
+  //     position: { x, y }
+  //   } = props
+  //   return canMovePiece(x, y)
+  // },
 
-  drop(props) {
+  drop(props, monitor) {
     const {
       movePiece,
       position: { x, y }
     } = props
-    movePiece(x, y)
+
+    const item = monitor.getItem()
+
+    movePiece(x, y, item)
   }
 }
 
 function collect(connect, monitor) {
   const info = {
     connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-    canDrop: monitor.canDrop()
+    isOver: monitor.isOver()
+    // canDrop: monitor.canDrop()
   }
 
   return info
@@ -57,7 +60,7 @@ class BoardSquare extends Component {
       isOver,
       canDrop
     } = this.props
-    const black = (x + y) % 2 === 1
+
     const dropStyle = {
       position: "relative",
       width: "100%",
@@ -66,10 +69,10 @@ class BoardSquare extends Component {
 
     return connectDropTarget(
       <div style={dropStyle}>
-        <Square black={black}>{this.props.children}</Square>
-        {isOver && !canDrop && this.renderOverlay("red")}
-        {!isOver && canDrop && this.renderOverlay("yellow")}
-        {isOver && canDrop && this.renderOverlay("green")}
+        <Square>{this.props.children}</Square>
+        {/* {isOver && !canDrop && this.renderOverlay("red")} */}
+        {/* {!isOver && canDrop && this.renderOverlay("yellow")} */}
+        {/* {isOver && canDrop && this.renderOverlay("green")} */}
       </div>
     )
   }

@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import { DragSource } from "react-dnd"
+import Constants from "./constants";
 
 const knightSource = {
   beginDrag(props, dnd, element) {
@@ -47,4 +48,4 @@ class Knight extends Component {
   }
 }
 
-export default DragSource("knight", knightSource, collect)(Knight)
+export default DragSource(Constants.BoardTypes.TABLE, knightSource, collect)(Knight)
