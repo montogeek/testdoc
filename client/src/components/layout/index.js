@@ -2,7 +2,11 @@ import React, { Component } from "react"
 import { DragSource, DropTarget } from "react-dnd"
 import { connect } from "react-redux"
 
+import Boardr from "./Board"
+import Page from "../../components/Page"
+
 import { moveTable } from "../../redux/actions/layout"
+import { getEvents } from "../../redux/actions/events"
 
 // Drag sources and drop targets only interact
 // if they have the same string type.
@@ -178,27 +182,46 @@ function Board() {
 }
 
 class Layout extends Component {
+  componentDidMount() {
+    const { getEvents, event } = this.props
+
+    if (typeof event === "undefined") {
+      getEvents()
+    }
+  }
+
   render() {
-    const { moveTable } = this.props
+    const { moveTable, event } = this.props
 
     return (
-      <>
-        <Board />
-        <LayoutSquareDrap moveTable={moveTable} />
-        <TableDrag rounded size={140} count={8} />
-        <TableDrag rounded size={150} count={6} />
-        <TableDrag rounded size={180} count={5} />
-        <TableDrag size={180} count={8} />
-        <TableDrag size={240} count={6} />
-      </>
+      <Page title="Sillas" loading={!event}>
+        {() => {
+          return <Boardr event={event} />
+        }}
+      </Page>
     )
+
+    // return (
+    //   <>
+    //     <Board />
+    //     <LayoutSquareDrap moveTable={moveTable} />
+    //     <TableDrag rounded size={140} count={8} />
+    //     <TableDrag rounded size={150} count={6} />
+    //     <TableDrag rounded size={180} count={5} />
+    //     <TableDrag size={180} count={8} />
+    //     <TableDrag size={240} count={6} />
+    //   </>
+    // )
   }
 }
 
 Layout = connect(
-  null,
+  ({ events }, props) => ({
+    event: events.data.find(event => event.id === parseInt(props.match.params.id, 10)),
+    loading: events.loading
+  }),
   {
-    moveTable
+    getEvents
   }
 )(Layout)
 

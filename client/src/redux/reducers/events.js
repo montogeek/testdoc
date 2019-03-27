@@ -48,7 +48,11 @@ export default function events(state = initialState, action) {
         loading: action.loading,
         data: action.data.map(event => ({
           ...event,
-          date: DateTime.fromSQL(event.date, { zone: "utc" }).toLocal()
+          date: DateTime.fromSQL(event.date, { zone: "utc" }).toLocal(),
+          position: {
+            kx: 0,
+            ky: 0
+          }
         }))
       }
 
@@ -280,13 +284,18 @@ export default function events(state = initialState, action) {
         })
       }
 
-      case MOVE_TABLE:
+    case MOVE_TABLE:
       return {
         ...state,
-        layout: {
-          x: action.x,
-          y: action.y
-        }
+        data: state.data.map(event => {
+          if (event.id === action.eventId) {
+            return {
+              ...event,
+              position: action.position
+            }
+          }
+          return event
+        })
       }
 
     default:

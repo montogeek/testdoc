@@ -57,7 +57,7 @@ const routes = [
   {
     path: "/event/:id/layout",
     exact: true,
-    component: PrivateRoute(DragDropContext(HTML5Backend)(Layout))
+    component: PrivateRoute(Layout)
   },
   {
     path: "*",
