@@ -3,11 +3,10 @@ import { connect } from "react-redux"
 import { DragDropContext } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
 
-import Knight from "./Knight"
 import BoardSquare from "./Drop/BoardSquare"
 import { moveTable } from "../../redux/actions/layout"
 import Constants from "./constants"
-import TablePiece, { Piece } from "./Drag/TablePiece"
+import TablePiece from "./Drag/TablePiece"
 
 class Board extends Component {
   canMove = (x, y) => {
@@ -24,28 +23,18 @@ class Board extends Component {
     this.props.moveTable(x, y, this.props.event.id, item.config)
   }
 
-  renderPiece(x, y) {
-    const { event } = this.props
-    if (event && event.position) {
-      const { kx, ky } = event.position
-      const { config } = event
-
-      if (x === kx && y === ky) {
-        // return "hi"
-        return <TablePiece config={config} />
-      }
+  renderPiece(x, y, piece) {
+    if (piece !== null) {
+      return <TablePiece config={piece} />
     }
 
     return null
   }
 
-  renderSquare(i) {
-    const x = i % 16
-    const y = Math.floor(i / 16)
-
+  renderSquare({ x, y, piece }) {
     return (
       <div
-        key={i}
+        key={x + y * 16}
         style={{
           width: "50px",
           height: "50px",
@@ -56,17 +45,14 @@ class Board extends Component {
         }}
       >
         <BoardSquare canMovePiece={this.canMove} movePiece={this.movePiece} position={{ x, y }}>
-          {this.renderPiece(x, y)}
+          {this.renderPiece(x, y, piece)}
         </BoardSquare>
       </div>
     )
   }
 
   render() {
-    const squares = []
-    for (let i = 0; i < 256; i++) {
-      squares.push(this.renderSquare(i))
-    }
+    const { squares } = this.props
 
     return (
       <div style={{ display: "flex" }}>
@@ -78,7 +64,7 @@ class Board extends Component {
             flexWrap: "wrap"
           }}
         >
-          {squares}
+          {squares.map(square => this.renderSquare(square))}
         </div>
         {Object.keys(Constants.TableImage).map(type => (
           <TablePiece type={type} config={Constants.TableImage[type]} />
@@ -90,7 +76,7 @@ class Board extends Component {
 
 Board = DragDropContext(HTML5Backend)(Board)
 Board = connect(
-  null,
+  ({ layout }) => ({ squares: layout.squares }),
   { moveTable }
 )(Board)
 

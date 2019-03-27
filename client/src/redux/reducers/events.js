@@ -27,8 +27,7 @@ import {
   REMOVE_ITEM_SUCCESS,
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
-  UPDATE_CATEGORY_FAILURE,
-  MOVE_TABLE
+  UPDATE_CATEGORY_FAILURE
 } from "../constants"
 
 const initialState = {
@@ -274,21 +273,6 @@ export default function events(state = initialState, action) {
                 }
                 return category
               })
-            }
-          }
-          return event
-        })
-      }
-
-    case MOVE_TABLE:
-      return {
-        ...state,
-        data: state.data.map(event => {
-          if (event.id === action.eventId) {
-            return {
-              ...event,
-              position: action.position,
-              config: action.config
             }
           }
           return event

@@ -1,10 +1,10 @@
-import { MOVE_TABLE } from "../constants"
+import { MOVE_PIECE } from "../constants"
 
-export function moveTable(kx, ky, eventId, config) {
+export function moveTable(kx, ky, eventId, piece) {
   return {
-    type: MOVE_TABLE,
+    type: MOVE_PIECE,
     position: { kx, ky },
     eventId,
-    config
+    piece
   }
 }
