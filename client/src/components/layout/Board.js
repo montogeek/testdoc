@@ -9,15 +9,6 @@ import Constants from "./constants"
 import TablePiece from "./Drag/TablePiece"
 
 class Board extends Component {
-  canMove = (x, y) => {
-    const { kx, ky } = this.props.event.position
-
-    const dx = x - kx
-    const dy = y - ky
-
-    return (Math.abs(dx) === 2 && Math.abs(dy) === 1) || (Math.abs(dx) === 1 && Math.abs(dy) === 2)
-  }
-
   movePiece = (x, y, item) => {
     // if (!this.canMove(x, y)) return false
     this.props.moveTable(x, y, this.props.event.id, item)
@@ -44,7 +35,12 @@ class Board extends Component {
           borderBottom: y === 15 ? "1px solid #69707D" : "none" // last row
         }}
       >
-        <BoardSquare canMovePiece={this.canMove} movePiece={this.movePiece} position={{ x, y }}>
+        <BoardSquare
+          hasPiece={!(piece === null)}
+          canMovePiece={this.canMove}
+          movePiece={this.movePiece}
+          position={{ x, y }}
+        >
           {this.renderPiece(x, y, piece)}
         </BoardSquare>
       </div>

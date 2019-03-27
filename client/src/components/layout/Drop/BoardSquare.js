@@ -5,13 +5,11 @@ import Square from "../Square"
 import Constants from "../constants"
 
 const squareTarget = {
-  // canDrop(props) {
-  //   const {
-  //     canMovePiece,
-  //     position: { x, y }
-  //   } = props
-  //   return canMovePiece(x, y)
-  // },
+  canDrop(props, monitor) {
+    const { hasPiece } = props
+
+    return !hasPiece
+  },
 
   drop(props, monitor) {
     const {
