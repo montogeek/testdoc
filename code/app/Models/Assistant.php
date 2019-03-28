@@ -16,9 +16,4 @@ class Assistant extends Model
     {
         return $this->attributes['total'] = $this->adults + $this->kids;
     }
-
-//    public function getFoodAttribute()
-////    {
-////        return $this->attributes['food'] =
-////    }
 }

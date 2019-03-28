@@ -11,7 +11,7 @@ const squareTarget = {
     return !hasPiece
   },
 
-  drop(props, monitor) {
+  async drop(props, monitor) {
     const {
       movePiece,
       position: { x, y }
@@ -19,7 +19,7 @@ const squareTarget = {
 
     const item = monitor.getItem()
 
-    movePiece(x, y, item)
+    await movePiece(x, y, item)
   }
 }
 
@@ -27,7 +27,6 @@ function collect(connect, monitor) {
   const info = {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver()
-    // canDrop: monitor.canDrop()
   }
 
   return info
@@ -53,10 +52,7 @@ class BoardSquare extends Component {
 
   render() {
     const {
-      position: { x, y },
       connectDropTarget,
-      isOver,
-      canDrop
     } = this.props
 
     const dropStyle = {
@@ -68,9 +64,6 @@ class BoardSquare extends Component {
     return connectDropTarget(
       <div style={dropStyle}>
         <Square>{this.props.children}</Square>
-        {/* {isOver && !canDrop && this.renderOverlay("red")} */}
-        {/* {!isOver && canDrop && this.renderOverlay("yellow")} */}
-        {/* {isOver && canDrop && this.renderOverlay("green")} */}
       </div>
     )
   }

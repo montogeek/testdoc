@@ -10,7 +10,6 @@ import TablePiece from "./Drag/TablePiece"
 
 class Board extends Component {
   movePiece = (x, y, item) => {
-    // if (!this.canMove(x, y)) return false
     this.props.moveTable(x, y, this.props.event.id, item)
   }
 
@@ -48,7 +47,11 @@ class Board extends Component {
   }
 
   render() {
-    const { squares } = this.props
+    const {
+      event: {
+        chairs: { layout }
+      }
+    } = this.props
 
     return (
       <div style={{ display: "flex" }}>
@@ -60,11 +63,11 @@ class Board extends Component {
             flexWrap: "wrap"
           }}
         >
-          {squares.map(square => this.renderSquare(square))}
+          {layout.map(square => this.renderSquare(square))}
         </div>
         <div style={{ position: "relative" }}>
-          {Object.keys(Constants.TableImage).map(type => (
-            <TablePiece type={type} config={Constants.TableImage[type]} />
+          {Object.keys(Constants.TableImage).map((type, i) => (
+            <TablePiece key={i} type={type} config={Constants.TableImage[type]} />
           ))}
         </div>
       </div>
@@ -74,7 +77,7 @@ class Board extends Component {
 
 Board = DragDropContext(HTML5Backend)(Board)
 Board = connect(
-  ({ layout }) => ({ squares: layout.squares }),
+  null,
   { moveTable }
 )(Board)
 

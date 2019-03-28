@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Item extends Model
+class Chair extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
-    public function category() {
-        return $this->belongsTo(Category::class);
-    }
+    protected $casts = [
+        'layout' => 'json',
+    ];
+
+    protected $fillable = ['layout'];
 
     public function event() {
         return  $this->belongsTo(Event::class);

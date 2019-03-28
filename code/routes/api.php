@@ -163,6 +163,7 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 //        ];
 
         $event['menu'] = $menu;
+        $event['chairs'] = $event->chairs;
 
         return $event;
     });
@@ -182,6 +183,8 @@ Route::middleware("auth:api")->put('/items/{id}', "MenuController@update");
 Route::middleware('auth:api')->delete('/items/{id}', 'MenuController@destroy');
 
 Route::middleware("auth:api")->put('/categories/{id}', "CategoriesController@update");
+
+Route::middleware("auth:api")->put("/layout/{id}", "LayoutController@update");
 
 Route::middleware('auth:api')->post('/logout', 'LoginController@logout')->name('logout');
 

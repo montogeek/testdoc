@@ -42,6 +42,11 @@ class Event extends Model
         return $this->belongsToMany(Category::class, 'budgets')->using(Budget::class)->as('budget')->withPivot('budget', 'extras')->withTimestamps();
     }
 
+    public function chairs()
+    {
+        return $this->hasOne(Chair::class);
+    }
+
     public function getDayAttribute()
     {
         return Carbon::parse($this->startDate)->day;

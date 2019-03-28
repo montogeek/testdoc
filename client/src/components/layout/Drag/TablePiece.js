@@ -55,7 +55,6 @@ class TablePiece extends React.Component {
 
     return connectDragSource(
       <div className="tablePiece">
-        {/* {config}2 */}
         <Piece {...config} insideGrid={insideGrid} isDragging={isDragging} />
       </div>
     )
