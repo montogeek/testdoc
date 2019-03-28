@@ -11,7 +11,7 @@ const squareTarget = {
     return !hasPiece
   },
 
-  async drop(props, monitor) {
+  drop(props, monitor) {
     const {
       movePiece,
       position: { x, y }
@@ -19,7 +19,7 @@ const squareTarget = {
 
     const item = monitor.getItem()
 
-    await movePiece(x, y, item)
+    movePiece(x, y, item)
   }
 }
 
@@ -51,9 +51,7 @@ class BoardSquare extends Component {
   }
 
   render() {
-    const {
-      connectDropTarget,
-    } = this.props
+    const { connectDropTarget } = this.props
 
     const dropStyle = {
       position: "relative",

@@ -48,9 +48,8 @@ class Board extends Component {
 
   render() {
     const {
-      event: {
-        chairs: { layout }
-      }
+      event: { chairs },
+      squares
     } = this.props
 
     return (
@@ -63,7 +62,7 @@ class Board extends Component {
             flexWrap: "wrap"
           }}
         >
-          {layout.map(square => this.renderSquare(square))}
+          {((chairs && chairs.layout) || squares).map(square => this.renderSquare(square))}
         </div>
         <div style={{ position: "relative" }}>
           {Object.keys(Constants.TableImage).map((type, i) => (
@@ -77,7 +76,7 @@ class Board extends Component {
 
 Board = DragDropContext(HTML5Backend)(Board)
 Board = connect(
-  null,
+  ({ layout }) => ({ squares: layout.squares }),
   { moveTable }
 )(Board)
 

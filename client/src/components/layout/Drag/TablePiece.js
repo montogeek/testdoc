@@ -1,16 +1,25 @@
 import React from "react"
 import { DragSource } from "react-dnd"
+
 import Constants from "../constants"
 
 const SIZE = 2
 
-const boxSource = {
+const pieceSource = {
   beginDrag(props) {
     return {
       type: props.type,
       config: props.config,
       x: props.x,
       y: props.y
+    }
+  },
+  endDrag(props, monitor) {
+    const item = monitor.getItem()
+    const didDrop = monitor.didDrop()
+
+    if (!didDrop) {
+      // props.removePiece(item.x, item.y)
     }
   }
 }
@@ -61,4 +70,4 @@ class TablePiece extends React.Component {
   }
 }
 
-export default DragSource(Constants.BoardTypes.TABLE, boxSource, collect)(TablePiece)
+export default DragSource(Constants.BoardTypes.TABLE, pieceSource, collect)(TablePiece)

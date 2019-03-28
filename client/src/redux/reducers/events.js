@@ -37,6 +37,17 @@ const initialState = {
   error: null
 }
 
+const defaultLayout = Array.from({ length: 256 }).map((_, i) => {
+  const x = i % 16
+  const y = Math.floor(i / 16)
+
+  return {
+    x,
+    y,
+    piece: null
+  }
+})
+
 export default function events(state = initialState, action) {
   switch (action.type) {
     case GET_EVENTS_REQUEST:
@@ -289,7 +300,7 @@ export default function events(state = initialState, action) {
               ...event,
               chairs: {
                 ...event.chairs,
-                layout: event.chairs.layout.map(square => {
+                layout: (event.chairs ? event.chairs.layout : defaultLayout).map(square => {
                   if (square.x === action.position.kx && square.y === action.position.ky) {
                     return {
                       ...square,
