@@ -8,7 +8,7 @@ const RedirectRoute = props => {
   return (
     <>
       {user.data.isAuthenticated ? (
-        <Layout>
+        <Layout match={rest.match}>
           <Component {...rest} />
         </Layout>
       ) : (

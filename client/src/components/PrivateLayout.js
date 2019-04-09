@@ -1,5 +1,6 @@
 import React, { Fragment } from "react"
 import { Link } from "react-router-dom"
+import { matchPath } from "react-router"
 import {
   EuiPage,
   EuiPageBody,
@@ -32,7 +33,35 @@ class PrivateLayout extends React.Component {
         name: "Eventos",
         href: "/dashboard",
         icon: <EuiIcon type="canvasApp" />,
-        isSelected: this.isActive("/dashboard")
+        isSelected: this.isActive("/dashboard"),
+        items: [
+          {
+            id: "event",
+            name: "Evento",
+            href: "/dashboard",
+            isSelected: this.isActive("/event/:id"),
+            items: [
+              {
+                id: "assistants",
+                name: "Asistentes",
+                href: "/event/:id/assistants",
+                isSelected: this.isActive("/event/:id/assistants")
+              },
+              {
+                id: "menu",
+                name: "Menu",
+                href: "/event/:id/menu",
+                isSelected: this.isActive("/event/:id/menu")
+              },
+              {
+                id: "chairs",
+                name: "Sillas",
+                href: "/event/:id/layout",
+                isSelected: this.isActive("/event/:id/layout")
+              }
+            ]
+          }
+        ]
       }
     ]
   }
@@ -99,13 +128,11 @@ class PrivateLayout extends React.Component {
     })
   }
 
-  isActive = path => {
-    return window.location.pathname === path
-  }
+  isActive = path => matchPath(window.location.pathname, { path })
 
   render() {
     const { openOnMobile } = this.state
-    const { children } = this.props
+    const { children, match } = this.props
 
     return (
       <Fragment>
@@ -136,7 +163,7 @@ class PrivateLayout extends React.Component {
                 isOpenOnMobile={openOnMobile}
                 items={this.sidebarItems}
                 renderItem={item => (
-                  <Link to={item.href} className={item.className}>
+                  <Link to={item.href.replace(":id", match.params.id)} className={item.className}>
                     {item.children}
                   </Link>
                 )}
