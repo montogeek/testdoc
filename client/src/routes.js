@@ -1,6 +1,3 @@
-import HTML5Backend from 'react-dnd-html5-backend'
-import { DragDropContext } from 'react-dnd'
-
 import PrivateRoute from "./helpers/router"
 
 import EventCreate from "./views/eventcreate"

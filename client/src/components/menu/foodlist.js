@@ -7,7 +7,6 @@ import {
   EuiFormErrorText,
   EuiConfirmModal,
   EuiOverlayMask,
-  EuiTitle,
   EuiSpacer,
   EuiFlexGroup,
   EuiFlexItem

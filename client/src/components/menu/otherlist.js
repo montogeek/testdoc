@@ -8,14 +8,10 @@ import {
   EuiFormErrorText,
   EuiConfirmModal,
   EuiOverlayMask,
-  EuiTitle,
   EuiIcon,
   EuiSpacer,
   EuiFlexGroup,
-  EuiFlexItem,
-  EuiStat,
-  EuiLoadingSpinner,
-  EuiButtonIcon
+  EuiFlexItem
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -45,8 +41,7 @@ let OthersList = class OthersList extends Component {
     {
       name: "Coste",
       field: "cost",
-      footer: ({ items, pagination }) =>
-        console.log(items, pagination) || items.reduce((acc, item) => acc + item.cost, 0),
+      footer: ({ items, pagination }) => items.reduce((acc, item) => acc + item.cost, 0),
       render: (value, item) => this.renderCell(value, item, "cost", "number")
     },
     {

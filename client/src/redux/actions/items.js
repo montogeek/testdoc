@@ -74,8 +74,8 @@ export function removeItem(id, eventId, categoryId) {
         data: { id, eventId, categoryId }
       })
     } catch (e) {
+      dispatch({ type: REMOVE_ITEM_FAILURE, loading: false, error: e })
       throw e
-      return dispatch({ type: REMOVE_ITEM_FAILURE, loading: false, error: e })
     }
   }
 }

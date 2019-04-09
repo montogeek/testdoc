@@ -20,21 +20,6 @@ import Page from "../Page"
 import { addItem } from "../../redux/actions/items"
 import { getEvents } from "../../redux/actions/events"
 
-const DisplayFormikState = props => (
-  <div style={{ margin: "1rem 0" }}>
-    <h3 style={{ fontFamily: "monospace" }} />
-    <pre
-      style={{
-        background: "#f6f8fa",
-        fontSize: ".65rem",
-        padding: ".5rem"
-      }}
-    >
-      <strong>props</strong> = {JSON.stringify(props, null, 2)}
-    </pre>
-  </div>
-)
-
 let MenuItemCreate = props => {
   const {
     values,
@@ -199,7 +184,6 @@ let MenuItemCreate = props => {
           <AssistantCreateIllustration width="500px" />
         </EuiFlexItem>
       </EuiFlexGroup>
-      <DisplayFormikState {...props} />
     </Page>
   )
 }

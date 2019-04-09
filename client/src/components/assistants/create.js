@@ -18,22 +18,6 @@ import * as Yup from "yup"
 import { ReactComponent as AssistantCreateIllustration } from "../../styles/illustrations/undraw_team_spirit_hrr4.svg"
 import Page from "../Page"
 import { addAssistant } from "../../redux/actions/assistants"
-import { dispatch } from "rxjs/internal/observable/range"
-
-const DisplayFormikState = props => (
-  <div style={{ margin: "1rem 0" }}>
-    <h3 style={{ fontFamily: "monospace" }} />
-    <pre
-      style={{
-        background: "#f6f8fa",
-        fontSize: ".65rem",
-        padding: ".5rem"
-      }}
-    >
-      <strong>props</strong> = {JSON.stringify(props, null, 2)}
-    </pre>
-  </div>
-)
 
 let AssistantCreate = props => {
   const {
@@ -46,8 +30,7 @@ let AssistantCreate = props => {
     handleChange,
     handleBlur,
     handleSubmit,
-    loading,
-    setValues
+    loading
   } = props
 
   return (
@@ -224,7 +207,6 @@ let AssistantCreate = props => {
           <AssistantCreateIllustration width="500px" />
         </EuiFlexItem>
       </EuiFlexGroup>
-      <DisplayFormikState {...props} />
     </Page>
   )
 }
