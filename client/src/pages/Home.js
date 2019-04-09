@@ -108,7 +108,7 @@ LoginForm = withFormik({
       })
       .catch(e => {
         setSubmitting(false)
-        setStatus({ error: "Usuario invalido" })
+        setStatus({ error: e.message })
       })
   },
   displayName: "Login"

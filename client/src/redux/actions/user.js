@@ -44,12 +44,10 @@ export function loginUser(email, password) {
 
       throw res
     } catch (e) {
-      const error = await e.json()
-
       dispatch({
         type: LOGIN_USER_FAILURE,
         loading: false,
-        error: error.message
+        error: e.message
       })
 
       throw e
@@ -73,7 +71,7 @@ export function registerUser(name, email, password, password_confirmation) {
         }
       })
 
-      if(res.ok) {
+      if (res.ok) {
         return dispatch({
           type: REGISTER_USER_SUCCESS,
           loading: false,
