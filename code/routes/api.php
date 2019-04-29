@@ -174,9 +174,11 @@ Route::middleware('auth:api')->get('/events', function (Request $request) {
 Route::middleware('auth:api')->post('/events', 'EventController@store');
 Route::middleware('auth:api')->put('/events/{id}', 'EventController@update');
 
+
 Route::middleware('auth:api')->post('/assistants', 'AssistantController@store');
 Route::middleware('auth:api')->put('/assistants/{id}', 'AssistantController@update');
 Route::middleware('auth:api')->delete('/assistants/{id}', 'AssistantController@destroy');
+Route::middleware('auth:api')->post('/assistants/importador/', 'AssistantController@import');
 
 Route::middleware('auth:api')->post('/items', 'MenuController@store');
 Route::middleware("auth:api")->put('/items/{id}', "MenuController@update");

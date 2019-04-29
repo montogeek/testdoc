@@ -8,7 +8,10 @@ import {
   EuiFieldNumber,
   EuiFormErrorText,
   EuiConfirmModal,
-  EuiOverlayMask
+  EuiOverlayMask,
+  EuiFlexItem,
+  EuiFlexGroup,
+  EuiButtonEmpty
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -382,11 +385,20 @@ let Assistants = class Assistants extends Component {
         loading={!event}
         title="Asistentes"
         titleRight={() => (
-          <Link to={`/event/${event.id}/assistants/create`}>
-            <EuiButton color="primary" fill>
-              Agregar asistente
-            </EuiButton>
-          </Link>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
+            <EuiFlexItem grow={false}>
+              <Link to={`/event/${event.id}/assistants/import`}>
+                <EuiButtonEmpty>Importar asistentes</EuiButtonEmpty>
+              </Link>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <Link to={`/event/${event.id}/assistants/create`}>
+                <EuiButton color="primary" fill>
+                  Agregar asistente
+                </EuiButton>
+              </Link>
+            </EuiFlexItem>
+          </EuiFlexGroup>
         )}
       >
         <EuiBasicTable

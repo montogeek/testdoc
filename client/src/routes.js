@@ -5,8 +5,9 @@ import EventUpdate from "./views/eventupdate"
 import Dashboard from "./pages/Dashboard"
 import Assistants from "./components/assistants"
 import AssistantCreate from "./components/assistants/create"
+import AssistantsImport from "./components/assistants/import"
 import Menu from "./views/menu"
-import MenuItemCreate from "./components/menu/create";
+import MenuItemCreate from "./components/menu/create"
 import Layout from "./components/layout"
 import Home from "./pages/Home"
 
@@ -40,6 +41,11 @@ const routes = [
     path: "/event/:id/assistants/create",
     exact: true,
     component: PrivateRoute(AssistantCreate)
+  },
+  {
+    path: "/event/:id/assistants/import",
+    exact: true,
+    component: PrivateRoute(AssistantsImport)
   },
   {
     path: "/event/:id/menu",

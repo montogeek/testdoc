@@ -28,7 +28,9 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
   UPDATE_CATEGORY_FAILURE,
-  MOVE_PIECE
+  MOVE_PIECE,
+  IMPORT_ASSISTANTS_REQUEST,
+  IMPORT_ASSISTANTS_FAILURE
 } from "../constants"
 
 const initialState = {
@@ -323,6 +325,12 @@ export default function events(state = initialState, action) {
           return event
         })
       }
+
+    case IMPORT_ASSISTANTS_REQUEST:
+      return { ...state, loading: action.loading }
+
+    case IMPORT_ASSISTANTS_FAILURE:
+      return { ...state, loading: action.loading, error: action.error }
 
     default:
       return state

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Assistant;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use League\Csv\Reader;
 
 class AssistantController extends Controller
 {
@@ -116,5 +117,18 @@ class AssistantController extends Controller
         $assistant->delete();
 
         return response()->json([], 200);
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('file');
+
+        $csv = Reader::createFromString($file->get());
+
+
+        return response()->json([
+            'name' => $request->file('file')->getSize(),
+            'state' => $csv->count()
+        ]);
     }
 }

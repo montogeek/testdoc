@@ -128,7 +128,7 @@ class PrivateLayout extends React.Component {
     })
   }
 
-  isActive = path => matchPath(window.location.pathname, { path })
+  isActive = path => !!matchPath(window.location.pathname, { path })
 
   render() {
     const { openOnMobile } = this.state

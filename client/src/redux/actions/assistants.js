@@ -9,7 +9,10 @@ import {
   UPDATE_ASSISTANT_FAILURE,
   REMOVE_ASSISTANT_REQUEST,
   REMOVE_ASSISTANT_SUCCESS,
-  REMOVE_ASSISTANT_FAILURE
+  REMOVE_ASSISTANT_FAILURE,
+  IMPORT_ASSISTANTS_REQUEST,
+  IMPORT_ASSISTANTS_SUCCESS,
+  IMPORT_ASSISTANTS_FAILURE
 } from "../constants"
 
 export function updateAssistant(data) {
@@ -67,10 +70,49 @@ export function addAssistant(data, event_id) {
 
       throw res
     } catch (e) {
-      const error = await e.json()
+      dispatch({ type: ADD_ASSISTANT_FAILURE, loading: false, error: e.message })
 
-      dispatch({ type: ADD_ASSISTANT_FAILURE, loading: false, error: error.message })
+      throw e
+    }
+  }
+}
 
+export function importAssistants(data, event_id) {
+  return async function(dispatch, getState) {
+    dispatch({ type: IMPORT_ASSISTANTS_REQUEST, loading: true })
+
+    try {
+      const res = await ky.post(`${process.env.REACT_APP_API_URL}/api/assistants/importador/`, {
+        body: data,
+        headers: {
+          Authorization: "Bearer " + getState().user.data.access_token
+        }
+      })
+
+      // const res = await fetch(`${process.env.REACT_APP_API_URL}/api/assistants/importador/`, {
+      //   method: "POST",
+      //   // body: data,
+      //   mode: "cors", // no-cors
+      //   body: JSON.stringify({ foo: "bar" }),
+      //   headers: {
+      //     Authorization: "Bearer " + getState().user.data.access_token
+      //   }
+      // })
+
+      // const res = await ky.post(`${process.env.REACT_APP_API_URL}/api/assistants/importador`, {
+      //   json: { event_id },
+      //   headers: {
+      //     Authorization: "Bearer " + getState().user.data.access_token
+      //   }
+      // })
+
+      if (res.ok) {
+        return dispatch({ type: IMPORT_ASSISTANTS_SUCCESS, loading: false, data: await res.json() })
+      }
+
+      throw res
+    } catch (e) {
+      dispatch({ type: IMPORT_ASSISTANTS_FAILURE, loading: false, error: e.message })
       throw e
     }
   }

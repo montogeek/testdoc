@@ -21,7 +21,7 @@ function Event({ event }) {
       <EuiAccordion
         id={event.id.toString()}
         paddingSize="xl"
-        initialIsOpen={true}
+        initialIsOpen={false}
         extraAction={
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
