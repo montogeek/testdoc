@@ -125,10 +125,14 @@ class AssistantController extends Controller
 
         $csv = Reader::createFromString($file->get());
 
+        $csv->setHeaderOffset(0);
+        $csv->setDelimiter(';');
 
-        return response()->json([
-            'name' => $request->file('file')->getSize(),
-            'state' => $csv->count()
-        ]);
+        $event = Event::find($request->get("event_id"));
+        foreach ($csv->getRecords() as $record) {
+            $event->assistants()->create($record);
+        }
+
+        return $event->assistants;
     }
 }

@@ -77,7 +77,6 @@ let AssistantsImport = props => {
             </form>
           </EuiForm>
         </EuiFlexItem>
-        <DisplayFormikState {...props} />
         <EuiFlexItem grow={false}>
           <SpreadSheetsIllustration width="500px" />
         </EuiFlexItem>
@@ -85,21 +84,6 @@ let AssistantsImport = props => {
     </Page>
   )
 }
-
-const DisplayFormikState = props => (
-  <div style={{ margin: "1rem 0" }}>
-    <h3 style={{ fontFamily: "monospace" }} />
-    <pre
-      style={{
-        background: "#f6f8fa",
-        fontSize: ".65rem",
-        padding: ".5rem"
-      }}
-    >
-      <strong>props</strong> = {JSON.stringify(props, null, 2)}
-    </pre>
-  </div>
-)
 
 AssistantsImport = withFormik({
   validationSchema: Yup.object().shape({
@@ -119,10 +103,9 @@ AssistantsImport = withFormik({
     props
       .importAssistants(formData)
       .then(() => {
-        // props.push(`/event/${props.match.params.id}/assistants`)
+        props.push(`/event/${props.match.params.id}/assistants`)
       })
       .catch(e => {
-        console.log("e", e)
         setSubmitting(false)
         setStatus({ error: "Error importando asistentes" })
         setErrors(e)

@@ -11,6 +11,7 @@ class Assistant extends Model
     
     protected $dates = ['deleted_at'];
     protected $appends = ['total'];
+    protected $fillable = ['name', 'address', 'city', 'state', 'zip', 'phonenumber', 'email', 'rsvp', 'kids', 'adults'];
 
     public function getTotalAttribute()
     {
