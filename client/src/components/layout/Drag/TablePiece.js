@@ -19,7 +19,7 @@ const pieceSource = {
     const didDrop = monitor.didDrop()
 
     if (!didDrop) {
-      // props.removePiece(item.x, item.y)
+      props.removePiece(item.x, item.y, item)
     }
   }
 }

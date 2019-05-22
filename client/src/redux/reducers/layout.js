@@ -1,4 +1,4 @@
-import { MOVE_PIECE } from "../constants"
+import { MOVE_PIECE, REMOVE_PIECE } from "../constants"
 
 const initialState = {
   squares: Array.from({ length: 256 }).map((_, i) => {
@@ -27,6 +27,20 @@ export default function layout(state = initialState, action) {
           }
 
           if (square.x === action.piece.x && square.y === action.piece.y) {
+            return {
+              ...square,
+              piece: null
+            }
+          }
+
+          return square
+        })
+      }
+    case REMOVE_PIECE:
+      return {
+        ...state,
+        squares: state.squares.map(square => {
+          if (square.x === action.position.kx && square.y === action.position.ky) {
             return {
               ...square,
               piece: null

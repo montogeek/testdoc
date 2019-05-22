@@ -4,7 +4,7 @@ import { DragDropContext } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
 
 import BoardSquare from "./Drop/BoardSquare"
-import { moveTable } from "../../redux/actions/layout"
+import { moveTable, removePiece } from "../../redux/actions/layout"
 import Constants from "./constants"
 import TablePiece from "./Drag/TablePiece"
 
@@ -13,9 +13,13 @@ class Board extends Component {
     this.props.moveTable(x, y, this.props.event.id, item)
   }
 
+  removePiece = (x, y, item) => {
+    this.props.removePiece(x, y, this.props.event.id, item)
+  }
+
   renderPiece(x, y, piece) {
     if (piece !== null) {
-      return <TablePiece x={x} y={y} config={piece} />
+      return <TablePiece x={x} y={y} config={piece} removePiece={this.removePiece} />
     }
 
     return null
@@ -77,7 +81,7 @@ class Board extends Component {
 Board = DragDropContext(HTML5Backend)(Board)
 Board = connect(
   ({ layout }) => ({ squares: layout.squares }),
-  { moveTable }
+  { moveTable, removePiece }
 )(Board)
 
 export default Board

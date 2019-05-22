@@ -29,6 +29,7 @@ import {
   UPDATE_CATEGORY_SUCCESS,
   UPDATE_CATEGORY_FAILURE,
   MOVE_PIECE,
+  REMOVE_PIECE,
   IMPORT_ASSISTANTS_REQUEST,
   IMPORT_ASSISTANTS_FAILURE
 } from "../constants"
@@ -311,6 +312,31 @@ export default function events(state = initialState, action) {
                   }
 
                   if (square.x === action.piece.x && square.y === action.piece.y) {
+                    return {
+                      ...square,
+                      piece: null
+                    }
+                  }
+
+                  return square
+                })
+              }
+            }
+          }
+          return event
+        })
+      }
+    case REMOVE_PIECE:
+      return {
+        ...state,
+        data: state.data.map(event => {
+          if (event.id === action.eventId) {
+            return {
+              ...event,
+              chairs: {
+                ...event.chairs,
+                layout: (event.chairs ? event.chairs.layout : defaultLayout).map(square => {
+                  if (square.x === action.position.kx && square.y === action.position.ky) {
                     return {
                       ...square,
                       piece: null
