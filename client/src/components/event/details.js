@@ -1,5 +1,13 @@
 import React, { Component } from "react"
 import { EuiFlexGroup, EuiFlexItem, EuiText, EuiBasicTable, EuiTextColor } from "@elastic/eui"
+import numbro from "numbro"
+
+const numberFormat = { thousandSeparated: true, mantissa: 2 }
+
+const formatCurrency = value => {
+  if (isNaN(value)) return numbro(0).formatCurrency(numberFormat)
+  return numbro(value).formatCurrency(numberFormat)
+}
 
 class Details extends Component {
   assistantsColumns = [
@@ -16,23 +24,32 @@ class Details extends Component {
     {
       field: "food",
       name: "Comida",
-      footer: ({ items }) =>
-        items.reduce((acc, item, _, array) => acc + item.food, 0) / items.length
+      render: value => formatCurrency(value),
+      footer: ({ items }) => {
+        const total = items.reduce((acc, item, _, array) => acc + item.food, 0) / items.length
+        return formatCurrency(total)
+      }
     },
     {
       field: "other",
       name: "Otros",
-      footer: ({ items }) => items.reduce((acc, item) => acc + item.other, 0) / items.length
+      render: value => formatCurrency(value),
+      footer: ({ items }) => {
+        const total = items.reduce((acc, item) => acc + item.other, 0) / items.length
+        return formatCurrency(total)
+      }
     },
     {
       field: "total",
       name: "Total",
       render: (_, item) => {
         const total = (item.food + item.other) * item.count
-        return !isNaN(total) ? total : 0
+        return formatCurrency(total)
       },
-      footer: ({ items }) =>
-        items.reduce((acc, item) => acc + (item.food + item.other) * item.count, 0)
+      footer: ({ items }) => {
+        const total = items.reduce((acc, item) => acc + (item.food + item.other) * item.count, 0)
+        return formatCurrency(total)
+      }
     }
   ]
 
@@ -50,23 +67,39 @@ class Details extends Component {
     {
       field: "budget",
       name: "Importe de presupuesto",
-      footer: ({ items }) => items.reduce((acc, item) => acc + item.budget, 0)
+      render: value => formatCurrency(value),
+      footer: ({ items }) => {
+        const total = items.reduce((acc, item) => acc + item.budget, 0)
+        return formatCurrency(total)
+      }
     },
     {
       field: "cost",
       name: "Coste total",
-      footer: ({ items }) => items.reduce((acc, item) => acc + item.cost, 0)
+      render: value => formatCurrency(value),
+      footer: ({ items }) => {
+        const total = items.reduce((acc, item) => acc + item.cost, 0)
+        return formatCurrency(total)
+      }
     },
     {
       field: "diff",
       name: "Diferencia",
-      footer: ({ items }) => items.reduce((acc, item) => acc + item.diff, 0),
       render: value =>
         value > 0 ? (
-          <EuiTextColor color="secondary">{value}</EuiTextColor>
+          <EuiTextColor color="secondary">{formatCurrency(value)}</EuiTextColor>
         ) : (
-          <EuiTextColor color="danger">({Math.abs(value)})</EuiTextColor>
-        )
+          <EuiTextColor color="danger">({formatCurrency(Math.abs(value))})</EuiTextColor>
+        ),
+      footer: ({ items }) => {
+        const total = items.reduce((acc, item) => acc + item.diff, 0)
+        if (total === 0) {
+          return formatCurrency(total)
+        } else if (total > 0) {
+          return <EuiTextColor color="secondary">{formatCurrency(total)}</EuiTextColor>
+        }
+        return <EuiTextColor color="danger">({formatCurrency(Math.abs(total))})</EuiTextColor>
+      }
     }
   ]
 
