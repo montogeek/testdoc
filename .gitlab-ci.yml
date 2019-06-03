@@ -68,8 +68,8 @@ production:
     - docker network prune --force
     - docker network create -d bridge --attachable $NETWORK_NAME
     - docker volume ls
-    - docker volume rm dbdata
     - docker volume inspect dbdata || true
+    - docker volume rm dbdata || true
     - docker stop db || true
     - docker stop backend || true
     - docker stop frontend || true
