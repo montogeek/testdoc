@@ -76,7 +76,7 @@ export default function events(state = initialState, action) {
       return {
         ...state,
         loading: action.loading,
-        data: [...state.data, action.data]
+        data: [...state.data, { ...action.data, menu: [] }]
       }
 
     case CREATE_EVENT_FAILURE:
