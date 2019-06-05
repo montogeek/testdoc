@@ -78,50 +78,6 @@ class PrivateLayout extends React.Component {
     )
   }
 
-  renderBreadcrumbs() {
-    const breadcrumbs = [
-      {
-        text: "Management",
-        href: "#",
-        onClick: e => {
-          e.preventDefault()
-          console.log("You clicked management")
-        },
-        "data-test-subj": "breadcrumbsAnimals",
-        className: "customClass"
-      },
-      {
-        text: "Truncation test is here for a really long item",
-        href: "#",
-        onClick: e => {
-          e.preventDefault()
-          console.log("You clicked truncation test")
-        }
-      },
-      {
-        text: "hidden",
-        href: "#",
-        onClick: e => {
-          e.preventDefault()
-          console.log("You clicked hidden")
-        }
-      },
-      {
-        text: "Users",
-        href: "#",
-        onClick: e => {
-          e.preventDefault()
-          console.log("You clicked users")
-        }
-      },
-      {
-        text: "Create"
-      }
-    ]
-
-    return <EuiHeaderBreadcrumbs breadcrumbs={breadcrumbs} />
-  }
-
   toggleOpen = () => {
     this.setState({
       openOnMobile: !this.state.openOnMobile
@@ -146,9 +102,6 @@ class PrivateLayout extends React.Component {
               </EuiShowFor>
               <EuiHeaderSectionItem border="right">{this.renderLogo()}</EuiHeaderSectionItem>
             </EuiHeaderSection>
-
-            {this.renderBreadcrumbs()}
-
             <EuiHeaderSection side="right">
               <EuiHeaderSectionItem>
                 <UserMenu />

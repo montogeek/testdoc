@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { DropTarget } from "react-dnd"
 
-import Square from "../Square"
 import Constants from "../constants"
 
 const squareTarget = {
@@ -61,7 +60,7 @@ class BoardSquare extends Component {
 
     return connectDropTarget(
       <div style={dropStyle}>
-        <Square>{this.props.children}</Square>
+        {this.props.children}
       </div>
     )
   }
