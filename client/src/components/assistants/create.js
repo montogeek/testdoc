@@ -8,10 +8,11 @@ import {
   EuiFormRow,
   EuiFieldText,
   EuiButton,
-  EuiCheckbox,
   EuiFieldNumber,
   EuiFlexGroup,
-  EuiFlexItem
+  EuiFlexItem,
+  EuiRadioGroup,
+  EuiRadio
 } from "@elastic/eui"
 import * as Yup from "yup"
 
@@ -30,6 +31,7 @@ let AssistantCreate = props => {
     handleChange,
     handleBlur,
     handleSubmit,
+    setValues,
     loading
   } = props
 
@@ -193,7 +195,27 @@ let AssistantCreate = props => {
                 error={errors.rsvp}
                 id="rsvp"
               >
-                <EuiCheckbox id="rsvp" checked={Boolean(values.rsvp)} onChange={handleChange} />
+                <EuiRadioGroup
+                  options={[
+                    {
+                      id: "true",
+                      value: "true",
+                      label: "Si"
+                    },
+                    {
+                      id: "false",
+                      value: "false",
+                      label: "No"
+                    }
+                  ]}
+                  idSelected={values.rsvp}
+                  onChange={e => {
+                    setValues({
+                      ...values,
+                      rsvp: e
+                    })
+                  }}
+                />
               </EuiFormRow>
               <EuiFormRow hasEmptyLabelSpace>
                 <EuiButton type="submit" isDisabled={isSubmitting} isLoading={loading} fill>
@@ -235,11 +257,14 @@ AssistantCreate = withFormik({
     email: "",
     kids: 0,
     adults: 0,
-    rsvp: false
+    rsvp: null
   }),
   handleSubmit: (values, { props, setSubmitting, setStatus, setErrors }) => {
     props
-      .addAssistant(values, props.match.params.id)
+      .addAssistant(
+        { ...values, rsvp: values.rsvp !== null ? values.rsvp === "true" : values.rsvp },
+        props.match.params.id
+      )
       .then(() => {
         props.push(`/event/${props.match.params.id}/assistants`)
       })

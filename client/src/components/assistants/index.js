@@ -138,6 +138,8 @@ let Assistants = class Assistants extends Component {
             checked={Boolean(rsvp)}
             onChange={this.handleChange}
           />
+        ) : rsvp === null ? (
+          <EuiIcon type="minusInCircle" color="subdued" />
         ) : rsvp ? (
           <EuiIcon type="checkInCircleFilled" color="secondary" />
         ) : (
@@ -427,7 +429,9 @@ Assistants = withFormik({
             email: Yup.string()
               .email("Email invalido")
               .required("Requerido"),
-            kids: Yup.nullable().number().min(0, "Debe ser mayor a 0"),
+            kids: Yup.nullable()
+              .number()
+              .min(0, "Debe ser mayor a 0"),
             adults: Yup.number().min(0, "Debe ser mayor a 0")
           })
         )
