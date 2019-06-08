@@ -1,16 +1,14 @@
 FROM node:10-alpine
 
-# Create app directory
-WORKDIR /usr/src/app
+ADD yarn.lock /yarn.lock
+ADD package.json /package.json
 
-# Install app dependencies
-COPY package.json ./
-COPY yarn.lock ./
-
+ENV NODE_PATH=/node_modules
+ENV PATH=$PATH:/node_modules/.bin
 RUN yarn
 
-# Bundle app source
-COPY . .
+WORKDIR /app
+ADD . /app
 
-
-CMD [ "yarn", "start" ]
+ENTRYPOINT ["yarn"]
+CMD ["start"]

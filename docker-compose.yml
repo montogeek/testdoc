@@ -17,7 +17,7 @@ services:
     networks:
       - app-network
     volumes:
-      - ./client:/usr/src/app
+      - ./client:/app
   backend:
     build:
       context: ./code
