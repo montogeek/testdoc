@@ -1,47 +1,47 @@
 version: "3"
 
 services:
-  frontend:
+  frontend_production:
     build:
       context: ./client
-      dockerfile: Dockerfile.production
+      dockerfile: production.Dockerfile
     env_file:
       - ./client/.env.production
     depends_on:
-      - backend
-      - ngnix
-      - db
-    container_name: frontend
+      - backend_production
+      - nginx_production
+      - db_production
+    container_name: frontend_production
     ports:
       - "80:80"
     networks:
-      - app-network
-  backend:
+      - app-network_production
+  backend_production:
     build:
       context: ./code
-      dockerfile: Dockerfile.production
-    container_name: backend
+      dockerfile: production.Dockerfile
+    container_name: backend_production
     env_file:
       - ./code/.env.${ENV}
     depends_on:
-      - db
+      - db_production
     networks:
-      - app-network
-  ngnix:
+      - app-network_production
+  nginx_production:
     build:
       context: ./code
       dockerfile: ./nginx/Dockerfile.nginx.production
-    container_name: nginx
+    container_name: nginx_production
     ports:
       - "8000:8000"
       - "443:443"
     depends_on:
-      - backend
+      - backend_production
     networks:
-      - app-network
-  db:
+      - app-network_production
+  db_production:
     image: mysql:5.7.22
-    container_name: db
+    container_name: db_production
     ports:
       - "3306:3306"
     environment:
@@ -49,14 +49,14 @@ services:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - dbdata:/var/lib/mysql
+      - dbdata_production:/var/lib/mysql
     networks:
-      - app-network
+      - app-network_production
 
 networks:
-  app-network:
+  app-network_production:
     driver: bridge
 
 volumes:
-  dbdata:
+  dbdata_production:
     driver: local
