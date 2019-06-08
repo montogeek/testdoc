@@ -9,7 +9,6 @@ services:
       - ./client/.env.local
     depends_on:
       - backend
-      - nginx
       - db
     container_name: frontend
     ports:
@@ -25,23 +24,13 @@ services:
     container_name: backend
     depends_on:
       - db
+    ports:
+      - "9000:9000"
     networks:
       - app-network
     volumes:
       - ./code:/var/www:cached
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - backend
-    networks:
-      - app-network
-    volumes:
-      - ./code:/var/www
-      - ./code/nginx/conf.d/default.dev.conf:/etc/nginx/conf.d/default.conf
+      - /var/www/vendor
   db:
     image: mysql:5.7.22
     container_name: db
