@@ -86,11 +86,11 @@ class Details extends Component {
       field: "diff",
       name: "Diferencia",
       render: value =>
-        value > 0 ? (
+        value === 0 ? formatCurrency(value) : value > 0 ? (
           <EuiTextColor color="secondary">{formatCurrency(value)}</EuiTextColor>
         ) : (
-          <EuiTextColor color="danger">({formatCurrency(Math.abs(value))})</EuiTextColor>
-        ),
+            <EuiTextColor color="danger">({formatCurrency(Math.abs(value))})</EuiTextColor>
+          ),
       footer: ({ items }) => {
         const total = items.reduce((acc, item) => acc + item.diff, 0)
         if (total === 0) {
