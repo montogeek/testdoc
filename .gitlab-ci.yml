@@ -1,5 +1,4 @@
 stages:
-  - build_image
   - deploy
 
 services:
@@ -51,7 +50,7 @@ production:
     - apk add docker
     - apk add sudo
     - apk add --no-cache curl
-    - apk add --update python python-dev py-pip build-base libffi-dev
+    - apk add --update python python-dev py-pip build-base libffi-dev libssl-dev libxml2-dev libxslt1-dev libjpeg8-dev zlib1g-dev
     - pip install docker-compose
     - curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
     - chmod +x /tmp/docker-machine
