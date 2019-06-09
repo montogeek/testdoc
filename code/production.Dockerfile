@@ -36,7 +36,7 @@ COPY . /var/www
 COPY .env.production /var/www/.env
 
 RUN mkdir -p /var/www/vendor
-RUN rm /var/www/bootstrap/cache/*
+RUN rm /var/www/bootstrap/cache/* || true
 
 RUN composer install \
     --optimize-autoloader \
