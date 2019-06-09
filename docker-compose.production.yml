@@ -6,10 +6,9 @@ services:
       context: ./client
       dockerfile: production.Dockerfile
     env_file:
-      - ./client/.env.production
+      - ./client/.env.${ENV}
     depends_on:
       - backend_production
-      - nginx_production
       - db_production
     container_name: frontend_production
     ports:
@@ -30,13 +29,13 @@ services:
   nginx_production:
     build:
       context: ./code
-      dockerfile: ./nginx/Dockerfile.nginx.production
+      dockerfile: ./nginx/production.Dockerfile
     container_name: nginx_production
     ports:
       - "8000:8000"
       - "443:443"
     depends_on:
-      - backend_production
+      - frontend_production
     networks:
       - app-network_production
   db_production:

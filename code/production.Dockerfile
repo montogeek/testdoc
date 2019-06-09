@@ -1,7 +1,7 @@
 FROM php:7.2-fpm
 
 # Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/
+COPY composer.json /var/www/
 
 # Set working directory
 WORKDIR /var/www
@@ -16,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     locales \
     zip \
     jpegoptim optipng pngquant gifsicle \
-    vim \
     unzip \
     git \
     curl
@@ -37,6 +36,7 @@ COPY . /var/www
 COPY .env.production /var/www/.env
 
 RUN mkdir -p /var/www/vendor
+RUN rm /var/www/bootstrap/cache/*
 
 RUN composer install \
     --optimize-autoloader \
