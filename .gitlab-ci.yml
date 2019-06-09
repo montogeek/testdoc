@@ -56,6 +56,7 @@ production:
     - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
     - sudo curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
     - sudo chmod +x /usr/local/bin/docker-compose
+    - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
     # - sudo curl -L --fail https://github.com/docker/compose/releases/download/1.23.2/run.sh -o /usr/local/bin/docker-compose
     # - sudo chmod +x /usr/local/bin/docker-compose
     - eval $(ssh-agent -s)
