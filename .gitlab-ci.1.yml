@@ -65,27 +65,26 @@ production:
   script:
     - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
     - eval $(docker-machine env $DOCKER_MACHINE_NAME --shell sh)
-    - docker-compose -f docker-compose.production.yml up
-    # - docker network prune --force
-    # - docker network create -d bridge --attachable $NETWORK_NAME
-    # - docker stop db || true
-    # - docker stop backend || true
-    # - docker stop frontend || true
-    # - docker stop nginx || true
-    # - docker rm db || true
-    # - docker rm backend || true
-    # - docker rm frontend || true
-    # - docker rm nginx || true
-    # - docker volume ls
-    # - docker volume inspect dbdata || true
-    # - docker volume rm dbdata || true
-    # - docker run --network=$NETWORK_NAME --name=db -it -d  -p 3306:3306 -v dbdata:/var/lib/mysql --env MYSQL_DATABASE=events --env MYSQL_USER=root --env MYSQL_ROOT_PASSWORD=root mysql:5.7.22
-    # - docker pull $CONTAINER_IMAGE_BACKEND:latest
-    # - docker pull $CONTAINER_IMAGE_FRONTEND:latest
-    # - docker pull $CONTAINER_IMAGE_NGINX:latest
-    # - docker run --network=$NETWORK_NAME --name=backend -it -d $CONTAINER_IMAGE_BACKEND:latest
-    # - docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx -it -d $CONTAINER_IMAGE_NGINX:latest
-    # - docker run --network=$NETWORK_NAME -p 80:80 --name=frontend -it -d $CONTAINER_IMAGE_FRONTEND:latest
-    # - docker network inspect $NETWORK_NAME
-    # - docker volume ls
-    # - docker volume inspect dbdata
+    - docker network prune --force
+    - docker network create -d bridge --attachable $NETWORK_NAME
+    - docker stop db || true
+    - docker stop backend || true
+    - docker stop frontend || true
+    - docker stop nginx || true
+    - docker rm db || true
+    - docker rm backend || true
+    - docker rm frontend || true
+    - docker rm nginx || true
+    - docker volume ls
+    - docker volume inspect dbdata || true
+    - docker volume rm dbdata || true
+    - docker run --network=$NETWORK_NAME --name=db -it -d  -p 3306:3306 -v dbdata:/var/lib/mysql --env MYSQL_DATABASE=events --env MYSQL_USER=root --env MYSQL_ROOT_PASSWORD=root mysql:5.7.22
+    - docker pull $CONTAINER_IMAGE_BACKEND:latest
+    - docker pull $CONTAINER_IMAGE_FRONTEND:latest
+    - docker pull $CONTAINER_IMAGE_NGINX:latest
+    - docker run --network=$NETWORK_NAME --name=backend -it -d $CONTAINER_IMAGE_BACKEND:latest
+    - docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx -it -d $CONTAINER_IMAGE_NGINX:latest
+    - docker run --network=$NETWORK_NAME -p 80:80 --name=frontend -it -d $CONTAINER_IMAGE_FRONTEND:latest
+    - docker network inspect $NETWORK_NAME
+    - docker volume ls
+    - docker volume inspect dbdata
