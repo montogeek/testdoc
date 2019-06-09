@@ -27,7 +27,7 @@ build_image:
     - docker pull $CONTAINER_IMAGE_NGINX:latest || true
     - cd code
     - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./production.Dockerfile .
-    - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/Dockerfile.nginx.production .
+    - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/production.Dockerfile .
     - docker push $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA
     - docker push $CONTAINER_IMAGE_BACKEND:latest
     - docker push $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA
