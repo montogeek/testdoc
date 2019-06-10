@@ -13,7 +13,16 @@ class EventsTableSeeder extends Seeder
     public function run()
     {
         $faker = Faker\Factory::create();
-        for ($i = 1; $i <= 20; $i++) {
+
+        DB::table('events')->insert([
+            'name' => 'El cumpleaños de 75 años de la abuela',
+            'startDate' => '2019-06-14 12:00:00',
+            'endDate' => '2019-06-14 14:00:00',
+            'location' => 'Casa de la tía Rosa',
+            'user_id' => 1
+        ]);
+
+        for ($i = 2; $i <= 20; $i++) {
             $date = Carbon::parse($faker->dateTimeBetween(date("Y-m-d H:i"), date("Y-m-d H:i", strtotime('+1 year')))->format('Y-m-d H:i'));
             $duration = Carbon::parse($date)->addHours(rand(2, 8));
 

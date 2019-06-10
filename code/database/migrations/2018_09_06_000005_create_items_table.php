@@ -28,7 +28,7 @@ class CreateItemsTable extends Migration
             $table->float('cost')->nullable();
             $table->float('shareKid')->nullable();
             $table->float('shareAdult')->nullable();
-            $table->string('notes', 45)->nullable();
+            $table->string('notes', 60)->nullable();
             $table->tinyInteger('bought')->nullable();
             $table->json('extras')->nullable();
             $table->unsignedInteger('quantity')->nullable();

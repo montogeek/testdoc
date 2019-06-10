@@ -17,7 +17,7 @@ class CreateBudgetsTable extends Migration
             $table->unsignedInteger('event_id');
             $table->unsignedInteger('category_id');
             $table->float('budget')->default(0.0);
-            $table->json('extras');
+            $table->json('extras')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
