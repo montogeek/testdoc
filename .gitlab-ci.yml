@@ -1,5 +1,5 @@
 stages:
-  # - build_image
+  - build_image
   - deploy
 
 services:
@@ -16,28 +16,28 @@ variables:
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
-# build_image:
-#   stage: build_image
-#   image: docker:git
-#   services:
-#     - docker:dind
-#   script:
-#     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
-#     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
-#     - docker pull $CONTAINER_IMAGE_NGINX:latest || true
-#     - cd code
-#     - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./production.Dockerfile .
-#     - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/production.Dockerfile .
-#     - docker push $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA
-#     - docker push $CONTAINER_IMAGE_BACKEND:latest
-#     - docker push $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA
-#     - docker push $CONTAINER_IMAGE_NGINX:latest
-#     - cd ../client
-#     - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./production.Dockerfile .
-#     - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
-#     - docker push $CONTAINER_IMAGE_FRONTEND:latest
-#   only:
-#     - master
+build_image:
+  stage: build_image
+  image: docker:git
+  services:
+    - docker:dind
+  script:
+    - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
+    - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
+    - docker pull $CONTAINER_IMAGE_NGINX:latest || true
+    - cd code
+    - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./production.Dockerfile .
+    - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/production.Dockerfile .
+    - docker push $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE_BACKEND:latest
+    - docker push $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE_NGINX:latest
+    - cd ../client
+    - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./production.Dockerfile .
+    - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE_FRONTEND:latest
+  only:
+    - master
 
 production:
   stage: deploy
@@ -66,26 +66,3 @@ production:
     - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
     - eval $(docker-machine env $DOCKER_MACHINE_NAME --shell sh)
     - ENV=production docker-compose -f docker-compose.production.yml up -d
-    # - docker network prune --force
-    # - docker network create -d bridge --attachable $NETWORK_NAME
-    # - docker stop db || true
-    # - docker stop backend || true
-    # - docker stop frontend || true
-    # - docker stop nginx || true
-    # - docker rm db || true
-    # - docker rm backend || true
-    # - docker rm frontend || true
-    # - docker rm nginx || true
-    # - docker volume ls
-    # - docker volume inspect dbdata || true
-    # - docker volume rm dbdata || true
-    # - docker run --network=$NETWORK_NAME --name=db -it -d  -p 3306:3306 -v dbdata:/var/lib/mysql --env MYSQL_DATABASE=events --env MYSQL_USER=root --env MYSQL_ROOT_PASSWORD=root mysql:5.7.22
-    # - docker pull $CONTAINER_IMAGE_BACKEND:latest
-    # - docker pull $CONTAINER_IMAGE_FRONTEND:latest
-    # - docker pull $CONTAINER_IMAGE_NGINX:latest
-    # - docker run --network=$NETWORK_NAME --name=backend -it -d $CONTAINER_IMAGE_BACKEND:latest
-    # - docker run --network=$NETWORK_NAME -p 8000:8000 --name=nginx -it -d $CONTAINER_IMAGE_NGINX:latest
-    # - docker run --network=$NETWORK_NAME -p 80:80 --name=frontend -it -d $CONTAINER_IMAGE_FRONTEND:latest
-    # - docker network inspect $NETWORK_NAME
-    # - docker volume ls
-    # - docker volume inspect dbdata
