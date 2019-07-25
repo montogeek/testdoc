@@ -1,3 +1,5 @@
+image: docker:18-git
+
 stages:
   - build_image
   - deploy
@@ -15,16 +17,15 @@ variables:
 
 
 services:
-   - docker:18.09-dind
+   # - docker:18.09-dind
+   - docker:18-dind
 
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
 build_image:
   stage: build_image
-  image: docker:git
-  #services:
-  #  - docker:18.09-dind
+  # image: docker:git
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
@@ -45,7 +46,7 @@ build_image:
 
 production:
   stage: deploy
-  image: docker:git
+  # image: docker:git
   environment:
     name: production
     url: http://138.197.6.62
