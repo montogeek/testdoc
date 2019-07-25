@@ -3,7 +3,7 @@ stages:
   - deploy
 
 services:
-  - docker:18.06.3-dind
+  - docker:18.09.5-dind
 
 variables:
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
