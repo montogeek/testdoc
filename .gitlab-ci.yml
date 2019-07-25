@@ -5,6 +5,9 @@ stages:
 services:
 - docker:dind
 
+before_script:
+   - docker info
+
 variables:
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
