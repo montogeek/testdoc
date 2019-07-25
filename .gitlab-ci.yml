@@ -17,7 +17,6 @@ variables:
 
 
 services:
-   # - docker:18.09-dind
    - docker:18-dind
 
 before_script:
@@ -25,7 +24,9 @@ before_script:
 
 build_image:
   stage: build_image
-  # image: docker:git
+  image: docker:18-git
+  services:
+   - docker:18-dind
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
@@ -46,7 +47,7 @@ build_image:
 
 production:
   stage: deploy
-  # image: docker:git
+  image: docker:18-git
   environment:
     name: production
     url: http://138.197.6.62
