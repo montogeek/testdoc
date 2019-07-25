@@ -1,16 +1,17 @@
+image: docker:stable
 stages:
   - build_image
   - deploy
 
 variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
   CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
   CONTAINER_IMAGE_DB: registry.gitlab.com/montogeek/testdoc/db
   DOCKER_MACHINE_NAME: proyecto-grado
   NETWORK_NAME: app-network
-  DOCKER_HOST: tcp://docker:2375
-  DOCKER_DRIVER: overlay2
 
 services:
    - docker:dind
@@ -20,7 +21,7 @@ before_script:
 
 build_image:
   stage: build_image
-  image: docker:git
+  # image: docker:git
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
@@ -43,7 +44,7 @@ build_image:
 
 production:
   stage: deploy
-  image: docker:git
+  # image: docker:git
   environment:
     name: production
     url: http://138.197.6.62
