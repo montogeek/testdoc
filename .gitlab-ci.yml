@@ -2,9 +2,6 @@ stages:
   - build_image
   - deploy
 
-services:
-- docker:dind
-
 variables:
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
@@ -13,14 +10,12 @@ variables:
   DOCKER_MACHINE_NAME: proyecto-grado
   NETWORK_NAME: app-network
 
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-
 build_image:
   stage: build_image
   image: docker:git
-  services:
-    - docker:dind
+  before_script:
+    - apk add docker
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
