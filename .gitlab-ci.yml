@@ -15,7 +15,7 @@ variables:
 
 
 services:
-   - docker:dind
+   - docker:18.09.8-dind
 
 before_script:
   # - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -26,7 +26,7 @@ before_script:
 build_image:
   stage: build_image
   services:
-   - docker:dind
+   - docker:18.09.8-dind
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
