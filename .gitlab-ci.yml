@@ -9,6 +9,8 @@ variables:
   CONTAINER_IMAGE_DB: registry.gitlab.com/montogeek/testdoc/db
   DOCKER_MACHINE_NAME: proyecto-grado
   NETWORK_NAME: app-network
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
 
 build_image:
   stage: build_image
