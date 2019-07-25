@@ -1,9 +1,72 @@
-image: docker:latest
+#image: docker:stable
+stages:
+  - build_image
+  - deploy
 
-services:
-  - docker:dind
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
+  CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
+  CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
+  CONTAINER_IMAGE_DB: registry.gitlab.com/montogeek/testdoc/db
+  DOCKER_MACHINE_NAME: proyecto-grado
+  NETWORK_NAME: app-network
 
-build:
-  stage: build
+#services:
+   #- docker:dind
+
+#before_script:
+   #- docker info
+
+build_image:
+  stage: build_image
+  # image: docker:git
+  before_script:
+    - apk add docker
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
-    - docker build -t test .
+    - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
+    - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
+    - docker pull $CONTAINER_IMAGE_NGINX:latest || true
+    - cd code
+    - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./production.Dockerfile .
+    - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/production.Dockerfile .
+    - docker push $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE_BACKEND:latest
+    - docker push $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE_NGINX:latest
+    - cd ../client
+    - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./production.Dockerfile .
+    - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
+    - docker push $CONTAINER_IMAGE_FRONTEND:latest
+  only:
+    - master
+
+production:
+  stage: deploy
+  # image: docker:git
+  environment:
+    name: production
+    url: http://138.197.6.62
+  only:
+    - master
+  before_script:
+    - apk add docker
+    - apk add sudo
+    - apk add --no-cache curl
+    - apk add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
+    - curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
+    - chmod +x /tmp/docker-machine
+    - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
+    - eval $(docker-machine env $DOCKER_MACHINE_NAME --shell sh)
+    - ENV=production docker-compose -f docker-compose.production.yml up -d
