@@ -1,3 +1,5 @@
+image: docker:18.09.8-dind
+
 stages:
   - build_image
   - deploy
@@ -47,7 +49,6 @@ build_image:
 
 production:
   stage: deploy
-  image: docker:stable
   environment:
     name: production
     url: http://138.197.6.62
