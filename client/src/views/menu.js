@@ -27,7 +27,7 @@ class Menu extends Component {
 
     return (
       <Page
-        title="Menu"
+        title="Menu del evento"
         loading={!event}
       >
         {() => {
