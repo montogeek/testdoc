@@ -1,4 +1,5 @@
 [[runners]]
   executor = "docker"
+  environment = ["DOCKER_TLS_CERTDIR="]
   [runners.docker]
     privileged = true
