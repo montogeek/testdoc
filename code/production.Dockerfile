@@ -13,7 +13,7 @@ WORKDIR /var/www
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
-    # maria-client \
+    mariadb-client \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
