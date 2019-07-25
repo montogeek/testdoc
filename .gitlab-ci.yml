@@ -11,6 +11,7 @@ variables:
   NETWORK_NAME: app-network
 
 before_script:
+  - apk add docker
   - docker info
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
