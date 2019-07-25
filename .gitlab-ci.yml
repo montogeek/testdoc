@@ -20,8 +20,6 @@ before_script:
 build_image:
   stage: build_image
   image: docker:stable
-  services:
-    - docker:stable
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
