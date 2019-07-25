@@ -28,13 +28,6 @@ class Menu extends Component {
     return (
       <Page
         title="Menu"
-        titleRight={
-          <Link to={`/event/assistants/create`}>
-            <EuiButton color="primary" fill>
-              Agregar categoria
-            </EuiButton>
-          </Link>
-        }
         loading={!event}
       >
         {() => {
