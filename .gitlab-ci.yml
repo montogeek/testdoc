@@ -2,6 +2,9 @@ stages:
   - build_image
   - deploy
 
+services:
+- docker:stable-git
+
 variables:
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
@@ -17,6 +20,8 @@ before_script:
 build_image:
   stage: build_image
   image: docker:stable
+  services:
+    - docker:stable-git
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
