@@ -2,9 +2,6 @@ stages:
   - build_image
   - deploy
 
-services:
-- docker:dind
-
 variables:
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
@@ -12,7 +9,14 @@ variables:
   CONTAINER_IMAGE_DB: registry.gitlab.com/montogeek/testdoc/db
   DOCKER_MACHINE_NAME: proyecto-grado
   NETWORK_NAME: app-network
-  DOCKER_TLS_CERTDIR: ""
+  # DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+
+
+services:
+   - docker:18.09-dind
+
 
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
@@ -21,7 +25,7 @@ build_image:
   stage: build_image
   image: docker:git
   services:
-    - docker:dind
+    - docker:18.09-dind
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
