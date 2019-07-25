@@ -3,7 +3,7 @@ stages:
   - deploy
 
 services:
-- docker:18-dind
+- docker:19-dind
 
 variables:
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
@@ -21,7 +21,7 @@ build_image:
   stage: build_image
   image: docker:stable
   services:
-    - docker:18-dind
+    - docker:19-dind
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
