@@ -7,10 +7,10 @@ COPY composer.json /var/www/
 WORKDIR /var/www
 
 # Install dependencies
-# RUN apt-get install software-properties-common
+RUN apt-get install software-properties-common python-software-properties
+RUN add-apt-repository ppa:git-core/ppa
 RUN apt-get update && apt-get install -y \
     build-essential \
-    php7.2-mysql \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
