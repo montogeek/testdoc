@@ -1,13 +1,11 @@
-image: docker:stable
-
 stages:
   - build_image
   - deploy
 
 variables:
   DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay2
+  # DOCKER_HOST: tcp://docker:2375/
+  # DOCKER_DRIVER: overlay2
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
   CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
@@ -17,7 +15,7 @@ variables:
 
 
 services:
-   - docker:stable-dind
+   - docker:dind
 
 before_script:
   # - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -27,9 +25,8 @@ before_script:
 
 build_image:
   stage: build_image
-  image: docker:stable
   services:
-   - docker:stable-dind
+   - docker:dind
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
