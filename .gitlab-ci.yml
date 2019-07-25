@@ -12,11 +12,16 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
 
+services:
+   - docker:dind
+
+before_script:
+   - docker info
+
 build_image:
   stage: build_image
   image: docker:git
   before_script:
-    - apk add docker
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
