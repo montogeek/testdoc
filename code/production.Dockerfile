@@ -7,7 +7,7 @@ COPY composer.json /var/www/
 WORKDIR /var/www
 
 # Install dependencies
-RUN add-apt-repository 'deb http://archive.ubuntu.com/ubuntu trusty universe'
+RUN apt-get install software-properties-common
 RUN apt-get update && apt-get install -y \
     build-essential \
      mysql-client-5.6 \
