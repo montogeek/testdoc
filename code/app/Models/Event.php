@@ -11,7 +11,7 @@ class Event extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['month_year', 'day', 'kids', 'adults', 'duration'];
+    protected $appends = ['month_year', 'day', 'kids', 'adults', 'duration', 'menu'];
 
     protected $hidden = ['assistant', 'items', 'categories'];
 
@@ -122,5 +122,17 @@ class Event extends Model
             'totalAssistants' => $this->totalAssistants,
             'value' => $totalOther / max($this->totalAssistants, 1)
         ];
+    }
+
+    public function getMenuAttribute()
+    {
+        return $this->categories->values()->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name,
+                'budget' => $category->budget->budget,
+                'items' => $category->items()->where("event_id", "=", $this->id)->get(),
+            ];
+        });
     }
 }

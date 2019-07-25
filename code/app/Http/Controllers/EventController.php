@@ -55,6 +55,25 @@ class EventController extends Controller
 
         $newEvent = Auth::user()->events()->save($event);
 
+        $event->categories()->sync([
+            1 => [
+                'category_id' => 1,
+                'budget' => 500,
+            ],
+            2 => [
+                'category_id' => 2,
+                'budget' => 400,
+            ],
+            3 => [
+                'category_id' => 3,
+                'budget' => 150,
+            ],
+            4 => [
+                'category_id' => 4,
+                'budget' => 300,
+            ]
+        ], false);
+
         return $newEvent;
 
     }
