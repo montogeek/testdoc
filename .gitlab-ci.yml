@@ -1,11 +1,10 @@
-image: docker:18.09.8-dind
+image: docker:18.09.8
 
 stages:
   - build_image
   - deploy
 
 variables:
-  DOCKER_TLS_CERTDIR: ""
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
   CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
