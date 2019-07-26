@@ -50,20 +50,6 @@ npm:
       - client/node_modules/
       - client/build/
 
-codestyle:
-  stage: test
-  dependencies: []
-  script:
-    - phpcs --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
-
-phpunit:
-  stage: test
-  dependencies:
-    - composer
-  script:
-    - cd code
-    - phpunit --coverage-text --colors=never
-
 production:
   stage: deploy
   script:
