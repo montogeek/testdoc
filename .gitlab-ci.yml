@@ -10,7 +10,7 @@ variables:
   NETWORK_NAME: app-network
 
 services:
-   - docker:18-dind
+   - docker:19-dind
 
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
