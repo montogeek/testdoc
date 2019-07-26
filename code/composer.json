@@ -11,7 +11,8 @@
         "laravel/framework": "5.7.10",
         "laravel/passport": "^7.0",
         "laravel/tinker": "^1.0",
-        "league/csv": "^9.2"
+        "league/csv": "^9.2",
+        "lorisleiva/laravel-deployer": "^0.2.11"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
@@ -47,8 +48,7 @@
             "@php artisan key:generate"
         ],
         "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump"
         ]
     },
     "config": {

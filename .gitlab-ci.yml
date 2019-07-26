@@ -53,12 +53,12 @@ npm:
 production:
   stage: deploy
   script:
+    - cd code
     - *init_ssh
     - *change_file_permissions
     - php artisan deploy 68.183.52.252 -s upload
   environment:
     name: production
     url: http://68.183.52.252
-  when: manual
   only:
     - master
