@@ -1,69 +1,76 @@
-image: docker:18.09.8
+image: lorisleiva/laravel-docker:latest
 
-stages:
-  - build_image
-  - deploy
+.init_ssh: &init_ssh |
+  eval $(ssh-agent -s)
+  echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
-variables:
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay2
-  CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
-  CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
-  CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
-  CONTAINER_IMAGE_DB: registry.gitlab.com/montogeek/testdoc/db
-  DOCKER_MACHINE_NAME: proyecto-grado
-  NETWORK_NAME: app-network
+# Replace the last line with the following lines if you'd rather
+# leave StrictHostKeyChecking enabled (replace yourdomain.com):
+#
+#  ssh-keyscan yourdomain.com >> ~/.ssh/known_hosts
+#  chmod 644 ~/.ssh/known_hosts
 
-services:
-   - docker:18.09.8-dind
+.change_file_permissions: &change_file_permissions |
+  find . -type f -not -path "./vendor/*" -exec chmod 664 {} \;    
+  find . -type d -not -path "./vendor/*" -exec chmod 775 {} \;
 
-before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-
-build_image:
-  stage: build_image
+composer:
+  stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-composer
+    paths:
+      - vendor/
   script:
-    - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
-    - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
-    - docker pull $CONTAINER_IMAGE_NGINX:latest || true
-    - cd code
-    - docker build --cache-from $CONTAINER_IMAGE_BACKEND:latest --tag $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_BACKEND:latest -f ./production.Dockerfile .
-    - docker build --cache-from $CONTAINER_IMAGE_NGINX:latest --tag $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_NGINX:latest -f ./nginx/production.Dockerfile .
-    - docker push $CONTAINER_IMAGE_BACKEND:$CI_COMMIT_SHA
-    - docker push $CONTAINER_IMAGE_BACKEND:latest
-    - docker push $CONTAINER_IMAGE_NGINX:$CI_COMMIT_SHA
-    - docker push $CONTAINER_IMAGE_NGINX:latest
-    - cd ../client
-    - docker build --cache-from $CONTAINER_IMAGE_FRONTEND:latest --tag $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE_FRONTEND:latest -f ./production.Dockerfile .
-    - docker push $CONTAINER_IMAGE_FRONTEND:$CI_COMMIT_SHA
-    - docker push $CONTAINER_IMAGE_FRONTEND:latest
-  only:
-    - master
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - cp .env.example .env
+    - php artisan key:generate
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - vendor/
+      - .env
+
+npm:
+  stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-npm
+    paths:
+      - node_modules/
+  script:
+    - npm install
+    - npm run production
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - node_modules/
+      - public/css/
+      - public/js/
+
+codestyle:
+  stage: test
+  dependencies: []
+  script:
+    - phpcs --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
+
+phpunit:
+  stage: test
+  dependencies:
+    - composer
+  script:
+    - phpunit --coverage-text --colors=never
 
 production:
   stage: deploy
+  script:
+    - *init_ssh
+    - *change_file_permissions
+    - php artisan deploy 68.183.52.252 -s upload
   environment:
     name: production
-    url: http://138.197.6.62
+    url: http://68.183.52.252
+  when: manual
   only:
     - master
-  before_script:
-    - apk add docker
-    - apk add sudo
-    - apk add --no-cache curl
-    - apk add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-    - pip install docker-compose
-    - curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
-    - chmod +x /tmp/docker-machine
-    - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
-    - chmod 700 ~/.ssh
-    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-  script:
-    - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
-    - eval $(docker-machine env $DOCKER_MACHINE_NAME --shell sh)
-    - ENV=production docker-compose -f docker-compose.production.yml up -d
