@@ -43,13 +43,14 @@ npm:
   script:
     - cd client
     - npm install
-    - npm run production
+    - npm run build
   artifacts:
     expire_in: 1 month
     paths:
       - client/node_modules/
       - client/public/css/
       - client/public/js/
+      - client/build/
 
 codestyle:
   stage: test
