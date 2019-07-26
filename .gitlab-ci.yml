@@ -22,32 +22,34 @@ composer:
   cache:
     key: ${CI_COMMIT_REF_SLUG}-composer
     paths:
-      - vendor/
+      - code/vendor/
   script:
+    - cd code
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-    - cp .env.example .env
+    - cp .env.production .env
     - php artisan key:generate
   artifacts:
     expire_in: 1 month
     paths:
-      - vendor/
-      - .env
+      - code/vendor/
+      - code/.env
 
 npm:
   stage: build
   cache:
     key: ${CI_COMMIT_REF_SLUG}-npm
     paths:
-      - node_modules/
+      - client/node_modules/
   script:
+    - cd client
     - npm install
     - npm run production
   artifacts:
     expire_in: 1 month
     paths:
-      - node_modules/
-      - public/css/
-      - public/js/
+      - client/node_modules/
+      - client/public/css/
+      - client/public/js/
 
 codestyle:
   stage: test
@@ -60,6 +62,7 @@ phpunit:
   dependencies:
     - composer
   script:
+    - cd code
     - phpunit --coverage-text --colors=never
 
 production:
