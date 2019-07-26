@@ -1,10 +1,13 @@
-image: docker:18
+image: docker:18.09.8
 
 stages:
-  - build
+  - build_image
+  - deploy
 
 variables:
   DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
   CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
@@ -13,13 +16,13 @@ variables:
   NETWORK_NAME: app-network
 
 services:
-   - docker:18-dind
+   - docker:18.09.8-dind
 
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
-build:
-  stage: build
+build_image:
+  stage: build_image
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
@@ -37,3 +40,30 @@ build:
     - docker push $CONTAINER_IMAGE_FRONTEND:latest
   only:
     - master
+
+production:
+  stage: deploy
+  environment:
+    name: production
+    url: http://138.197.6.62
+  only:
+    - master
+  before_script:
+    - apk add docker
+    - apk add sudo
+    - apk add --no-cache curl
+    - apk add py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
+    - curl -L https://github.com/docker/machine/releases/download/v0.13.0/docker-machine-`uname -s`-`uname -m` >/tmp/docker-machine
+    - chmod +x /tmp/docker-machine
+    - sudo cp /tmp/docker-machine /usr/local/bin/docker-machine
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker-machine create --driver generic --generic-ip-address=138.197.6.62 --generic-ssh-key ~/.ssh/id_rsa $DOCKER_MACHINE_NAME
+    - eval $(docker-machine env $DOCKER_MACHINE_NAME --shell sh)
+    - ENV=production docker-compose -f docker-compose.production.yml up -d
