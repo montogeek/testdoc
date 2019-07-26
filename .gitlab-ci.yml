@@ -43,7 +43,7 @@ npm:
   script:
     - cd client
     - npm install
-    - npm run build
+    - GENERATE_SOURCEMAP=false node --max-old-space-size=4000 ./node_modules/.bin/react-scripts build
   artifacts:
     expire_in: 1 month
     paths:
