@@ -92,7 +92,7 @@ return [
 
     'options' => [
         'application' => env('APP_NAME', 'Laravel'),
-        'repository' => 'https://gitlab.com/montogeek/testdoc',
+        'repository' => 'git@gitlab.com:montogeek/testdoc.git',
     ],
 
     /*
@@ -108,7 +108,7 @@ return [
 
     'hosts' => [
         '68.183.52.252' => [
-            'deploy_path' => '/var/www/',
+            'deploy_path' => '/var/www',
             'user' => 'root',
         ],
     ],
