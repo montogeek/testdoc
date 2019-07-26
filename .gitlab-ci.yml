@@ -2,21 +2,19 @@ stages:
   - build_image
 
 variables:
-  CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
-  CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
-  CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
-  CONTAINER_IMAGE_DB: registry.gitlab.com/montogeek/testdoc/db
-  DOCKER_MACHINE_NAME: proyecto-grado
-  NETWORK_NAME: app-network
+   DOCKER_HOST: tcp://docker:2375/
+   DOCKER_DRIVER: overlay2
+   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
 
 services:
-   - docker:19-dind
+  - docker:18.09-dind
+
 
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
 build_image:
   stage: build_image
-  image: docker:latest
+  image: docker:18.09
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
