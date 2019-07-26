@@ -1,8 +1,9 @@
-# image: docker:18.09.8
-
 stages:
   - build_image
   - deploy
+
+services:
+- docker:dind
 
 variables:
   DOCKER_TLS_CERTDIR: ""
@@ -13,14 +14,14 @@ variables:
   DOCKER_MACHINE_NAME: proyecto-grado
   NETWORK_NAME: app-network
 
-services:
-   - docker:dind
-
 before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
 build_image:
   stage: build_image
+  image: docker:git
+  services:
+    - docker:dind
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
     - docker pull $CONTAINER_IMAGE_FRONTEND:latest || true
@@ -41,6 +42,7 @@ build_image:
 
 production:
   stage: deploy
+  image: docker:git
   environment:
     name: production
     url: http://138.197.6.62
