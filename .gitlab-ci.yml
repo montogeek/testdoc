@@ -5,8 +5,9 @@ stages:
   - deploy
 
 variables:
-  # DOCKER_TLS_CERTDIR: ""
-  # DOCKER_HOST: tcp://docker:2375/
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
   CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
   CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
