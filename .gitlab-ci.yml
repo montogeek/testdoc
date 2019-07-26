@@ -2,12 +2,14 @@ stages:
   - build_image
 
 variables:
-   DOCKER_HOST: tcp://docker:2375/
+   DOCKER_HOST: tcp://docker:2375
    DOCKER_DRIVER: overlay2
+   # Required to be able to connect to the docker daemon. See https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
+   DOCKER_TLS_CERTDIR: ""
    CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
 
 services:
-  - docker:18.09-dind
+  - docker:stable-dind
 
 
 before_script:
@@ -15,6 +17,5 @@ before_script:
 
 build_image:
   stage: build_image
-  image: docker:18.09
   script:
     - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
