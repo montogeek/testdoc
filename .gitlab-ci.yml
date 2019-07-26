@@ -1,21 +1,20 @@
+image: docker:18.09.8
+
 stages:
   - build_image
+  - deploy
 
 variables:
-   DOCKER_HOST: tcp://docker:2375
-   DOCKER_DRIVER: overlay2
-   # Required to be able to connect to the docker daemon. See https://gitlab.com/gitlab-org/gitlab-runner/issues/4501
-   DOCKER_TLS_CERTDIR: ""
-   CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
+  CONTAINER_IMAGE_BACKEND: registry.gitlab.com/montogeek/testdoc/backend
+  CONTAINER_IMAGE_FRONTEND: registry.gitlab.com/montogeek/testdoc/frontend
+  CONTAINER_IMAGE_NGINX: registry.gitlab.com/montogeek/testdoc/nginx
+  CONTAINER_IMAGE_DB: registry.gitlab.com/montogeek/testdoc/db
+  DOCKER_MACHINE_NAME: proyecto-grado
+  NETWORK_NAME: app-network
+  DOCKER_TLS_CERTDIR: ""
 
 services:
-  - docker:stable-dind
-
+   - docker:18.09.8-dind
 
 before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-
-build_image:
-  stage: build_image
-  script:
-    - docker pull $CONTAINER_IMAGE_BACKEND:latest || true
