@@ -92,7 +92,7 @@ return [
 
     'options' => [
         'application' => env('APP_NAME', 'Laravel'),
-        'repository' => 'git@gitlab.com:montogeek/testdoc.git',
+        'repository' => 'https://gitlab.com/montogeek/testdoc.git',
     ],
 
     /*
