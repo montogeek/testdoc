@@ -56,7 +56,7 @@ production:
     - cd code
     - *init_ssh
     - *change_file_permissions
-    - php artisan deploy 68.183.52.252 -s upload
+    - php artisan deploy 68.183.52.252 -s upload -v
   environment:
     name: production
     url: http://68.183.52.252
