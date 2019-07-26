@@ -8,7 +8,6 @@ import {
   EuiHeaderSection,
   EuiHeaderSectionItem,
   EuiHeaderSectionItemButton,
-  EuiHeaderBreadcrumbs,
   EuiHeaderLogo,
   EuiIcon,
   EuiShowFor,

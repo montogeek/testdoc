@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import Root from "./Root"
 import { Provider } from "react-redux"
 
-import configureStore, { loadState, saveState } from "./redux/store"
+import configureStore, { loadState } from "./redux/store"
 
 import "./styles/app.scss"
 

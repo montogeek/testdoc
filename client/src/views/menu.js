@@ -1,7 +1,5 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Link } from "react-router-dom"
-import { EuiButton } from "@elastic/eui"
 
 import { getEvents } from "../redux/actions/events"
 import FoodList from "../components/menu/foodlist"

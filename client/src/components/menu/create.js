@@ -43,7 +43,7 @@ let MenuItemCreate = props => {
     if (categoryId === null) {
       getEvents()
     }
-  }, [categoryId])
+  }, [categoryId, getEvents])
 
   return (
     <Page title="Agregar item" loading={loading}>

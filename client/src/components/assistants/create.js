@@ -11,8 +11,7 @@ import {
   EuiFieldNumber,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiRadioGroup,
-  EuiRadio
+  EuiRadioGroup
 } from "@elastic/eui"
 import * as Yup from "yup"
 

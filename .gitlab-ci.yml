@@ -48,8 +48,6 @@ npm:
     expire_in: 1 month
     paths:
       - client/node_modules/
-      - client/public/css/
-      - client/public/js/
       - client/build/
 
 codestyle:
