@@ -2,12 +2,10 @@
 
 namespace Deployer;
 
-set('my_custom_message', 'hello world!');
+after('hook:ready', 'deploy_client');
 
-desc('My task');
-task('my_task', function () {
-    run("cd {{release_path}} && echo '{{my_custom_message}}'");
+desc('Deploy client');
+task('deploy_client', function () {
+  run("pwd");
+  run("ls -alh .");
 });
-
-
-after('hook:ready', 'my_task');
