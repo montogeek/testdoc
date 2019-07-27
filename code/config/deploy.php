@@ -61,6 +61,7 @@ return [
             'artisan:cache:clear',
             'artisan:config:cache',
             'artisan:migrate',
+            'artisan:db:seed'
         ],
 
         // Deployment is done and live
@@ -141,7 +142,8 @@ return [
 
     'include' => [
         'recipe/deploy_frontend.php',
-        'recipe/fix_permissions.php'
+        'recipe/fix_permissions.php',
+        'recipe/deploy_backend.php'
     ],
 
     /*
