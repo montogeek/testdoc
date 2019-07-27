@@ -26,7 +26,8 @@ composer:
   script:
     - cd code
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-    - cp .env.production .env
+    - mv .env.production .env
+    - rm .env.test
     - php artisan key:generate
   artifacts:
     expire_in: 1 month
