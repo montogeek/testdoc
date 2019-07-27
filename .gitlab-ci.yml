@@ -49,13 +49,14 @@ npm:
   artifacts:
     expire_in: 1 month
     paths:
-      - client/node_modules/
       - client/build/
 
 production:
   stage: deploy
   script:
     - ls -alh
+    - ls -alh client
+    - ls -alh client/build/
     - cd code
     - *init_ssh
     - *change_file_permissions
@@ -67,7 +68,7 @@ production:
     - cat config/database.php
     - php artisan deploy 68.183.52.252 -s upload -v
     - cd ..
-    - mv client/build /var/www/client
+    - mv client/build/ /var/www/client/
   environment:
     name: production
     url: http://68.183.52.252
