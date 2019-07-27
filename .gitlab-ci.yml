@@ -66,9 +66,13 @@ production:
     - ls -alh
     - cat .env
     - cat config/database.php
-    - php artisan deploy 68.183.52.252 -s upload -v
     - cd ..
     - mv client/build/ /var/www/client/
+    - cd code
+    - php artisan deploy 68.183.52.252 -s upload -v
+    - sudo chmod -R 755 /var/www/
+    - sudo chmod -R 777 /var/www/current/storage/*
+    
   environment:
     name: production
     url: http://68.183.52.252
