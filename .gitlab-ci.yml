@@ -60,18 +60,17 @@ production:
     - cd code
     - *init_ssh
     - *change_file_permissions
-    - ls -alh
     - mv .env.production .env
     - rm .env.test
-    - ls -alh
-    - cat .env
-    - cat config/database.php
     - cd ..
-    - cp -R client/build /var/www/client/
+    - ls -alh /var/www/client/
+    - cp -R client/build/ /var/www/client/
+    - ls -alh /var/www/client/
     - cd code
     - php artisan deploy 68.183.52.252 -s upload -v
     - chmod -R 755 /var/www/
-    - chmod -R 777 /var/www/current/storage/*
+    - LATEST_DEPLOY=$(ls -td -- */ | head -n 1)
+    - chmod -R 777 /var/www/${LATEST_DEPLOY}storage/*
     
   environment:
     name: production
