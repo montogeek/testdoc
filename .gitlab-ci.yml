@@ -67,7 +67,7 @@ production:
     - cat .env
     - cat config/database.php
     - cd ..
-    - mv client/build/* /var/www/client/
+    - cp -R client/build /var/www/client/
     - cd code
     - php artisan deploy 68.183.52.252 -s upload -v
     - chmod -R 755 /var/www/
