@@ -19,10 +19,10 @@ image: lorisleiva/laravel-docker:latest
 
 composer:
   stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-composer
-    paths:
-      - code/vendor/
+  # cache:
+  #   key: ${CI_COMMIT_REF_SLUG}-composer
+  #   paths:
+  #     - code/vendor/
   script:
     - cd code
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
@@ -37,10 +37,10 @@ composer:
 
 npm:
   stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}-npm
-    paths:
-      - client/node_modules/
+  # cache:
+  #   key: ${CI_COMMIT_REF_SLUG}-npm
+  #   paths:
+  #     - client/node_modules/
   script:
     - cd client
     - npm install
