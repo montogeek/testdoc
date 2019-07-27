@@ -67,11 +67,11 @@ production:
     - cat .env
     - cat config/database.php
     - cd ..
-    - mv client/build/ /var/www/client/
+    - mv client/build/* /var/www/client/
     - cd code
     - php artisan deploy 68.183.52.252 -s upload -v
-    - sudo chmod -R 755 /var/www/
-    - sudo chmod -R 777 /var/www/current/storage/*
+    - chmod -R 755 /var/www/
+    - chmod -R 777 /var/www/current/storage/*
     
   environment:
     name: production
