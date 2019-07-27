@@ -19,15 +19,16 @@ image: lorisleiva/laravel-docker:latest
 
 composer:
   stage: build
-  # cache:
-  #   key: ${CI_COMMIT_REF_SLUG}-composer
-  #   paths:
-  #     - code/vendor/
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-composer
+    paths:
+      - code/vendor/
   script:
     - cd code
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
     - mv .env.production .env
     - rm .env.test
+    - ls -alh
     - php artisan key:generate
   artifacts:
     expire_in: 1 month
@@ -37,10 +38,10 @@ composer:
 
 npm:
   stage: build
-  # cache:
-  #   key: ${CI_COMMIT_REF_SLUG}-npm
-  #   paths:
-  #     - client/node_modules/
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-npm
+    paths:
+      - client/node_modules/
   script:
     - cd client
     - npm install
@@ -57,8 +58,10 @@ production:
     - cd code
     - *init_ssh
     - *change_file_permissions
+    - ls -alh
     - mv .env.production .env
     - rm .env.test
+    - ls -alh
     - php artisan deploy 68.183.52.252 -s upload -v
   environment:
     name: production

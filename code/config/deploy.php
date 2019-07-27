@@ -59,7 +59,7 @@ return [
             'artisan:storage:link',
             'artisan:view:clear',
             'artisan:cache:clear',
-            'artisan:config:cache',
+            // 'artisan:config:cache',
             'artisan:migrate',
         ],
         
