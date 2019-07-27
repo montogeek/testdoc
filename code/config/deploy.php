@@ -48,12 +48,12 @@ return [
         'start' => [
             //
         ],
-        
+
         // Code and composer vendors are ready but nothing is built.
         'build' => [
             //
         ],
-        
+
         // Deployment is done but not live yet (before symlink)
         'ready' => [
             'artisan:storage:link',
@@ -62,17 +62,17 @@ return [
             'artisan:config:cache',
             'artisan:migrate',
         ],
-        
+
         // Deployment is done and live
         'done' => [
             //
         ],
-        
+
         // Deployment succeeded.
         'success' => [
             //
         ],
-        
+
         // Deployment failed.
         'fail' => [
             //
@@ -141,6 +141,7 @@ return [
 
     'include' => [
         'recipe/deploy_frontend.php',
+        'recipe/fix_permissions.php'
     ],
 
     /*
