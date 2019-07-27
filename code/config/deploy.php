@@ -140,7 +140,7 @@ return [
     */
 
     'include' => [
-        //
+        'recipe/deploy_frontend.php',
     ],
 
     /*

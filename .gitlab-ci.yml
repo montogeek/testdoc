@@ -54,23 +54,21 @@ npm:
 production:
   stage: deploy
   script:
-    - ls -alh
-    - ls -alh client
     - ls -alh client/build/
     - cd code
     - *init_ssh
     - *change_file_permissions
     - mv .env.production .env
     - rm .env.test
-    - cd ..
-    - ls -alh /var/www/client/
-    - cp -R client/build/ /var/www/client/
-    - ls -alh /var/www/client/
-    - cd code
+    # - cd ..
+    # - ls -alh /var/www/client/
+    # - cp -R client/build/ /var/www/client/
+    # - ls -alh /var/www/client/
+    # - cd code
     - php artisan deploy 68.183.52.252 -s upload -v
-    - chmod -R 755 /var/www/
-    - LATEST_DEPLOY=$(ls -td -- */ | head -n 1)
-    - chmod -R 777 /var/www/${LATEST_DEPLOY}storage/*
+    # - chmod -R 755 /var/www/
+    # - LATEST_DEPLOY=$(ls -td -- */ | head -n 1)
+    # - chmod -R 777 /var/www/${LATEST_DEPLOY}storage/*
     
   environment:
     name: production
