@@ -63,6 +63,7 @@ production:
     - rm .env.test
     - ls -alh
     - cat .env
+    - cat config/database.php
     - php artisan deploy 68.183.52.252 -s upload -v
   environment:
     name: production
