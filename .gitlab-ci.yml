@@ -62,6 +62,7 @@ production:
     - mv .env.production .env
     - rm .env.test
     - ls -alh
+    - cat .env
     - php artisan deploy 68.183.52.252 -s upload -v
   environment:
     name: production
