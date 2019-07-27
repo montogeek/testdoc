@@ -6,11 +6,13 @@ after('artisan:db:seed', 'deploy_backend');
 
 desc('Deploy backend');
 task('deploy_backend', function () {
-  $passportKeys = run("php artisan passport:keys");
-  run("echo $passportKeys");
+  within('{{release_path}}', function () {
+    $passportKeys = run("php artisan passport:keys");
+    run("echo $passportKeys");
 
-  $passportClient = run("php passport:client --password --name='Frontend'");
-  run("echo $passportClient");
+    $passportClient = run("php passport:client --password --name='Frontend'");
+    run("echo $passportClient");
 
-  writeln("Backend deployed");
+    writeln("Backend deployed");
+  });
 });
