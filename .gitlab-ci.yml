@@ -57,6 +57,8 @@ production:
     - cd code
     - *init_ssh
     - *change_file_permissions
+    - mv .env.production .env
+    - rm .env.test
     - php artisan deploy 68.183.52.252 -s upload -v
   environment:
     name: production
