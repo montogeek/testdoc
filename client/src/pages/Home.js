@@ -297,7 +297,7 @@ class Home extends React.Component {
             <EuiPageContentHeader>
               <EuiPageContentHeaderSection>
                 <EuiTitle>
-                  <h2>Eventos</h2>
+                  <h2>Administración y Gestión de eventos académicos</h2>
                 </EuiTitle>
               </EuiPageContentHeaderSection>
             </EuiPageContentHeader>
