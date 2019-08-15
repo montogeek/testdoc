@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { DragDropContext } from "react-dnd"
+import { DndProvider } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
 
 import BoardSquare from "./Drop/BoardSquare"
@@ -57,28 +57,29 @@ class Board extends Component {
     } = this.props
 
     return (
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            width: "800px",
-            height: "800px",
-            display: "flex",
-            flexWrap: "wrap"
-          }}
-        >
-          {((chairs && chairs.layout) || squares).map(square => this.renderSquare(square))}
+      <DndProvider backend={HTML5Backend}>
+        <div style={{ display: "flex" }}>
+          <div
+            style={{
+              width: "800px",
+              height: "800px",
+              display: "flex",
+              flexWrap: "wrap"
+            }}
+          >
+            {((chairs && chairs.layout) || squares).map(square => this.renderSquare(square))}
+          </div>
+          <div style={{ position: "relative" }}>
+            {Object.keys(Constants.TableImage).map((type, i) => (
+              <TablePiece key={i} type={type} config={Constants.TableImage[type]} />
+            ))}
+          </div>
         </div>
-        <div style={{ position: "relative" }}>
-          {Object.keys(Constants.TableImage).map((type, i) => (
-            <TablePiece key={i} type={type} config={Constants.TableImage[type]} />
-          ))}
-        </div>
-      </div>
+      </DndProvider>
     )
   }
 }
 
-Board = DragDropContext(HTML5Backend)(Board)
 Board = connect(
   ({ layout }) => ({ squares: layout.squares }),
   { moveTable, removePiece }
