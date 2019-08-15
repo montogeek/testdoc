@@ -238,12 +238,13 @@ RegisterForm = withFormik({
   handleSubmit: (values, { props, setSubmitting, setStatus, setErrors }) => {
     props
       .registerUser(values.name, values.email, values.password, values.password_confirmation)
-      .then(() => {
+      .then(res => {
         setSubmitting(false)
       })
       .catch(e => {
         setSubmitting(false)
         setStatus({ error: "Error registrandose" })
+        setErrors(e)
       })
   },
   displayName: "Register"
@@ -302,7 +303,7 @@ class Home extends React.Component {
               </EuiPageContentHeaderSection>
             </EuiPageContentHeader>
             <EuiPageContentBody>
-              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[0]} expand={true} />
+              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[1]} expand={true} />
             </EuiPageContentBody>
           </EuiPageContent>
         </EuiPageBody>

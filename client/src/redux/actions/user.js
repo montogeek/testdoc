@@ -63,23 +63,28 @@ export function registerUser(name, email, password, password_confirmation) {
     })
 
     try {
-      const res = await ky.post(`${process.env.REACT_APP_API_URL}/register`, {
+      const request = await ky.post(`${process.env.REACT_APP_API_URL}/register`, {
         json: { name, email, password, password_confirmation },
         credentials: "include",
         headers: {
           Accept: "application/json"
-        }
+        },
+        throwHttpErrors: false
       })
 
-      if (res.ok) {
+      const response = await request.json()
+
+      if (response.errors) {
+        throw response.errors
+      }
+
+      if (request.ok) {
         return dispatch({
           type: REGISTER_USER_SUCCESS,
           loading: false,
-          data: await res.json()
+          data: response
         })
       }
-
-      throw res
     } catch (e) {
       dispatch({
         type: REGISTER_USER_FAILURE,

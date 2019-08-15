@@ -23,7 +23,9 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toArray(), 400);
+            return response()->json([
+                'errors' => $validator->errors()->toArray()
+            ], 400);
         }
 
         $user = new User;
@@ -61,7 +63,6 @@ class LoginController extends Controller
         }
 
         throw new UnauthorizedHttpException('', 'Not authorized');
-
     }
 
     public function refresh(Request $request)
