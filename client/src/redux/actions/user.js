@@ -81,15 +81,13 @@ export function registerUser(name, email, password, password_confirmation) {
 
       throw res
     } catch (e) {
-      const error = await e.json()
-
       dispatch({
         type: REGISTER_USER_FAILURE,
         loading: false,
-        error: error.message
+        error: e.message
       })
 
-      throw error
+      throw e
     }
   }
 }

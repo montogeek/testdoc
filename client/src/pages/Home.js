@@ -24,7 +24,6 @@ import {
   EuiFieldPassword
 } from "@elastic/eui"
 
-
 const mapStateToProps = state => {
   return {
     user: state.user
@@ -223,7 +222,9 @@ RegisterForm = withFormik({
     email: Yup.string()
       .email("Email invalido")
       .required("Requerido"),
-    password: Yup.string().min(6).required("Contraseña es requerida"),
+    password: Yup.string()
+      .min(6)
+      .required("Contraseña es requerida"),
     password_confirmation: Yup.string()
       .oneOf([Yup.ref("password"), null], "Contraseñas deben ser iguales")
       .required("Confirmacion contraseña es requerida")
@@ -243,7 +244,6 @@ RegisterForm = withFormik({
       .catch(e => {
         setSubmitting(false)
         setStatus({ error: "Error registrandose" })
-        setErrors(e)
       })
   },
   displayName: "Register"
