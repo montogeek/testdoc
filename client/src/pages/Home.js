@@ -298,12 +298,14 @@ class Home extends React.Component {
             <EuiPageContentHeader>
               <EuiPageContentHeaderSection>
                 <EuiTitle>
-                  <h2>Administración y Gestión de eventos académicos</h2>
+                  <h2 style={{ textAlign: "center" }}>
+                    Administración <br /> y Gestión de eventos académicos
+                  </h2>
                 </EuiTitle>
               </EuiPageContentHeaderSection>
             </EuiPageContentHeader>
             <EuiPageContentBody>
-              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[1]} expand={true} />
+              <EuiTabbedContent tabs={this.tabs} initialSelectedTab={this.tabs[0]} expand={true} />
             </EuiPageContentBody>
           </EuiPageContent>
         </EuiPageBody>
