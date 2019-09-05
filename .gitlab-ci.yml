@@ -44,7 +44,7 @@ npm:
       - client/node_modules/
   script:
     - cd client
-    - npm install
+    - npm install --production
     - GENERATE_SOURCEMAP=false node --max-old-space-size=4000 ./node_modules/.bin/react-scripts build
   artifacts:
     expire_in: 1 month
