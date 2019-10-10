@@ -48,7 +48,7 @@ class PrivateLayout extends React.Component {
               },
               {
                 id: "menu",
-                name: "Menu",
+                name: "Menú",
                 href: "/event/:id/menu",
                 isSelected: this.isActive("/event/:id/menu")
               },

@@ -25,7 +25,7 @@ class Menu extends Component {
 
     return (
       <Page
-        title="Menu del evento"
+        title="Menú del evento"
         loading={!event}
       >
         {() => {
@@ -58,7 +58,7 @@ class Menu extends Component {
                     />
                   )
                 })
-              : "No hay menu"
+              : "No hay menú"
 
           return (
             <>

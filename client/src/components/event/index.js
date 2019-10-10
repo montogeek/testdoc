@@ -36,7 +36,7 @@ function Event({ event }) {
             </EuiFlexItem>
             <EuiFlexItem>
               <Link to={`/event/${event.id}/menu`}>
-                <EuiButton>Menu</EuiButton>
+                <EuiButton>Menú</EuiButton>
               </Link>
             </EuiFlexItem>
             <EuiFlexItem>
