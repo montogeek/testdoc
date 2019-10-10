@@ -210,9 +210,10 @@ let Assistants = class Assistants extends Component {
             const isValid = this.props.isValid
 
             return isEditing ? (
-              <EuiButton
+              <EuiButtonEmpty
                 size="s"
                 fill
+                iconType="save"
                 isDisabled={!isValid}
                 onClick={() => {
                   this.props.setFieldValue("id", item.id, false)
@@ -222,11 +223,11 @@ let Assistants = class Assistants extends Component {
                 }}
               >
                 Guardar
-              </EuiButton>
+              </EuiButtonEmpty>
             ) : (
-              <EuiButton size="s" fill onClick={() => this.edit(item.id)}>
+              <EuiButtonEmpty iconType="pencil" size="s" fill onClick={() => this.edit(item.id)}>
                 Editar
-              </EuiButton>
+              </EuiButtonEmpty>
             )
           }
         },
@@ -235,20 +236,26 @@ let Assistants = class Assistants extends Component {
             const isEditing = this.isEditing(item.id)
 
             return isEditing ? (
-              <EuiButton
+              <EuiButtonEmpty
                 size="s"
+                iconType="editorUndo"
                 onClick={() => {
                   this.props.resetForm()
                   this.setState({ editingId: null })
                 }}
               >
                 Cancelar
-              </EuiButton>
+              </EuiButtonEmpty>
             ) : (
               <>
-                <EuiButton color="danger" size="s" onClick={() => this.showConfirmation(item.id)}>
+                <EuiButtonEmpty
+                  color="danger"
+                  size="s"
+                  iconType="trash"
+                  onClick={() => this.showConfirmation(item.id)}
+                >
                   Eliminar
-                </EuiButton>
+                </EuiButtonEmpty>
                 {this.state.confirmationOpen[item.id] && (
                   <EuiOverlayMask>
                     <EuiConfirmModal
