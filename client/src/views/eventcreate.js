@@ -152,7 +152,6 @@ let EventCreate = props => {
 EventCreate = withFormik({
   validationSchema: Yup.object().shape({
     name: Yup.string().required("Requerido"),
-    date: Yup.string().required("Requerido"),
     location: Yup.string().required("Requerido")
   }),
   mapPropsToValues: () => ({
