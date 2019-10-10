@@ -9,7 +9,8 @@ import {
   EuiOverlayMask,
   EuiSpacer,
   EuiFlexGroup,
-  EuiFlexItem
+  EuiFlexItem,
+  EuiButtonEmpty
 } from "@elastic/eui"
 import { Comparators } from "@elastic/eui/es/services/sort"
 import { connect } from "react-redux"
@@ -160,9 +161,10 @@ let FoodList = class FoodList extends Component {
             const isValid = this.props.isValid
 
             return isEditing ? (
-              <EuiButton
+              <EuiButtonEmpty
                 size="s"
-                fill
+                iconType="save"
+                flush="left"
                 isDisabled={!isValid}
                 onClick={() => {
                   this.props.setFieldValue("id", item.id, false)
@@ -172,11 +174,16 @@ let FoodList = class FoodList extends Component {
                 }}
               >
                 Guardar
-              </EuiButton>
+              </EuiButtonEmpty>
             ) : (
-              <EuiButton size="s" fill onClick={() => this.edit(item.id)}>
+              <EuiButtonEmpty
+                iconType="pencil"
+                size="s"
+                flush="left"
+                onClick={() => this.edit(item.id)}
+              >
                 Editar
-              </EuiButton>
+              </EuiButtonEmpty>
             )
           }
         },
@@ -185,20 +192,28 @@ let FoodList = class FoodList extends Component {
             const isEditing = this.isEditing(item.id)
 
             return isEditing ? (
-              <EuiButton
+              <EuiButtonEmpty
                 size="s"
+                iconType="editorUndo"
+                flush="right"
                 onClick={() => {
                   this.props.resetForm()
                   this.setState({ editingId: null })
                 }}
               >
                 Cancelar
-              </EuiButton>
+              </EuiButtonEmpty>
             ) : (
               <>
-                <EuiButton color="danger" size="s" onClick={() => this.showConfirmation(item.id)}>
+                <EuiButtonEmpty
+                  iconType="trash"
+                  flush="right"
+                  color="danger"
+                  size="s"
+                  onClick={() => this.showConfirmation(item.id)}
+                >
                   Eliminar
-                </EuiButton>
+                </EuiButtonEmpty>
                 {this.state.confirmationOpen[item.id] && (
                   <EuiOverlayMask>
                     <EuiConfirmModal

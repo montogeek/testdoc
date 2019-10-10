@@ -24,17 +24,15 @@ class Menu extends Component {
     } = this.props
 
     return (
-      <Page
-        title="Menú del evento"
-        loading={!event}
-      >
+      <Page title="Menú del evento" loading={!event}>
         {() => {
           const list =
             event.menu.length > 0
               ? event.menu.map(category => {
-                  if (category.name === "Comida y bebida") {
+                  if (category.name === "Comida y bebidas") {
                     return (
                       <FoodList
+                        key={category.id}
                         name={category.name}
                         items={category.items}
                         budget={category.budget}
