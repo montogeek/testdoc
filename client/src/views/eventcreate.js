@@ -14,6 +14,7 @@ import {
   EuiFlexItem
 } from "@elastic/eui"
 import moment from "moment"
+import * as Yup from "yup"
 
 import { createEvent } from "../redux/actions/events"
 import Page from "../components/Page"
@@ -149,6 +150,11 @@ let EventCreate = props => {
 }
 
 EventCreate = withFormik({
+  validationSchema: Yup.object().shape({
+    name: Yup.string().required("Requerido"),
+    date: Yup.string().required("Requerido"),
+    location: Yup.string().required("Requerido")
+  }),
   mapPropsToValues: () => ({
     name: "",
     startDate: moment(),
