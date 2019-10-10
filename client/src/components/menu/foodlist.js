@@ -217,7 +217,7 @@ let FoodList = class FoodList extends Component {
                 {this.state.confirmationOpen[item.id] && (
                   <EuiOverlayMask>
                     <EuiConfirmModal
-                      title="¿Eliminar item?"
+                      title="¿Eliminar ítem?"
                       onCancel={() => this.hideConfirmation(item.id)}
                       onConfirm={() => {
                         this.props.removeItem(
@@ -229,7 +229,7 @@ let FoodList = class FoodList extends Component {
                       cancelButtonText="Cancelar"
                       confirmButtonText="Confirmar"
                     >
-                      <p>Esta seguro de eliminar este item</p>
+                      <p>Esta seguro de eliminar este ítem</p>
                     </EuiConfirmModal>
                   </EuiOverlayMask>
                 )}
@@ -402,7 +402,7 @@ let FoodList = class FoodList extends Component {
               }}
             >
               <EuiButton color="primary" fill size="s">
-                Agregar item
+                Agregar ítem
               </EuiButton>
             </Link>
           </EuiFlexItem>

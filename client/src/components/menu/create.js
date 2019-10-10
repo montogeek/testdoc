@@ -46,7 +46,7 @@ let MenuItemCreate = props => {
   }, [categoryId, getEvents])
 
   return (
-    <Page title="Agregar item" loading={loading}>
+    <Page title="Agregar ítem" loading={loading}>
       <EuiFlexGroup>
         <EuiFlexItem>
           <EuiForm>
@@ -174,7 +174,7 @@ let MenuItemCreate = props => {
               </EuiFormRow>
               <EuiFormRow hasEmptyLabelSpace>
                 <EuiButton type="submit" isDisabled={isSubmitting} isLoading={loading} fill>
-                  Agregar item
+                  Agregar ítem
                 </EuiButton>
               </EuiFormRow>
             </form>
@@ -225,7 +225,7 @@ MenuItemCreate = withFormik({
       })
       .catch(e => {
         setSubmitting(false)
-        setStatus({ error: "Error agregando item" })
+        setStatus({ error: "Error agregando ítem" })
         setErrors(e)
       })
   },
