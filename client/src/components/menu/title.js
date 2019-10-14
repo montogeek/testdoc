@@ -3,7 +3,6 @@ import {
   EuiFieldText,
   EuiFieldNumber,
   EuiTitle,
-  EuiIcon,
   EuiFlexItem,
   EuiStat,
   EuiLoadingSpinner,
@@ -14,6 +13,7 @@ import * as Yup from "yup"
 import { withFormik } from "formik"
 
 import { updateCategory } from "../../redux/actions/categories"
+import { EuiButtonEmpty } from "@elastic/eui"
 
 let CategoryTitle = class CategoryTitle extends Component {
   state = {
@@ -70,7 +70,7 @@ let CategoryTitle = class CategoryTitle extends Component {
           <EuiStat title={`$ ${budget}`} description="" titleSize="m" titleColor="secondary" />
         </EuiFlexItem>
         <EuiFlexItem grow={8}>
-          <EuiIcon type="pencil" onClick={this.toggleEditing} size="l" />
+          <EuiButtonEmpty iconType="pencil" onClick={this.toggleEditing} size="l" />
         </EuiFlexItem>
       </>
     )
