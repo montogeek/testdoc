@@ -383,6 +383,7 @@ let FoodList = class FoodList extends Component {
           <EuiFlexItem grow={5}>
             <EuiFlexGroup alignItems={"center"}>
               <Title
+                editable={false}
                 name={name}
                 budget={budget}
                 id={categoryId}

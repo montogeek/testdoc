@@ -30,7 +30,7 @@ let CategoryTitle = class CategoryTitle extends Component {
   }
 
   render() {
-    const { name, budget, values, handleChange, loading } = this.props
+    const { name, budget, values, handleChange, loading, editable = true } = this.props
     const { editing } = this.state
 
     if (loading) {
@@ -45,7 +45,13 @@ let CategoryTitle = class CategoryTitle extends Component {
       return (
         <>
           <EuiFlexItem grow={1}>
-            <EuiFieldText name={"name"} value={values.name} onChange={handleChange} />
+            {editable ? (
+              <EuiFieldText name={"name"} value={values.name} onChange={handleChange} />
+            ) : (
+              <EuiTitle>
+                <h2>{name}</h2>
+              </EuiTitle>
+            )}
             <EuiFieldNumber name={"budget"} value={values.budget} onChange={handleChange} />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
@@ -92,4 +98,4 @@ CategoryTitle = connect(
   }
 )(CategoryTitle)
 
-export default CategoryTitle;
+export default CategoryTitle
