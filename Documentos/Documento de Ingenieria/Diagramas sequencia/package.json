@@ -9,5 +9,8 @@
     "to-vfile": "^6.0.0",
     "vfile-reporter": "^6.0.0",
     "yamljs": "^0.3.0"
+  },
+  "scripts": {
+    "postinstall": "patch-package"
   }
 }
