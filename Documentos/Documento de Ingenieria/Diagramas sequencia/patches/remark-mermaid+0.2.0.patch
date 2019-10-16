@@ -1,0 +1,117 @@
+diff --git a/node_modules/remark-mermaid/src/index.js b/node_modules/remark-mermaid/src/index.js
+index 5a1e2c4..aa2e4be 100644
+--- a/node_modules/remark-mermaid/src/index.js
++++ b/node_modules/remark-mermaid/src/index.js
+@@ -1,6 +1,7 @@
+ const fs = require('fs-extra');
+ const visit = require('unist-util-visit');
+ const utils = require('./utils');
++const YAML = require('yamljs');
+ 
+ const render = utils.render;
+ const renderFromFile = utils.renderFromFile;
+@@ -92,7 +93,7 @@ function replaceLinkWithEmbedded(node, index, parent, vFile) {
+  */
+ function visitCodeBlock(ast, vFile, isSimple) {
+   return visit(ast, 'code', (node, index, parent) => {
+-    const { lang, value, position } = node;
++    const { lang, value, position, meta } = node;
+     const destinationDir = getDestinationDir(vFile);
+     let newNode;
+ 
+@@ -111,7 +112,7 @@ function visitCodeBlock(ast, vFile, isSimple) {
+     } else {
+       let graphSvgFilename;
+       try {
+-        graphSvgFilename = render(value, destinationDir);
++        graphSvgFilename = render(value, destinationDir, meta ? YAML.parse(meta).title : null);
+ 
+         vFile.info(`${lang} code block replaced with graph`, position, PLUGIN_NAME);
+       } catch (error) {
+diff --git a/node_modules/remark-mermaid/src/utils.js b/node_modules/remark-mermaid/src/utils.js
+index 6584001..62186bd 100644
+--- a/node_modules/remark-mermaid/src/utils.js
++++ b/node_modules/remark-mermaid/src/utils.js
+@@ -1,10 +1,10 @@
+-const crypto = require('crypto');
+-const fs = require('fs-extra');
+-const path = require('path');
+-const which = require('npm-which')(__dirname);
+-const execSync = require('child_process').execSync;
++const crypto = require("crypto");
++const fs = require("fs-extra");
++const path = require("path");
++const which = require("npm-which")(__dirname);
++const execSync = require("child_process").execSync;
+ 
+-const PLUGIN_NAME = 'remark-mermaid';
++const PLUGIN_NAME = "remark-mermaid";
+ 
+ /**
+  * Accepts the `source` of the graph as a string, and render an SVG using
+@@ -14,18 +14,26 @@ const PLUGIN_NAME = 'remark-mermaid';
+  * @param  {string} destination
+  * @return {string}
+  */
+-function render(source, destination) {
+-  const unique = crypto.createHmac('sha1', PLUGIN_NAME).update(source).digest('hex');
+-  const mmdcExecutable = which.sync('mmdc');
++function render(source, destination, filename) {
++  const unique = crypto
++    .createHmac("sha1", PLUGIN_NAME)
++    .update(source)
++    .digest("hex");
++  const mmdcExecutable = which.sync("mmdc");
+   const mmdPath = path.join(destination, `${unique}.mmd`);
+-  const svgFilename = `${unique}.svg`;
++  const svgFilename = `${filename || unique}.svg`;
+   const svgPath = path.join(destination, svgFilename);
+ 
+   // Write temporary file
+   fs.outputFileSync(mmdPath, source);
+ 
+   // Invoke mermaid.cli
+-  execSync(`${mmdcExecutable} -i ${mmdPath} -o ${svgPath} -b transparent`);
++  execSync(
++    `${mmdcExecutable.replace(/ /g, "\\ ")} -i ${mmdPath} -o ${svgPath.replace(
++      / /g,
++      "\\ "
++    )} -b transparent`
++  );
+ 
+   // Clean up temporary file
+   fs.removeSync(mmdPath);
+@@ -42,8 +50,11 @@ function render(source, destination) {
+  * @return {string}
+  */
+ function renderFromFile(inputFile, destination) {
+-  const unique = crypto.createHmac('sha1', PLUGIN_NAME).update(inputFile).digest('hex');
+-  const mmdcExecutable = which.sync('mmdc');
++  const unique = crypto
++    .createHmac("sha1", PLUGIN_NAME)
++    .update(inputFile)
++    .digest("hex");
++  const mmdcExecutable = which.sync("mmdc");
+   const svgFilename = `${unique}.svg`;
+   const svgPath = path.join(destination, svgFilename);
+ 
+@@ -77,10 +88,10 @@ function getDestinationDir(vFile) {
+  */
+ function createMermaidDiv(contents) {
+   return {
+-    type: 'html',
++    type: "html",
+     value: `<div class="mermaid">
+   ${contents}
+-</div>`,
++</div>`
+   };
+ }
+ 
+@@ -88,5 +99,5 @@ module.exports = {
+   createMermaidDiv,
+   getDestinationDir,
+   render,
+-  renderFromFile,
++  renderFromFile
+ };
