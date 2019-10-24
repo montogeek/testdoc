@@ -1,4 +1,4 @@
-name;DIRECCI�N;CIUDAD;Provincia o estado;C�DIGO POSTAL;TEL�FONO;CORREO ELECTR�NICO;�ASISTIR�?;NI�OS;ADULTOS;TOTAL
+name;address;city;state;zip;phonenumber;email;rsvp;kids;adults;total
 Familia 1;Direcci�n 1;Ciudad 1;Provincia o estado 1;C�digo postal 1;Tel�fono 1;Direcci�n de correo electr�nico1;No;2;2;4
 Familia 2;Direcci�n 2;Ciudad 2;Provincia o estado 2;C�digo postal 2;Tel�fono 2;Direcci�n de correo electr�nico2;S�;1;1;2
 Familia 3;Direcci�n 3;Ciudad 3;Provincia o estado 3;C�digo postal 3;Tel�fono 3;Direcci�n de correo electr�nico3;S�;3;3;6
